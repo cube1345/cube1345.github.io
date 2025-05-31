@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Cube Card</title><link>https://cube1345.github.io/</link><description>Cube的互联网名片~</description><copyright>Cube Card</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://raw.githubusercontent.com/cube1345/cube1345.github.io/refs/heads/main/static/avatar.webp</url><title>avatar</title><link>https://cube1345.github.io/</link></image><lastBuildDate>Wed, 21 May 2025 08:40:28 +0000</lastBuildDate><managingEditor>Cube Card</managingEditor><ttl>60</ttl><webMaster>Cube Card</webMaster><item><title>Markdown语法</title><link>https://cube1345.github.io//post/2.html</link><description># 一级标题
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Cube Card</title><link>https://cube1345.github.io/</link><description>Cube的互联网名片~</description><copyright>Cube Card</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://raw.githubusercontent.com/cube1345/cube1345.github.io/refs/heads/main/static/avatar.webp</url><title>avatar</title><link>https://cube1345.github.io/</link></image><lastBuildDate>Sat, 31 May 2025 07:01:00 +0000</lastBuildDate><managingEditor>Cube Card</managingEditor><ttl>60</ttl><webMaster>Cube Card</webMaster><item><title>Markdown语法</title><link>https://cube1345.github.io//post/2.html</link><description># 一级标题
 [百度网址](https://www.baidu.com/)
 ## 二级标题
 **111**_主播扣1真送地狱火吗_
@@ -249,7 +249,7 @@
 我的GitHub账号是：https://github.com/cube1345
 对计算机的很多技术都很感兴趣，想做很多有意思的项目，欢迎一起学习交流~
 正在学习前端和嵌入式中~
-最近在搓PID平衡车以及STM32F407ZET6的拓展板~
+最近在搓一个网易云音乐的前端以及准备工业嵌入式~
 注：目前很多代码还来自“思源笔记”的代码分享，之后有时间会改成自己的！！！
 [参考的博客：思源笔记](https://blog.freeblock.cn/)
 嘻嘻~。</description><guid isPermaLink="true">https://cube1345.github.io//post/1.html</guid><pubDate>Sat, 17 May 2025 03:27:59 +0000</pubDate></item></channel></rss>
