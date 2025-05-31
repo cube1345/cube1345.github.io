@@ -75,7 +75,8 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <ol>
 <li>第一步</li>
 </ol>
-<p>Clion我这里是直接导入了之前使用的IDEA的配置。关于STM32单片机开发，首先要把你的CubeMX和CubeCLT的位置告诉Clion，这个在一开始弹出的界面就可以配置好，至于OpenOCD可以先不管。此时，可以先去打开CubeMX进行图形化配置（需要注意在Project Manager中选择CMake），并将生成的文件夹导入到Clion中。接下来主要需要注意的地方如图所示，上面的名称咋下一步要用。下面四个全部在刚才下载的CubeCLT中都能找到，并且一般是自动找到，不需要手动找这些可执行文件。</p>
+<p>Clion我这里是直接导入了之前使用的IDEA的配置。关于STM32单片机开发，首先要把你的CubeMX和CubeCLT的位置告诉Clion，这个在一开始弹出的界面就可以配置好，至于OpenOCD可以先不管。此时，可以先去打开CubeMX进行图形化配置（需要注意在Project Manager中选择CMake），并将生成的文件夹导入到Clion中。接下来主要需要注意的地方如图所示，上面的名称我们在<br>
+下一步要用。下面四个全部在刚才下载的CubeCLT中都能找到，并且一般是自动找到，不需要手动找这些可执行文件。</p>
 <p><a target="_blank" rel="noopener noreferrer" href="https://github.com/user-attachments/assets/3881ccad-6948-4556-a02e-8c95d6175c82"><img src="https://github.com/user-attachments/assets/3881ccad-6948-4556-a02e-8c95d6175c82" alt="Image" style="max-width: 100%;"></a></p>
 <p>2.第二步</p>
 <p>第二个需要取配置的地方是这里，这里可以使用Debug模式，工具链栏需要写我们刚才那个界面取的名称，另外，“在编辑CMakeLists.txt或其他CMake配置文件时重新加载CMake项目”这个也需要打勾。<br>
