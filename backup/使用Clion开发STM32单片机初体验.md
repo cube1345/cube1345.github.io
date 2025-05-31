@@ -10,8 +10,7 @@ Clion的下载没什么好说的，非常简单。CubeMX在使用Clion时，将�
 
 1. 第一步
 
-Clion我这里是直接导入了之前使用的IDEA的配置。关于STM32单片机开发，首先要把你的CubeMX和CubeCLT的位置告诉Clion，这个在一开始弹出的界面就可以配置好，至于OpenOCD可以先不管。此时，可以先去打开CubeMX进行图形化配置（需要注意在Project Manager中选择CMake），并将生成的文件夹导入到Clion中。接下来主要需要注意的地方如图所示，上面的名称我们在
-下一步要用。下面四个全部在刚才下载的CubeCLT中都能找到，并且一般是自动找到，不需要手动找这些可执行文件。
+Clion我这里是直接导入了之前使用的IDEA的配置。关于STM32单片机开发，首先要把你的CubeMX和CubeCLT的位置告诉Clion，这个在一开始弹出的界面就可以配置好，至于OpenOCD可以先不管。此时，可以先去打开CubeMX进行图形化配置（需要注意在Project Manager中选择CMake），并将生成的文件夹导入到Clion中。接下来主要需要注意的地方如图所示，上面的名称我们在下一步要用。下面四个全部在刚才下载的CubeCLT中都能找到，并且一般是自动找到，不需要手动找这些可执行文件。
 
 ![Image](https://github.com/user-attachments/assets/3881ccad-6948-4556-a02e-8c95d6175c82)
 
