@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Cube Card</title><link>https://cube1345.github.io/</link><description>Cube的互联网名片~</description><copyright>Cube Card</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://raw.githubusercontent.com/cube1345/cube1345.github.io/refs/heads/main/static/avatar.webp</url><title>avatar</title><link>https://cube1345.github.io/</link></image><lastBuildDate>Sat, 31 May 2025 08:00:02 +0000</lastBuildDate><managingEditor>Cube Card</managingEditor><ttl>60</ttl><webMaster>Cube Card</webMaster><item><title>使用Clion开发STM32单片机初体验</title><link>https://cube1345.github.io//post/3.html</link><description>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>Cube Card</title><link>https://cube1345.github.io/</link><description>Cube的互联网名片~</description><copyright>Cube Card</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://raw.githubusercontent.com/cube1345/cube1345.github.io/refs/heads/main/static/avatar.webp</url><title>avatar</title><link>https://cube1345.github.io/</link></image><lastBuildDate>Tue, 03 Jun 2025 10:01:01 +0000</lastBuildDate><managingEditor>Cube Card</managingEditor><ttl>60</ttl><webMaster>Cube Card</webMaster><item><title>使用Clion开发STM32单片机初体验</title><link>https://cube1345.github.io//post/3.html</link><description>
 看了keysking的最新视频，恰好Jetbrains的Clion软件最近对非商业用途免费开放，所以心血来潮自己配置了一下，之后便可以不再使用CubeIDE了。</description><guid isPermaLink="true">https://cube1345.github.io//post/3.html</guid><pubDate>Sat, 31 May 2025 07:49:06 +0000</pubDate></item><item><title>Markdown语法</title><link>https://cube1345.github.io//post/2.html</link><description># 一级标题
 [百度网址](https://www.baidu.com/)
 ## 二级标题
@@ -246,11 +246,9 @@
         document.querySelector('#message').innerHTML += '&lt;h1&gt;😭&amp;nbsp;&amp;nbsp;抱歉，您访问页面找不到啦&lt;/h1&gt;&lt;p&gt;🏠您可以返回首页&lt;a href='https://blog.freeblock.cn'&gt;星源博客&lt;/a&gt;&lt;br&gt;或者&lt;br&gt;🐱‍🐉玩一会小恐龙快跑&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;(源码来自Chromium)&lt;br&gt;按&lt;span&gt;空格(space)&lt;/span&gt;&lt;span&gt;上(↑)&lt;/span&gt;&lt;span&gt;下(↓)&lt;/span&gt;&lt;span&gt;左(←)&lt;/span&gt;&lt;span&gt;右(→)&lt;/span&gt;键试试&lt;/p&gt;'
     &lt;/script&gt;
 &lt;/html&gt;
-```。</description><guid isPermaLink="true">https://cube1345.github.io//post/2.html</guid><pubDate>Sat, 17 May 2025 08:01:27 +0000</pubDate></item><item><title>Welcome to My World!</title><link>https://cube1345.github.io//post/1.html</link><description>你好，这里是Cube的自我介绍~
+```。</description><guid isPermaLink="true">https://cube1345.github.io//post/2.html</guid><pubDate>Sat, 17 May 2025 08:01:27 +0000</pubDate></item><item><title>Welcome to My World!</title><link>https://cube1345.github.io//post/1.html</link><description>你好，欢迎您来到我的网站，这里是Cube的自我介绍~
 我的GitHub账号是：https://github.com/cube1345
 对计算机的很多技术都很感兴趣，想做很多有意思的项目，欢迎一起学习交流~
 正在学习前端和嵌入式中~
 最近在搓一个网易云音乐的前端以及准备工业嵌入式~
-注：目前很多代码还来自“思源笔记”的代码分享，之后有时间会改成自己的！！！
-[参考的博客：思源笔记](https://blog.freeblock.cn/)
 嘻嘻~。</description><guid isPermaLink="true">https://cube1345.github.io//post/1.html</guid><pubDate>Sat, 17 May 2025 03:27:59 +0000</pubDate></item></channel></rss>
