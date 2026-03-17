@@ -1,0 +1,19 @@
+- class_name: 推荐站点
+  class_desc: 这些站点长期更新，内容质量稳定，适合作为日常阅读来源。
+  link_list:
+    - name: Hexo
+      link: https://hexo.io/
+      avatar: https://d33wubrfki0l68.cloudfront.net/2f7e72d4b6fbf47f0d76f798ac0fc1b048121977/4a6b2/logo.svg
+      descr: 快速、简洁且高效的静态博客框架
+    - name: Butterfly
+      link: https://butterfly.js.org/
+      avatar: https://butterfly.js.org/img/butterfly-icon.png
+      descr: 当前主题的官方文档与功能说明
+
+- class_name: 我的主页
+  class_desc: 这里可以放你自己的站点矩阵、项目主页或常用链接。
+  link_list:
+    - name: GitHub
+      link: https://github.com/cube1345
+      avatar: https://github.githubassets.com/favicons/favicon.svg
+      descr: 代码仓库与项目记录
