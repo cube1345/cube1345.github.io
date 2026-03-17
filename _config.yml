@@ -102,5 +102,5 @@ theme: matery
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: 'git'
-  repository: 'git@github.com:cube1345/cube1345.github.io.git'
+  repository: 'https://github.com/cube1345/cube1345.github.io.git'
   branch: 'main'
