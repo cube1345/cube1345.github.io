@@ -1,0 +1,320 @@
+#nav
+  backdrop-filter: blur(14px)
+
+  .menus_items
+    gap: 10px
+
+  .menus_item
+    margin: 0 4px
+
+  .site-page
+    display: inline-flex
+    align-items: center
+    gap: 10px
+    padding: 9px 14px
+    border: 1px solid transparent
+    border-radius: 999px
+    transition: background-color .25s ease, border-color .25s ease, transform .25s ease, box-shadow .25s ease
+
+    i
+      display: inline-flex
+      align-items: center
+      justify-content: center
+      width: 30px
+      height: 30px
+      border-radius: 50%
+      background: rgba(255, 255, 255, .18)
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22)
+      font-size: .92rem
+
+    &:hover
+      background: rgba(255, 255, 255, .12)
+      border-color: rgba(255, 255, 255, .2)
+      box-shadow: 0 10px 24px rgba(15, 23, 42, .12)
+      transform: translateY(-1px)
+
+#page-header.not-top-img
+  #nav
+    background: rgba(255, 251, 245, .82)
+    border-bottom: 1px solid rgba(47, 111, 102, .08)
+
+    .site-page
+      i
+        background: rgba(47, 111, 102, .09)
+        color: $theme-color
+
+      &:hover
+        background: rgba(47, 111, 102, .08)
+        border-color: rgba(47, 111, 102, .12)
+
+#recent-posts
+  .recent-post-item
+    border: 1px solid rgba(47, 111, 102, .08)
+    border-radius: 28px
+    background: linear-gradient(180deg, rgba(255, 255, 255, .96), rgba(248, 246, 240, .96))
+    box-shadow: 0 22px 48px rgba(15, 23, 42, .08)
+
+    .post_cover
+      .post-bg
+        border-radius: 22px
+
+    & > .recent-post-info
+      padding-top: 34px
+      padding-bottom: 34px
+
+      > .article-title
+        font-size: 1.7em
+        font-weight: 700
+
+      > .content
+        color: #52606d
+
+.card-widget
+  border: 1px solid rgba(47, 111, 102, .08)
+  border-radius: 24px
+  background: linear-gradient(180deg, rgba(255, 255, 255, .97), rgba(248, 246, 240, .97))
+  box-shadow: 0 16px 38px rgba(15, 23, 42, .06)
+
+  .item-headline
+    display: flex
+    align-items: center
+    gap: 10px
+    margin-bottom: 14px
+
+    i
+      color: $theme-color
+
+.card-info
+  .avatar-img img
+    border: 4px solid rgba(255, 255, 255, .9)
+    box-shadow: 0 12px 28px rgba(15, 23, 42, .12)
+
+  #card-info-btn
+    border-radius: 999px
+    background: linear-gradient(135deg, $theme-color, lighten($theme-color, 16%))
+    box-shadow: 0 14px 26px rgba(47, 111, 102, .2)
+
+#page
+  .page-title
+    display: flex
+    align-items: center
+    gap: 12px
+    margin-bottom: 20px
+    font-size: 2.1em
+
+    &:before
+      display: inline-flex
+      align-items: center
+      justify-content: center
+      width: 44px
+      height: 44px
+      border-radius: 14px
+      background: linear-gradient(135deg, rgba(47, 111, 102, .12), rgba(217, 123, 82, .18))
+      color: $theme-color
+      font-family: 'Font Awesome 7 Free', 'Font Awesome 6 Free', 'Font Awesome 6 Pro'
+      font-weight: 900
+      content: '\f15c'
+
+.type-link
+  #page .page-title:before
+    content: '\f0c1'
+
+.type-tags
+  #page .page-title:before
+    content: '\23'
+
+.type-categories
+  #page .page-title:before
+    content: '\f07b'
+
+#article-container
+  h2
+    display: flex
+    align-items: center
+    gap: 10px
+    margin-top: 2.1rem
+    margin-bottom: 1rem
+    font-size: 1.45rem
+    line-height: 1.25
+
+    &:before
+      display: inline-flex
+      align-items: center
+      justify-content: center
+      flex: 0 0 34px
+      width: 34px
+      height: 34px
+      border-radius: 12px
+      background: rgba(47, 111, 102, .1)
+      color: $theme-color
+      font-family: 'Font Awesome 7 Free', 'Font Awesome 6 Free', 'Font Awesome 6 Pro'
+      font-weight: 900
+      line-height: 1
+      transform: translateY(1px)
+      content: '\f0da'
+
+  p,
+  li
+    color: #46525d
+
+  img[alt='GitHub Contributions']
+    display: block
+    margin: 18px auto 0
+    padding: 14px
+    max-width: 100%
+    border: 1px solid rgba(47, 111, 102, .1)
+    border-radius: 22px
+    background: linear-gradient(180deg, rgba(255, 255, 255, .98), rgba(248, 246, 240, .95))
+    box-shadow: 0 18px 40px rgba(15, 23, 42, .08)
+
+  .page-panel
+    margin: 20px 0
+    padding: 22px 24px
+    border: 1px solid rgba(47, 111, 102, .1)
+    border-radius: 22px
+    background: linear-gradient(180deg, rgba(255, 255, 255, .98), rgba(248, 246, 240, .95))
+    box-shadow: 0 16px 34px rgba(15, 23, 42, .06)
+
+  .page-kicker
+    display: inline-flex
+    align-items: center
+    gap: 8px
+    margin-bottom: 14px
+    padding: 6px 12px
+    border-radius: 999px
+    background: rgba(47, 111, 102, .09)
+    color: $theme-color
+    font-size: .92rem
+    font-weight: 600
+    letter-spacing: .02em
+
+  .profile-grid,
+  .friend-grid
+    display: grid
+    grid-template-columns: repeat(2, minmax(0, 1fr))
+    gap: 16px
+    margin: 20px 0
+
+    +maxWidth768()
+      grid-template-columns: 1fr
+
+  .profile-card,
+  .friend-card
+    padding: 18px 18px 16px
+    border: 1px solid rgba(47, 111, 102, .08)
+    border-radius: 20px
+    background: rgba(255, 255, 255, .82)
+
+    h3
+      margin-top: 0
+      margin-bottom: 10px
+      font-size: 1.06rem
+
+  .inline-meta
+    display: flex
+    flex-wrap: wrap
+    gap: 10px
+    margin-top: 12px
+
+    span
+      display: inline-flex
+      align-items: center
+      padding: 6px 12px
+      border-radius: 999px
+      background: rgba(47, 111, 102, .08)
+      color: #4d5b66
+      font-size: .9rem
+
+  .friend-template pre
+    margin-top: 14px
+    border-radius: 18px
+
+  .link-policy ul
+    padding-left: 20px
+
+.type-link
+  #article-container
+    .flink-desc
+      margin: 4px 0 12px
+      color: #60707a
+
+    .flink-list
+      display: grid
+      grid-template-columns: repeat(2, minmax(0, 1fr))
+      gap: 16px
+      padding: 8px 0 0
+
+      +maxWidth768()
+        grid-template-columns: 1fr
+
+      > .flink-list-item
+        float: none
+        margin: 0
+        width: 100%
+        height: auto
+        min-height: 108px
+        border: 1px solid rgba(47, 111, 102, .08)
+        border-radius: 22px
+        background: linear-gradient(180deg, rgba(255, 255, 255, .98), rgba(248, 246, 240, .95))
+        box-shadow: 0 18px 34px rgba(15, 23, 42, .05)
+        transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease
+
+        &:before
+          display: none
+
+        &:hover
+          transform: translateY(-4px)
+          border-color: rgba(47, 111, 102, .16)
+          box-shadow: 0 24px 44px rgba(15, 23, 42, .1)
+
+          .flink-item-icon
+            margin-left: 0
+            width: 60px
+
+        a
+          display: flex
+          align-items: center
+          min-height: 108px
+          padding: 14px 16px
+
+          .flink-item-icon
+            float: none
+            margin: 0 16px 0 0
+            flex: 0 0 60px
+            width: 60px
+            height: 60px
+            border-radius: 18px
+            background: rgba(47, 111, 102, .06)
+
+    .flink-item-name
+      padding: 8px 0 0
+      height: auto
+      font-size: 1.1em
+
+    .flink-item-desc
+      padding: 8px 0 0
+      height: auto
+      font-size: .95em
+
+#aside-content .sticky_layout
+  .card-archives,
+  .card-tags,
+  .card-categories,
+  .card-webinfo,
+  .card-recent-post
+    overflow: hidden
+
+@media screen and (max-width: 768px)
+  #site-info
+    margin: 0 16px
+    padding: 26px 20px
+
+  #nav .site-page
+    padding: 8px 12px
+
+    i
+      width: 28px
+      height: 28px
+
+  #recent-posts .recent-post-item > .recent-post-info
+    padding: 22px 20px 28px
