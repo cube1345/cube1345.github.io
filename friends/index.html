@@ -1,0 +1,251 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>友链 | Cube Diary</title><meta name="author" content="cube"><meta name="copyright" content="cube"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f5ef"><meta name="description" content="Friend Links   这里收录我会长期访问的博客、项目主页和持续维护的内容型站点。欢迎交换友链，但我更看重站点是否真实、稳定、持续更新。   申请条件        基础要求            站点可以稳定访问       有持续更新的原创内容       页面信息完整，加载体验正常       没有异常跳转或大量采集内容                优先类型">
+<meta property="og:type" content="website">
+<meta property="og:title" content="友链">
+<meta property="og:url" content="http://cube1345.github.io/friends/index.html">
+<meta property="og:site_name" content="Cube Diary">
+<meta property="og:description" content="Friend Links   这里收录我会长期访问的博客、项目主页和持续维护的内容型站点。欢迎交换友链，但我更看重站点是否真实、稳定、持续更新。   申请条件        基础要求            站点可以稳定访问       有持续更新的原创内容       页面信息完整，加载体验正常       没有异常跳转或大量采集内容                优先类型">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://cube1345.github.io/img/lilisi1.jpg">
+<meta property="article:published_time" content="2026-03-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-16T23:38:24.528Z">
+<meta property="article:author" content="cube">
+<meta property="article:tag" content="hexo, blog, frontend, embedded, notes">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://cube1345.github.io/img/lilisi1.jpg"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="http://cube1345.github.io/friends/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f5ef')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'medium_zoom',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#2f6f66","bgDark":"#1f1f1f","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '友链',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'page'
+}</script><meta name="generator" content="Hexo 8.1.1"></head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.min.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/lilisi1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">1</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/navigation"><i class="fa-fw fas fa-compass"></i><span> 索引</span></a></div><div class="menus_item"><a class="site-page" href="/tools"><i class="fa-fw fas fa-screwdriver-wrench"></i><span> 工具</span></a></div><div class="menus_item"><a class="site-page" href="/friends"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page type-link" id="body-wrap"><header class="not-top-img fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Cube Diary</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/navigation"><i class="fa-fw fas fa-compass"></i><span> 索引</span></a></div><div class="menus_item"><a class="site-page" href="/tools"><i class="fa-fw fas fa-screwdriver-wrench"></i><span> 工具</span></a></div><div class="menus_item"><a class="site-page" href="/friends"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><h1 class="title-seo">友链</h1></header><main class="layout" id="content-inner"><div id="page"><div class="page-title">友链</div><div class="container" id="article-container"><div class="flink"><h2 id="推荐站点"><a href="#推荐站点" class="headerlink" title="推荐站点"></a>推荐站点</h2><div class="flink-desc">这些站点长期更新，内容质量稳定，适合作为日常阅读来源。</div> <div class="flink-list">
+  <div class="flink-list-item">
+    <a href="https://hexo.io/" title="Hexo" target="_blank">
+      <div class="flink-item-icon">
+        <img class="no-lightbox" src="https://d33wubrfki0l68.cloudfront.net/2f7e72d4b6fbf47f0d76f798ac0fc1b048121977/4a6b2/logo.svg" onerror='this.onerror=null;this.src="/img/friend_404.gif"' alt="Hexo" / loading='lazy'>
+      </div>
+      <div class="flink-item-name">Hexo</div>
+      <div class="flink-item-desc" title="快速、简洁且高效的静态博客框架">快速、简洁且高效的静态博客框架</div>
+    </a>
+  </div>
+  <div class="flink-list-item">
+    <a href="https://butterfly.js.org/" title="Butterfly" target="_blank">
+      <div class="flink-item-icon">
+        <img class="no-lightbox" src="https://butterfly.js.org/img/butterfly-icon.png" onerror='this.onerror=null;this.src="/img/friend_404.gif"' alt="Butterfly" / loading='lazy'>
+      </div>
+      <div class="flink-item-name">Butterfly</div>
+      <div class="flink-item-desc" title="当前主题的官方文档与功能说明">当前主题的官方文档与功能说明</div>
+    </a>
+  </div></div><h2 id="我的主页"><a href="#我的主页" class="headerlink" title="我的主页"></a>我的主页</h2><div class="flink-desc">这里可以放你自己的站点矩阵、项目主页或常用链接。</div> <div class="flink-list">
+  <div class="flink-list-item">
+    <a href="https://github.com/cube1345" title="GitHub" target="_blank">
+      <div class="flink-item-icon">
+        <img class="no-lightbox" src="https://github.githubassets.com/favicons/favicon.svg" onerror='this.onerror=null;this.src="/img/friend_404.gif"' alt="GitHub" / loading='lazy'>
+      </div>
+      <div class="flink-item-name">GitHub</div>
+      <div class="flink-item-desc" title="代码仓库与项目记录">代码仓库与项目记录</div>
+    </a>
+  </div></div><div class="page-panel">
+  <div class="page-kicker">Friend Links</div>
+  <p>这里收录我会长期访问的博客、项目主页和持续维护的内容型站点。欢迎交换友链，但我更看重站点是否真实、稳定、持续更新。</p>
+</div>
+
+<h2 id="申请条件"><a href="#申请条件" class="headerlink" title="申请条件"></a>申请条件</h2><div class="friend-grid link-policy">
+  <div class="friend-card">
+    <h3>基础要求</h3>
+    <ul>
+      <li>站点可以稳定访问</li>
+      <li>有持续更新的原创内容</li>
+      <li>页面信息完整，加载体验正常</li>
+      <li>没有异常跳转或大量采集内容</li>
+    </ul>
+  </div>
+  <div class="friend-card">
+    <h3>优先类型</h3>
+    <ul>
+      <li>技术博客</li>
+      <li>项目型个人主页</li>
+      <li>长期写作类站点</li>
+      <li>有明确主题方向的内容站</li>
+    </ul>
+  </div>
+</div>
+
+<h2 id="交换方式"><a href="#交换方式" class="headerlink" title="交换方式"></a>交换方式</h2><div class="page-panel">
+  <p>如果你希望交换友链，建议先将本站加入你的友链页，再把你的站点信息发给我。</p>
+  <div class="inline-meta">
+    <span>site name</span>
+    <span>site url</span>
+    <span>avatar</span>
+    <span>description</span>
+  </div>
+</div>
+
+<h2 id="信息模板"><a href="#信息模板" class="headerlink" title="信息模板"></a>信息模板</h2><div class="friend-template">
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">你的站点名</span></span><br><span class="line">  <span class="attr">link:</span> <span class="string">https://example.com</span></span><br><span class="line">  <span class="attr">avatar:</span> <span class="string">https://example.com/avatar.jpg</span></span><br><span class="line">  <span class="attr">descr:</span> <span class="string">一句话介绍你的站点</span></span><br></pre></td></tr></table></figure>
+
+</div>
+
+<h2 id="当前展示"><a href="#当前展示" class="headerlink" title="当前展示"></a>当前展示</h2><p>下面是当前收录的站点列表。</p>
+</div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/lilisi1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">cube</div><div class="author-info-description">持续记录技术、项目和真实的思考过程。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">1</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/cube1345"><i class="fab fa-github"></i><span>GitHub</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/cube1345" target="_blank" title="GitHub"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:cubeacount123@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这里主要更新技术笔记、项目复盘和长期学习记录。</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/03/17/hello-world/" title="博客搭建记录：从 Hexo 到个人主页雏形">博客搭建记录：从 Hexo 到个人主页雏形</a><time datetime="2026-03-17T13:30:00.000Z" title="发表于 2026-03-17 21:30:00">2026-03-17</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            
+          </div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"><span class="card-category-list-name">博客搭建</span><span class="card-category-list-count">1</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/Butterfly/" style="font-size: 1.15em; color: rgb(50, 86, 200);">Butterfly</a><a href="/tags/GitHub-Pages/" style="font-size: 1.15em; color: rgb(87, 65, 50);">GitHub Pages</a><a href="/tags/Hexo/" style="font-size: 1.15em; color: rgb(50, 50, 91);">Hexo</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline">
+      <i class="fas fa-archive"></i>
+      <span>归档</span>
+      
+    </div>
+  
+    <ul class="card-archive-list">
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/03/">
+            <span class="card-archive-list-date">
+              2026 年 03 月
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+    </ul>
+  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">1</div></div><div class="webinfo-item"><div class="item-name">运行时间 :</div><div class="item-count" id="runtimeshow" data-publishDate="2026-03-16T16:00:00.000Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-03-16T23:38:31.204Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By cube</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">专注内容积累，而不是页面堆砌。</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
