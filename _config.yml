@@ -103,4 +103,4 @@ theme: matery
 deploy:
   type: 'git'
   repository: 'https://github.com/cube1345/cube1345.github.io.git'
-  branch: 'main'
+  branch: 'master'
