@@ -132,12 +132,19 @@
     display: flex
     align-items: center
     gap: 10px
+    padding-left: 0
     margin-top: 2.1rem
     margin-bottom: 1rem
     font-size: 1.45rem
     line-height: 1.25
 
+    &:hover
+      padding-left: 0
+
     &:before
+      position: static
+      top: auto
+      left: auto
       display: inline-flex
       align-items: center
       justify-content: center
@@ -150,7 +157,7 @@
       font-family: 'Font Awesome 7 Free', 'Font Awesome 6 Free', 'Font Awesome 6 Pro'
       font-weight: 900
       line-height: 1
-      transform: translateY(1px)
+      transform: none
       content: '\f0da'
 
   p,
