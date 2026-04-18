@@ -170,7 +170,6 @@ subtitle:
   # If you close the typewriter effect, the subtitle will only show the first line of sub
   sub:
     - Keep building in public.
-    - 写代码，也写长期主义。
     - Notes on frontend, embedded, and life.
 
 # Article layout on the homepage
