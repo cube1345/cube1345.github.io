@@ -5,17 +5,12 @@ updated: 2026-04-18 22:10:00
 categories:
   - 嵌入式系统
 tags:
-  - FreeRTOS
-  - RTOS
+  - 计算机架构
   - 嵌入式
-  - 队列
-  - 互斥量
 description: 从 FreeRTOS 的队列机制讲起，梳理任务阻塞、ISR 级 API、TCB、PendSV 上下文切换、优先级反转和互斥量的基本原理。
 top_img: false
 toc: true
 ---
-
-
 笔者是很久之前学习[RTOS](https://zhida.zhihu.com/search?content_id=273316053&content_type=Article&match_order=1&q=RTOS&zhida_source=entity)了，当时学了很多概念一知半解，然而实际开发的时候由于爱好屎山的缘故，基本上也不会用到那些概念。
 
 最近对底层有学习的需求，我想将[FreeRTOS](https://zhida.zhihu.com/search?content_id=273316053&content_type=Article&match_order=1&q=FreeRTOS&zhida_source=entity)的一些概念拾起来。
@@ -47,12 +42,12 @@ e.g. [xQueueSendToFront](https://zhida.zhihu.com/search?content_id=273316053&con
 ```text
 Queue Control里面存放这一个队列的数据信息，belike：
 
-uxLength          = 3        ← 总共有 3 个格子                
-uxItemSize        = 8        ← 每个格子 8 字节                
-uxMessagesWaiting = 0        ← 队列里有0个数据等待被取走                      
-pcWriteTo         = Item 0   ← 下次写到这儿                   
-pcReadFrom        = Item 2   ← 下次从这儿读（初始化特殊位置）    
-xTasksWaitingToSend    = {空}  ← 没有任务在等"不满"            
+uxLength          = 3        ← 总共有 3 个格子          
+uxItemSize        = 8        ← 每个格子 8 字节          
+uxMessagesWaiting = 0        ← 队列里有0个数据等待被取走                
+pcWriteTo         = Item 0   ← 下次写到这儿             
+pcReadFrom        = Item 2   ← 下次从这儿读（初始化特殊位置）  
+xTasksWaitingToSend    = {空}  ← 没有任务在等"不满"      
 xTasksWaitingToReceive = {空}  ← 没有任务在等"不空"
 ```
 
@@ -154,18 +149,18 @@ TCB是如何做到上下文切换的呢？
 而这个函数，在FreeRTOS里面是一段被写好的汇编代码：
 
 ```text
- 1. 保存当前任务的现场                   
+ 1. 保存当前任务的现场             
     - 把 R4~R11压入当前栈（Cortex-M内核在硬件层面上，只要进入异常，CPU硬件压入R0, R1, R2, R3, R12, LR, PC, xPSR）  
-    - 保存当前 SP 到当前任务的 TCB        
-                                       
- 2. 查找下一个要运行的任务                
-    - pxCurrentTCB = pxNextTCB          
-                                       
- 3. 恢复新任务的现场                     
-    - 从新任务的 TCB 读取 SP             
-    - 从栈弹出 R4~R11, LR, PC, xPSR     
-                                       
- 4. BX LR 返回                          
+    - 保存当前 SP 到当前任务的 TCB  
+                                 
+ 2. 查找下一个要运行的任务          
+    - pxCurrentTCB = pxNextTCB    
+                                 
+ 3. 恢复新任务的现场               
+    - 从新任务的 TCB 读取 SP       
+    - 从栈弹出 R4~R11, LR, PC, xPSR   
+                                 
+ 4. BX LR 返回                    
     - PC 被恢复为 Task B 上次打断的位置   
     - CPU 开始执行 Task B 的代码
 ```

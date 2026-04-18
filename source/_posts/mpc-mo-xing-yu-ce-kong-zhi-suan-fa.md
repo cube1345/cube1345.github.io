@@ -7,13 +7,11 @@ categories:
 tags:
   - 嵌入式
   - 控制算法
-  - MPC
-  - 机器人
+  - ROS
 description: 从基本概念、预测模型、代价函数到约束处理，系统梳理模型预测控制（MPC）的核心思想与典型应用。
 mathjax: true
 toc: true
 ---
-
 # MPC模型预测控制算法
 
 ## 1. 什么是MPC
