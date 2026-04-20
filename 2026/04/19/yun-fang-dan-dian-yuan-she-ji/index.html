@@ -1,0 +1,372 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>运放单电源设计：交流耦合、直流偏置与阻值选取 | Cube Diary</title><meta name="author" content="cube"><meta name="copyright" content="cube"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f5ef"><meta name="description" content="从交流耦合、虚拟地、直流耦合到线性映射设计，梳理单电源运放电路的常见思路。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="运放单电源设计：交流耦合、直流偏置与阻值选取">
+<meta property="og:url" content="https://cube1345.github.io/2026/04/19/yun-fang-dan-dian-yuan-she-ji/index.html">
+<meta property="og:site_name" content="Cube Diary">
+<meta property="og:description" content="从交流耦合、虚拟地、直流耦合到线性映射设计，梳理单电源运放电路的常见思路。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://placewaifu.com/image/800/450?post=yun-fang-dan-dian-yuan-she-ji">
+<meta property="article:published_time" content="2026-04-19T03:00:00.000Z">
+<meta property="article:modified_time" content="2026-04-19T03:00:00.000Z">
+<meta property="article:author" content="cube">
+<meta property="article:tag" content="hexo, blog, frontend, embedded, notes">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://placewaifu.com/image/800/450?post=yun-fang-dan-dian-yuan-she-ji"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "运放单电源设计：交流耦合、直流偏置与阻值选取",
+  "url": "https://cube1345.github.io/2026/04/19/yun-fang-dan-dian-yuan-she-ji/",
+  "image": "https://placewaifu.com/image/800/450?post=yun-fang-dan-dian-yuan-she-ji",
+  "datePublished": "2026-04-19T03:00:00.000Z",
+  "dateModified": "2026-04-19T03:00:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "cube",
+      "url": "https://cube1345.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.ico"><link rel="canonical" href="https://cube1345.github.io/2026/04/19/yun-fang-dan-dian-yuan-she-ji/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f5ef')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '运放单电源设计：交流耦合、直流偏置与阻值选取',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/lilisi1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">9</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/navigation"><i class="fa-fw fas fa-compass"></i><span> 索引</span></a></div><div class="menus_item"><a class="site-page" href="/tools"><i class="fa-fw fas fa-screwdriver-wrench"></i><span> 工具</span></a></div><div class="menus_item"><a class="site-page" href="/friends"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(https://placewaifu.com/image/800/450?post=yun-fang-dan-dian-yuan-she-ji);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Cube Diary</span></a><a class="nav-page-title" href="/"><span class="site-name">运放单电源设计：交流耦合、直流偏置与阻值选取</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/navigation"><i class="fa-fw fas fa-compass"></i><span> 索引</span></a></div><div class="menus_item"><a class="site-page" href="/tools"><i class="fa-fw fas fa-screwdriver-wrench"></i><span> 工具</span></a></div><div class="menus_item"><a class="site-page" href="/friends"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">运放单电源设计：交流耦合、直流偏置与阻值选取</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-04-19T03:00:00.000Z" title="发表于 2026-04-19 11:00:00">2026-04-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-04-19T03:00:00.000Z" title="更新于 2026-04-19 11:00:00">2026-04-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%A8%A1%E6%8B%9F%E7%94%B5%E8%B7%AF/">模拟电路</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><div id="post-outdate-notice" data="{&quot;limitDay&quot;:365,&quot;messagePrev&quot;:&quot;It has been&quot;,&quot;messageNext&quot;:&quot;days since the last update, the content of the article may be outdated.&quot;,&quot;postUpdate&quot;:&quot;2026-04-19 11:00:00&quot;}" hidden></div><h1 id="运放单电源设计：交流耦合、直流偏置与阻值选取"><a href="#运放单电源设计：交流耦合、直流偏置与阻值选取" class="headerlink" title="运放单电源设计：交流耦合、直流偏置与阻值选取"></a>运放单电源设计：交流耦合、直流偏置与阻值选取</h1><p>很多教材默认使用双电源运放，但真正落到 MCU、传感器接口和便携设备上时，单电源供电才更常见。单电源设计的关键并不是“把负电源脚接地”这么简单，而是要重新处理信号参考点、输出摆幅和偏置方式。</p>
+<p><img src="/../images/posts/yun-fang-dan-dian-yuan-she-ji/01-dual-supply-reference.png" alt="双电源中的参考地位置" loading='lazy'></p>
+<span id="more"></span>
+
+<h2 id="1-为什么单电源设计需要偏置"><a href="#1-为什么单电源设计需要偏置" class="headerlink" title="1. 为什么单电源设计需要偏置"></a>1. 为什么单电源设计需要偏置</h2><p>双电源系统中，地通常位于正负电源之间，输入信号可以围绕 <code>0V</code> 正负摆动。单电源系统不同，运放既看不到负电源，也无法自然处理跨过 <code>0V</code> 的交流信号。</p>
+<p><img src="/../images/posts/yun-fang-dan-dian-yuan-she-ji/02-single-supply-problem.png" alt="单电源下负半周会被削掉的问题" loading='lazy'></p>
+<p>因此，单电源运放设计通常需要人为构造一个新的参考点，让交流信号围绕这个“抬高后的地”摆动。最常见的做法，就是在电源中点附近建立一个偏置电压。</p>
+<p><img src="/../images/posts/yun-fang-dan-dian-yuan-she-ji/03-midpoint-bias.png" alt="使用中点偏置构造虚拟地" loading='lazy'></p>
+<h2 id="2-交流耦合单电源运放"><a href="#2-交流耦合单电源运放" class="headerlink" title="2. 交流耦合单电源运放"></a>2. 交流耦合单电源运放</h2><p>交流耦合方案适合前级只关心交流成分、不需要保留直流信息的场景。核心思路是：</p>
+<ul>
+<li>输入信号先通过耦合电容隔直</li>
+<li>运放输入端通过分压网络建立中点偏置</li>
+<li>输出信号围绕偏置电压摆动，而不是围绕 0V 摆动</li>
+</ul>
+<p>如果直接用两个电阻分压获得中点电压，这个参考点还需要配合去耦和滤波，否则噪声会直接进入信号链路。</p>
+<p><img src="/../images/posts/yun-fang-dan-dian-yuan-she-ji/04-reference-source.png" alt="单电源偏置网络与滤波思路" loading='lazy'></p>
+<p>工程上更稳妥的做法，是把“参考点”本身当成一个需要认真设计的节点：</p>
+<ul>
+<li>每级运放最好就近做本地去耦</li>
+<li>分压电阻过大时，参考点阻抗会上升</li>
+<li>对精度和稳定性要求更高时，直接使用基准源往往更可靠</li>
+</ul>
+<h2 id="3-直流耦合单电源运放"><a href="#3-直流耦合单电源运放" class="headerlink" title="3. 直流耦合单电源运放"></a>3. 直流耦合单电源运放</h2><p>如果输入信号本身包含直流信息，例如传感器电压、电流采样或控制量映射，就不能简单靠耦合电容处理，而应该用直流耦合结构直接完成线性变换。</p>
+<p><img src="/../images/posts/yun-fang-dan-dian-yuan-she-ji/05-dc-coupled-example.png" alt="单电源直流耦合运放示例" loading='lazy'></p>
+<p>单电源下还要特别注意供电脚退耦。正电源端应就近放置退耦电容，降低电源阻抗和高频噪声。</p>
+<p><img src="/../images/posts/yun-fang-dan-dian-yuan-she-ji/06-decoupling.png" alt="单电源运放的去耦配置" loading='lazy'></p>
+<p>从叠加角度看，这类电路通常可以理解为：</p>
+<ul>
+<li>一个对输入信号的比例放大项</li>
+<li>一个由参考电压 <code>V_{REF}</code> 引入的直流平移项</li>
+</ul>
+<p>当 <code>V_{REF}=0</code> 时，输出只体现输入的放大关系：</p>
+<p><img src="/../images/posts/yun-fang-dan-dian-yuan-she-ji/07-vref-zero.png" alt="VREF 为零时的输出关系" loading='lazy'></p>
+<p>当 <code>V_{REF}</code> 抬高后，输出工作区间也会整体平移。如果平移量或增益选择不合适，就可能在单电源端点附近提前饱和。</p>
+<p><img src="/../images/posts/yun-fang-dan-dian-yuan-she-ji/08-vref-bias-limit.png" alt="VREF 抬高后输出摆幅受限" loading='lazy'></p>
+<h2 id="4-如何把输入范围映射到输出范围"><a href="#4-如何把输入范围映射到输出范围" class="headerlink" title="4. 如何把输入范围映射到输出范围"></a>4. 如何把输入范围映射到输出范围</h2><p>单电源运放设计最常见的实际任务，是把某个输入区间线性映射到另一个输出区间。这个问题本质上是：</p>
+<p>$$<br>V_{out} &#x3D; k V_{in} + b<br>$$</p>
+<p>也就是先求增益 <code>k</code>，再求偏置 <code>b</code>，最后让电阻网络去实现它。</p>
+<h3 id="4-1-同相比例放大示例"><a href="#4-1-同相比例放大示例" class="headerlink" title="4.1 同相比例放大示例"></a>4.1 同相比例放大示例</h3><p><img src="/../images/posts/yun-fang-dan-dian-yuan-she-ji/09-design-example-1.png" alt="同相放大结构的设计例子" loading='lazy'></p>
+<p>在给定输入区间、输出区间、负载电阻和供电电压后，可以先解出目标直线方程，再反推电阻比值。这样做的好处是，设计目标和电路参数之间的关系非常清晰。</p>
+<p><img src="/../images/posts/yun-fang-dan-dian-yuan-she-ji/10-design-example-1-result.png" alt="根据映射关系求得的参数结果" loading='lazy'></p>
+<h3 id="4-2-带偏置的线性映射示例"><a href="#4-2-带偏置的线性映射示例" class="headerlink" title="4.2 带偏置的线性映射示例"></a>4.2 带偏置的线性映射示例</h3><p><img src="/../images/posts/yun-fang-dan-dian-yuan-she-ji/11-design-example-2.png" alt="带参考偏置的线性映射电路" loading='lazy'></p>
+<p>对于带偏置输入的网络，可以先把偏置侧化成戴维南等效，再分别看“信号增益”和“参考平移”两部分。这样既方便推公式，也方便后续做误差分析。</p>
+<p><img src="/../images/posts/yun-fang-dan-dian-yuan-she-ji/12-design-example-2-result.png" alt="第二个设计例子的阻值结果" loading='lazy'></p>
+<h2 id="5-设计时最容易忽略的事"><a href="#5-设计时最容易忽略的事" class="headerlink" title="5. 设计时最容易忽略的事"></a>5. 设计时最容易忽略的事</h2><ul>
+<li>单电源不是把双电源电路直接平移一下就结束，参考点本身就是系统的一部分</li>
+<li>输出摆幅永远受供电限制，不能只看理想传输方程</li>
+<li>偏置、增益、输入范围、负载和电阻容差要一起看</li>
+<li>运放去耦、参考点阻抗和 PCB 走线，都会直接影响最终效果</li>
+</ul>
+<h2 id="6-小结"><a href="#6-小结" class="headerlink" title="6. 小结"></a>6. 小结</h2><p>单电源运放设计的核心，是把“信号”与“参考点”同时纳入设计。交流耦合更关注偏置与隔直，直流耦合更关注线性映射和输出范围。只要先把目标输入区间和目标输出区间定义清楚，再去选择拓扑和阻值，设计过程就会清晰很多。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://cube1345.github.io">cube</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://cube1345.github.io/2026/04/19/yun-fang-dan-dian-yuan-she-ji/">https://cube1345.github.io/2026/04/19/yun-fang-dan-dian-yuan-she-ji/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://cube1345.github.io" target="_blank">Cube Diary</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="https://placewaifu.com/image/800/450?post=yun-fang-dan-dian-yuan-she-ji" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/04/19/yun-fang-fei-li-xiang-yu-bi-huan-wu-cha/" title="运放非理想特性与闭环误差"><img class="cover" src="https://placewaifu.com/image/800/450?post=yun-fang-fei-li-xiang-yu-bi-huan-wu-cha" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy'><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">运放非理想特性与闭环误差</div></div><div class="info-2"><div class="info-item-1">从开环增益、环路增益和误差项出发，理解非理想运放在闭环电路中的实际表现。</div></div></div></a><a class="pagination-related" href="/2026/04/19/shu-kong-dian-yuan/" title="数控电源"><img class="cover" src="https://placewaifu.com/image/800/450?post=shu-kong-dian-yuan" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">数控电源</div></div><div class="info-2"><div class="info-item-1">从 PWM、反馈闭环和降压芯片出发，整理数控电源的基本思路。</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/lilisi1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">cube</div><div class="author-info-description">持续记录技术、项目和真实的思考过程。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">9</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/cube1345"><i class="fab fa-github"></i><span>GitHub</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/cube1345" target="_blank" title="GitHub"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:cubeacount123@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">这里主要更新技术笔记、项目复盘和长期学习记录。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%90%E6%94%BE%E5%8D%95%E7%94%B5%E6%BA%90%E8%AE%BE%E8%AE%A1%EF%BC%9A%E4%BA%A4%E6%B5%81%E8%80%A6%E5%90%88%E3%80%81%E7%9B%B4%E6%B5%81%E5%81%8F%E7%BD%AE%E4%B8%8E%E9%98%BB%E5%80%BC%E9%80%89%E5%8F%96"><span class="toc-number">1.</span> <span class="toc-text">运放单电源设计：交流耦合、直流偏置与阻值选取</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8D%95%E7%94%B5%E6%BA%90%E8%AE%BE%E8%AE%A1%E9%9C%80%E8%A6%81%E5%81%8F%E7%BD%AE"><span class="toc-number">1.1.</span> <span class="toc-text">1. 为什么单电源设计需要偏置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%BA%A4%E6%B5%81%E8%80%A6%E5%90%88%E5%8D%95%E7%94%B5%E6%BA%90%E8%BF%90%E6%94%BE"><span class="toc-number">1.2.</span> <span class="toc-text">2. 交流耦合单电源运放</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%9B%B4%E6%B5%81%E8%80%A6%E5%90%88%E5%8D%95%E7%94%B5%E6%BA%90%E8%BF%90%E6%94%BE"><span class="toc-number">1.3.</span> <span class="toc-text">3. 直流耦合单电源运放</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E5%A6%82%E4%BD%95%E6%8A%8A%E8%BE%93%E5%85%A5%E8%8C%83%E5%9B%B4%E6%98%A0%E5%B0%84%E5%88%B0%E8%BE%93%E5%87%BA%E8%8C%83%E5%9B%B4"><span class="toc-number">1.4.</span> <span class="toc-text">4. 如何把输入范围映射到输出范围</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E5%90%8C%E7%9B%B8%E6%AF%94%E4%BE%8B%E6%94%BE%E5%A4%A7%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 同相比例放大示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E5%B8%A6%E5%81%8F%E7%BD%AE%E7%9A%84%E7%BA%BF%E6%80%A7%E6%98%A0%E5%B0%84%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 带偏置的线性映射示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E8%AE%BE%E8%AE%A1%E6%97%B6%E6%9C%80%E5%AE%B9%E6%98%93%E5%BF%BD%E7%95%A5%E7%9A%84%E4%BA%8B"><span class="toc-number">1.5.</span> <span class="toc-text">5. 设计时最容易忽略的事</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%B0%8F%E7%BB%93"><span class="toc-number">1.6.</span> <span class="toc-text">6. 小结</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/19/you-yuan-lv-bo-qi-ji-chu-yu-she-ji/" title="有源滤波器基础与设计">有源滤波器基础与设计</a><time datetime="2026-04-19T03:40:00.000Z" title="发表于 2026-04-19 11:40:00">2026-04-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/19/yun-fang-fei-li-xiang-yu-bi-huan-wu-cha/" title="运放非理想特性与闭环误差">运放非理想特性与闭环误差</a><time datetime="2026-04-19T03:20:00.000Z" title="发表于 2026-04-19 11:20:00">2026-04-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/19/yun-fang-dan-dian-yuan-she-ji/" title="运放单电源设计：交流耦合、直流偏置与阻值选取">运放单电源设计：交流耦合、直流偏置与阻值选取</a><time datetime="2026-04-19T03:00:00.000Z" title="发表于 2026-04-19 11:00:00">2026-04-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/19/shu-kong-dian-yuan/" title="数控电源">数控电源</a><time datetime="2026-04-19T02:00:00.000Z" title="发表于 2026-04-19 10:00:00">2026-04-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/19/fan-ji-dian-yuan/" title="反激电源">反激电源</a><time datetime="2026-04-19T01:30:00.000Z" title="发表于 2026-04-19 09:30:00">2026-04-19</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By cube</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div><div class="footer_custom_text">专注内容积累，而不是页面堆砌。</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        loader: {
+          load: [
+            // Four font extension packages (optional)
+            //- '[tex]/bbm',
+            //- '[tex]/bboldx',
+            //- '[tex]/dsfont',
+            '[tex]/mhchem'
+          ],
+          paths: {
+            'mathjax-newcm': '[mathjax]/../@mathjax/mathjax-newcm-font',
+
+            //- // Four font extension packages (optional)
+            //- 'mathjax-bbm-extension': '[mathjax]/../@mathjax/mathjax-bbm-font-extension',
+            //- 'mathjax-bboldx-extension': '[mathjax]/../@mathjax/mathjax-bboldx-font-extension',
+            //- 'mathjax-dsfont-extension': '[mathjax]/../@mathjax/mathjax-dsfont-font-extension',
+            'mathjax-mhchem-extension': '[mathjax]/../@mathjax/mathjax-mhchem-font-extension'
+          }
+        },
+        output: {
+          font: 'mathjax-newcm',
+        },
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+          packages: {
+            '[+]': [
+              'mhchem'
+            ]
+          }
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          menuOptions: {
+            settings: {
+              enrich: false  // Turn off Braille and voice narration text automatic generation
+            }
+          },
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax@4.1.0/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script></div><script>(() => {
+  const selectors = [
+    '#busuanzi_value_site_uv',
+    '#busuanzi_value_site_pv',
+    '#busuanzi_value_page_pv'
+  ]
+  const formatter = new Intl.NumberFormat('zh-CN')
+  const blockedHosts = new Set(['localhost', '127.0.0.1', '0.0.0.0', '::1'])
+  const busuanziSrc = '//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js'
+
+  const setPlaceholder = value => {
+    selectors.forEach(selector => {
+      document.querySelectorAll(selector).forEach(node => {
+        node.textContent = value
+      })
+    })
+  }
+
+  const normalizeCount = node => {
+    if (!node) return
+    const raw = (node.textContent || '').replace(/[,\s]/g, '')
+    if (/^\d+$/.test(raw)) {
+      node.textContent = formatter.format(Number(raw))
+    }
+  }
+
+  const watchNode = node => {
+    if (!node || node.dataset.busuanziObserved === 'true') return
+    node.dataset.busuanziObserved = 'true'
+    new MutationObserver(() => normalizeCount(node)).observe(node, {
+      childList: true,
+      characterData: true,
+      subtree: true
+    })
+    normalizeCount(node)
+  }
+
+  const initObserver = () => {
+    selectors.forEach(selector => {
+      document.querySelectorAll(selector).forEach(watchNode)
+    })
+  }
+
+  const applyFallback = () => {
+    selectors.forEach(selector => {
+      document.querySelectorAll(selector).forEach(node => {
+        const text = (node.textContent || '').trim()
+        if (!/\d/.test(text)) {
+          node.textContent = '--'
+        }
+      })
+    })
+  }
+
+  const loadBusuanzi = () => {
+    if (document.querySelector('script[data-busuanzi-loader="true"]')) return
+    const script = document.createElement('script')
+    script.async = true
+    script.src = busuanziSrc
+    script.dataset.pjax = ''
+    script.dataset.busuanziLoader = 'true'
+    script.onerror = () => applyFallback()
+    document.body.appendChild(script)
+  }
+
+  const init = () => {
+    initObserver()
+
+    if (blockedHosts.has(window.location.hostname)) {
+      setPlaceholder('--')
+      return
+    }
+
+    loadBusuanzi()
+    window.setTimeout(applyFallback, 5000)
+  }
+
+  document.addEventListener('pjax:complete', init)
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init, { once: true })
+  } else {
+    init()
+  }
+})()
+</script></div></body></html>
