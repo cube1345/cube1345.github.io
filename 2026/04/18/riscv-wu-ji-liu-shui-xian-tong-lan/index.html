@@ -10,7 +10,7 @@
 <meta property="article:modified_time" content="2026-04-18T15:10:00.000Z">
 <meta property="article:author" content="cube">
 <meta property="article:tag" content="RISC-V">
-<meta property="article:tag" content="计算机架构">
+<meta property="article:tag" content="流水线">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cube1345.github.io/images/covers/takagi-01.jpg"><script type="application/ld+json">{
   "@context": "https://schema.org",
@@ -135,9 +135,8 @@
   isHighlightShrink: false,
   isToc: false,
   pageType: 'post'
-}</script><meta name="generator" content="Hexo 8.1.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/lilisi1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">9</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/friends"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/images/covers/takagi-01.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Cube Diary</span></a><a class="nav-page-title" href="/"><span class="site-name">RISC-V 五级流水线通览</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/friends"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">RISC-V 五级流水线通览</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-04-18T15:10:00.000Z" title="发表于 2026-04-18 23:10:00">2026-04-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-04-18T15:10:00.000Z" title="更新于 2026-04-18 23:10:00">2026-04-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/">计算机体系结构</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout hide-aside" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><div id="post-outdate-notice" data="{&quot;limitDay&quot;:365,&quot;messagePrev&quot;:&quot;It has been&quot;,&quot;messageNext&quot;:&quot;days since the last update, the content of the article may be outdated.&quot;,&quot;postUpdate&quot;:&quot;2026-04-18 23:10:00&quot;}" hidden></div><p>RISC-V 的五级流水线通常指经典的 <code>IF -&gt; ID -&gt; EX -&gt; MEM -&gt; WB</code> 五个阶段。下面这篇文章按整体目标、各级职责、级间寄存器、冒险处理和工程实现变化来系统梳理这套经典结构。</p>
-<p>RISC-V 的“五级流水线”通常指经典的 <strong>IF → ID → EX → MEM → WB</strong> 五个阶段。这不是 RISC-V 独有的神秘魔法，而是从 MIPS 风格经典教学处理器一路传承下来的“工业时代蒸汽朋克骨架”。RISC-V 很适合拿它讲清楚，因为指令格式规整、load&#x2F;store 分离、编码相对干净，特别适合作为流水线教材。</p>
-<p>我按“整体目标 → 每一级做什么 → 级间寄存器 → 冒险处理 → 控制通路 → 典型时序 → 实际工程变化”来拆开讲。</p>
+}</script><meta name="generator" content="Hexo 8.1.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/lilisi1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">9</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/friends"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/images/covers/takagi-01.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Cube Diary</span></a><a class="nav-page-title" href="/"><span class="site-name">RISC-V 五级流水线通览</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/friends"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">RISC-V 五级流水线通览</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-04-18T15:10:00.000Z" title="发表于 2026-04-18 23:10:00">2026-04-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-04-18T15:10:00.000Z" title="更新于 2026-04-18 23:10:00">2026-04-18</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/">计算机体系结构</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout hide-aside" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><div id="post-outdate-notice" data="{&quot;limitDay&quot;:365,&quot;messagePrev&quot;:&quot;It has been&quot;,&quot;messageNext&quot;:&quot;days since the last update, the content of the article may be outdated.&quot;,&quot;postUpdate&quot;:&quot;2026-04-18 23:10:00&quot;}" hidden></div><p>RISC-V 的五级流水线通常指经典的 <code>IF -&gt; ID -&gt; EX -&gt; MEM -&gt; WB</code> 五个阶段。下面这篇文章按整体目标、各级职责、级间寄存器、冒险处理和工程实现变化来系统梳理这套经典结构。</p>
+<p>RISC-V 的“五级流水线”通常指经典的 <strong>IF → ID → EX → MEM → WB</strong> 五个阶段。RISC-V 很适合拿它讲清楚，因为指令格式规整、load&#x2F;store 分离、编码相对干净，特别适合作为流水线教材。</p>
 <hr>
 <h1 id="一、五级流水线到底在解决什么"><a href="#一、五级流水线到底在解决什么" class="headerlink" title="一、五级流水线到底在解决什么"></a>一、五级流水线到底在解决什么</h1><p>单周期 CPU 的思路是：一条指令从头到尾一次做完，再做下一条。<br>好处是简单，坏处也很明显：时钟周期必须迁就<strong>最慢指令路径</strong>，所以频率上不去。</p>
 <p>流水线（Pipeline）的核心思想是：</p>
@@ -176,10 +175,8 @@
 <li><strong>EX&#x2F;MEM</strong></li>
 <li><strong>MEM&#x2F;WB</strong></li>
 </ul>
-<p>这些寄存器的作用非常关键：<br>它们像传送带上的托盘，把某条指令在当前阶段算出来的中间结果，稳定地交给下一拍的下一阶段。</p>
 <hr>
-<h1 id="三、五个阶段逐级展开"><a href="#三、五个阶段逐级展开" class="headerlink" title="三、五个阶段逐级展开"></a>三、五个阶段逐级展开</h1><hr>
-<h2 id="1）IF：Instruction-Fetch，取指阶段"><a href="#1）IF：Instruction-Fetch，取指阶段" class="headerlink" title="1）IF：Instruction Fetch，取指阶段"></a>1）IF：Instruction Fetch，取指阶段</h2><h3 id="主要任务"><a href="#主要任务" class="headerlink" title="主要任务"></a>主要任务</h3><p>IF 阶段干两件事：</p>
+<h1 id="三、五个阶段逐级展开"><a href="#三、五个阶段逐级展开" class="headerlink" title="三、五个阶段逐级展开"></a>三、五个阶段逐级展开</h1><h2 id="1）IF：Instruction-Fetch，取指阶段"><a href="#1）IF：Instruction-Fetch，取指阶段" class="headerlink" title="1）IF：Instruction Fetch，取指阶段"></a>1）IF：Instruction Fetch，取指阶段</h2><h3 id="主要任务"><a href="#主要任务" class="headerlink" title="主要任务"></a>主要任务</h3><p>IF 阶段干两件事：</p>
 <ul>
 <li>用 <strong>PC（Program Counter）</strong> 到指令存储器取出指令</li>
 <li>计算下一条 PC，通常是 <code>PC + 4</code></li>
@@ -200,13 +197,12 @@
 <p><code>pc+4</code> 后面很有用，尤其是 <code>jal</code> &#x2F; <code>jalr</code> 要写回返回地址时。</p>
 <h3 id="细节提醒"><a href="#细节提醒" class="headerlink" title="细节提醒"></a>细节提醒</h3><p>如果实现了分支，那么 IF 阶段可能会遇到：</p>
 <ul>
-<li>“下一条到底是 <code>PC+4</code>，还是分支目标？”</li>
+<li>下一条到底是 <code>PC+4</code>，还是分支目标</li>
 <li>如果分支结果还没出来，往往先按顺序取，错了再冲刷流水线</li>
 </ul>
 <p>这就引出了控制冒险，后面细讲。</p>
 <hr>
-<h2 id="2）ID：Instruction-Decode，译码-读寄存器阶段"><a href="#2）ID：Instruction-Decode，译码-读寄存器阶段" class="headerlink" title="2）ID：Instruction Decode，译码&#x2F;读寄存器阶段"></a>2）ID：Instruction Decode，译码&#x2F;读寄存器阶段</h2><p>这是一个非常热闹的阶段，很多活都堆在这里。</p>
-<h3 id="主要任务-1"><a href="#主要任务-1" class="headerlink" title="主要任务"></a>主要任务</h3><ul>
+<h2 id="2）ID：Instruction-Decode，译码-读寄存器阶段"><a href="#2）ID：Instruction-Decode，译码-读寄存器阶段" class="headerlink" title="2）ID：Instruction Decode，译码&#x2F;读寄存器阶段"></a>2）ID：Instruction Decode，译码&#x2F;读寄存器阶段</h2><h3 id="主要任务-1"><a href="#主要任务-1" class="headerlink" title="主要任务"></a>主要任务</h3><ul>
 <li>解析指令字段</li>
 <li>生成控制信号</li>
 <li>从寄存器堆读取源寄存器</li>
@@ -222,7 +218,7 @@
 <li><code>rs2</code></li>
 <li><code>funct7</code></li>
 </ul>
-<p>不同格式（R&#x2F;I&#x2F;S&#x2F;B&#x2F;U&#x2F;J）字段位置相对规整，但立即数拼接方式不完全一样。<br>这块是 RISC-V 设计里一个很“工程脑”的点：<strong>寄存器字段位置尽量稳定</strong>，便于译码。</p>
+<p>不同格式（R&#x2F;I&#x2F;S&#x2F;B&#x2F;U&#x2F;J）字段位置相对规整，但立即数拼接方式不完全一样。</p>
 <h3 id="寄存器堆读取"><a href="#寄存器堆读取" class="headerlink" title="寄存器堆读取"></a>寄存器堆读取</h3><p>ID 阶段根据 <code>rs1</code>、<code>rs2</code> 读出两个源操作数：</p>
 <ul>
 <li><code>ReadData1</code></li>
@@ -233,7 +229,7 @@
 <li><code>x0</code> 到 <code>x31</code></li>
 <li><code>x0</code> 永远是 0，写了也白写，硅片版佛系选手</li>
 </ul>
-<h3 id="立即数生成器"><a href="#立即数生成器" class="headerlink" title="立即数生成器"></a>立即数生成器</h3><p>RISC-V 的立即数不是一整段直接拎出来就能用，经常需要重新拼位、符号扩展。例如：</p>
+<h3 id="立即数生成器"><a href="#立即数生成器" class="headerlink" title="立即数生成器"></a>立即数生成器</h3><p>RISC-V 的立即数不是一整段，经常需要重新拼位、符号扩展。例如：</p>
 <ul>
 <li>I-type：算术立即数、load、jalr</li>
 <li>S-type：store</li>
@@ -263,8 +259,7 @@
 <li>各类控制信号</li>
 </ul>
 <hr>
-<h2 id="3）EX：Execute，执行阶段"><a href="#3）EX：Execute，执行阶段" class="headerlink" title="3）EX：Execute，执行阶段"></a>3）EX：Execute，执行阶段</h2><p>这是“算力现场”。</p>
-<h3 id="主要任务-2"><a href="#主要任务-2" class="headerlink" title="主要任务"></a>主要任务</h3><ul>
+<h2 id="3）EX：Execute，执行阶段"><a href="#3）EX：Execute，执行阶段" class="headerlink" title="3）EX：Execute，执行阶段"></a>3）EX：Execute，执行阶段</h2><h3 id="主要任务-2"><a href="#主要任务-2" class="headerlink" title="主要任务"></a>主要任务</h3><ul>
 <li>ALU 运算</li>
 <li>分支条件判断</li>
 <li>计算 load&#x2F;store 的访存地址</li>
@@ -331,8 +326,7 @@
 <li>控制信号（MemRead、MemWrite、RegWrite、MemToReg 等）</li>
 </ul>
 <hr>
-<h2 id="4）MEM：Memory-Access，访存阶段"><a href="#4）MEM：Memory-Access，访存阶段" class="headerlink" title="4）MEM：Memory Access，访存阶段"></a>4）MEM：Memory Access，访存阶段</h2><p>这个阶段主要服务于 load&#x2F;store。</p>
-<h3 id="主要任务-3"><a href="#主要任务-3" class="headerlink" title="主要任务"></a>主要任务</h3><ul>
+<h2 id="4）MEM：Memory-Access，访存阶段"><a href="#4）MEM：Memory-Access，访存阶段" class="headerlink" title="4）MEM：Memory Access，访存阶段"></a>4）MEM：Memory Access，访存阶段</h2><h3 id="主要任务-3"><a href="#主要任务-3" class="headerlink" title="主要任务"></a>主要任务</h3><ul>
 <li>如果是 load，从数据存储器读数据</li>
 <li>如果是 store，向数据存储器写数据</li>
 <li>如果不是访存指令，这阶段很多时候只是“路过”</li>
@@ -365,8 +359,7 @@
 <li>写回相关控制信号</li>
 </ul>
 <hr>
-<h2 id="5）WB：Write-Back，写回阶段"><a href="#5）WB：Write-Back，写回阶段" class="headerlink" title="5）WB：Write Back，写回阶段"></a>5）WB：Write Back，写回阶段</h2><p>终于把结果送回寄存器堆。</p>
-<h3 id="主要任务-4"><a href="#主要任务-4" class="headerlink" title="主要任务"></a>主要任务</h3><p>根据指令类型，从不同来源选择要写回的数据，写入 rd。</p>
+<h2 id="5）WB：Write-Back，写回阶段"><a href="#5）WB：Write-Back，写回阶段" class="headerlink" title="5）WB：Write Back，写回阶段"></a>5）WB：Write Back，写回阶段</h2><h3 id="主要任务-4"><a href="#主要任务-4" class="headerlink" title="主要任务"></a>主要任务</h3><p>根据指令类型，从不同来源选择要写回的数据，写入 rd。</p>
 <h3 id="写回来源常见有三种"><a href="#写回来源常见有三种" class="headerlink" title="写回来源常见有三种"></a>写回来源常见有三种</h3><ul>
 <li>ALU 结果例如 <code>add</code>, <code>addi</code>, <code>and</code></li>
 <li>内存读取值例如 <code>lw</code>, <code>lb</code></li>
@@ -385,8 +378,7 @@
 <p>才真正写寄存器。</p>
 <p>因为 <code>x0</code> 永远不能被改。</p>
 <hr>
-<h1 id="四、为什么要有流水线寄存器"><a href="#四、为什么要有流水线寄存器" class="headerlink" title="四、为什么要有流水线寄存器"></a>四、为什么要有流水线寄存器</h1><p>五级流水线的魂，不只是“五个方块”，而是它们之间那四个寄存器。</p>
-<h2 id="IF-ID"><a href="#IF-ID" class="headerlink" title="IF&#x2F;ID"></a>IF&#x2F;ID</h2><p>保存：</p>
+<h1 id="四、为什么要有流水线寄存器"><a href="#四、为什么要有流水线寄存器" class="headerlink" title="四、为什么要有流水线寄存器"></a>四、为什么要有流水线寄存器</h1><h2 id="IF-ID"><a href="#IF-ID" class="headerlink" title="IF&#x2F;ID"></a>IF&#x2F;ID</h2><p>保存：</p>
 <ul>
 <li>取出的指令</li>
 <li>当前 PC</li>
@@ -415,7 +407,7 @@
 <li>rd</li>
 <li>写回控制信号</li>
 </ul>
-<h3 id="本质作用"><a href="#本质作用" class="headerlink" title="本质作用"></a>本质作用</h3><p>它们让每一级只关心“这一拍自己该干什么”，<br>而不必跟前后级直接乱缠。<br>没有这些寄存器，流水线就像五个人抢一张桌子写作业，必然一地鸡毛。</p>
+<h3 id="本质作用"><a href="#本质作用" class="headerlink" title="本质作用"></a>本质作用</h3><p>它们让每一级只关心“这一拍自己该干什么”，<br>而不必跟前后级直接乱缠。</p>
 <hr>
 <h1 id="五、流水线的三大冒险：核心难点"><a href="#五、流水线的三大冒险：核心难点" class="headerlink" title="五、流水线的三大冒险：核心难点"></a>五、流水线的三大冒险：核心难点</h1><p>流水线难点不在“分五段”，而在多条指令重叠后会互相绊脚。<br>这叫 <strong>Hazard（冒险）</strong>。</p>
 <p>三类经典冒险：</p>
@@ -467,8 +459,7 @@
 <p>如果没有转发，就可能要等到 <code>add</code> 写回后，<code>sub</code> 才能继续。</p>
 <p>这显然很伤吞吐率。</p>
 <hr>
-<h3 id="数据冒险的解决方法二：前递-转发（forwarding-bypassing）"><a href="#数据冒险的解决方法二：前递-转发（forwarding-bypassing）" class="headerlink" title="数据冒险的解决方法二：前递&#x2F;转发（forwarding &#x2F; bypassing）"></a>数据冒险的解决方法二：前递&#x2F;转发（forwarding &#x2F; bypassing）</h3><p>这是经典五级流水线的关键优化。</p>
-<h3 id="核心思想"><a href="#核心思想" class="headerlink" title="核心思想"></a>核心思想</h3><p>不要傻等 WB 真把结果写回寄存器堆。<br>只要某阶段已经算出了结果，就直接“旁路”送给需要它的后续指令。</p>
+<h3 id="数据冒险的解决方法二：前递-转发（forwarding-bypassing）"><a href="#数据冒险的解决方法二：前递-转发（forwarding-bypassing）" class="headerlink" title="数据冒险的解决方法二：前递&#x2F;转发（forwarding &#x2F; bypassing）"></a>数据冒险的解决方法二：前递&#x2F;转发（forwarding &#x2F; bypassing）</h3><h3 id="核心思想"><a href="#核心思想" class="headerlink" title="核心思想"></a>核心思想</h3><p>不要等 WB 真把结果写回寄存器堆。<br>只要某阶段已经算出了结果，就直接旁路送给需要它的后续指令。</p>
 <h4 id="例如"><a href="#例如" class="headerlink" title="例如"></a>例如</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">add x5, x1, x2</span><br><span class="line">sub x6, x5, x3</span><br></pre></td></tr></table></figure>
 
 <ul>
@@ -497,8 +488,7 @@
 <p>则选择转发源。</p>
 <h3 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h3><p>一般 EX&#x2F;MEM 比 MEM&#x2F;WB 更新鲜，所以优先级更高。</p>
 <hr>
-<h3 id="但有一种依赖，转发也救不全：load-use-hazard"><a href="#但有一种依赖，转发也救不全：load-use-hazard" class="headerlink" title="但有一种依赖，转发也救不全：load-use hazard"></a>但有一种依赖，转发也救不全：load-use hazard</h3><p>这就是经典五级流水线最有名的刺头。</p>
-<p>看例子：</p>
+<h3 id="但有一种依赖，转发也救不全：load-use-hazard"><a href="#但有一种依赖，转发也救不全：load-use-hazard" class="headerlink" title="但有一种依赖，转发也救不全：load-use hazard"></a>但有一种依赖，转发也救不全：load-use hazard</h3><p>看例子：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lw  x5, 0(x1)</span><br><span class="line">add x6, x5, x2</span><br></pre></td></tr></table></figure>
 
 <p>问题在于：</p>
@@ -520,7 +510,6 @@
 <li>它的 <code>rd</code> 与 IF&#x2F;ID 中下一条指令的 <code>rs1</code> 或 <code>rs2</code> 相同</li>
 </ul>
 <p>那么触发 stall。</p>
-<p>公式味儿写一下：</p>
 <p>[<br>ID&#x2F;EX.MemRead \land ((ID&#x2F;EX.rd &#x3D; IF&#x2F;ID.rs1) \lor (ID&#x2F;EX.rd &#x3D; IF&#x2F;ID.rs2))<br>]</p>
 <p>则：</p>
 <ul>
@@ -528,7 +517,6 @@
 <li><code>IF/IDWrite = 0</code></li>
 <li>把控制信号清零注入 ID&#x2F;EX（形成 bubble）</li>
 </ul>
-<p>这套操作就是教材 CPU 的标准武术动作。</p>
 <hr>
 <h2 id="3）控制冒险"><a href="#3）控制冒险" class="headerlink" title="3）控制冒险"></a>3）控制冒险</h2><p>控制冒险来自分支和跳转。</p>
 <h3 id="本质"><a href="#本质" class="headerlink" title="本质"></a>本质</h3><p>IF 阶段要决定下一条取哪条指令，<br>可分支是否成立往往要到 EX 才知道。</p>
@@ -540,13 +528,12 @@
 <ul>
 <li>遇到分支就等结果出来再取下一条</li>
 </ul>
-<p>简单，但性能很差。<br>分支一多，流水线像被砂纸打磨。</p>
+<p>简单，但性能很差。</p>
 <h3 id="解决办法二：预测不跳转（predict-not-taken）"><a href="#解决办法二：预测不跳转（predict-not-taken）" class="headerlink" title="解决办法二：预测不跳转（predict not taken）"></a>解决办法二：预测不跳转（predict not taken）</h3><p>经典教学五级常这么干：</p>
 <ul>
 <li>默认按 <code>PC+4</code> 继续取</li>
 <li>如果 EX 阶段发现分支成立，再 flush 错取指令</li>
 </ul>
-<p>这叫静态预测“not taken”。</p>
 <h3 id="flush-是什么"><a href="#flush-是什么" class="headerlink" title="flush 是什么"></a>flush 是什么</h3><p>flush 就是把已经进入流水线、但不该执行的错误路径指令作废。</p>
 <p>通常做法：</p>
 <ul>
@@ -556,7 +543,6 @@
 <h3 id="分支代价"><a href="#分支代价" class="headerlink" title="分支代价"></a>分支代价</h3><p>如果分支在 EX 才解析，<br>那通常会有 1～2 个甚至更多周期的 penalty，取决于你在错误路径上已经放进来了几条指令。</p>
 <hr>
 <h1 id="六、以几条指令看流水线时序"><a href="#六、以几条指令看流水线时序" class="headerlink" title="六、以几条指令看流水线时序"></a>六、以几条指令看流水线时序</h1><p>看时序最能抓住本质。</p>
-<hr>
 <h2 id="例-1：无冒险的理想情况"><a href="#例-1：无冒险的理想情况" class="headerlink" title="例 1：无冒险的理想情况"></a>例 1：无冒险的理想情况</h2><p>指令序列：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">add x1, x2, x3</span><br><span class="line">sub x4, x5, x6</span><br><span class="line">and x7, x8, x9</span><br></pre></td></tr></table></figure>
 
@@ -674,8 +660,7 @@
 </tbody></table>
 <p>这里 <code>add</code> 至少要晚一拍进入 EX。</p>
 <hr>
-<h1 id="七、控制信号是如何在流水线中流动的"><a href="#七、控制信号是如何在流水线中流动的" class="headerlink" title="七、控制信号是如何在流水线中流动的"></a>七、控制信号是如何在流水线中流动的</h1><p>这是很多人第一次学时容易忽略，但实际非常重要。</p>
-<p>因为一条指令每一阶段需要不同控制信号，所以 ID 阶段生成后，必须跟着指令一路传下去。</p>
+<h1 id="七、控制信号是如何在流水线中流动的"><a href="#七、控制信号是如何在流水线中流动的" class="headerlink" title="七、控制信号是如何在流水线中流动的"></a>七、控制信号是如何在流水线中流动的</h1><p>因为一条指令每一阶段需要不同控制信号，所以 ID 阶段生成后，必须跟着指令一路传下去。</p>
 <p>常见可以分三类：</p>
 <h2 id="EX-类控制信号"><a href="#EX-类控制信号" class="headerlink" title="EX 类控制信号"></a>EX 类控制信号</h2><p>给 EX 阶段用，比如：</p>
 <ul>
@@ -740,8 +725,7 @@
 <p><strong>大量寄存器 + 比较器 + 选择器 + 少量组合逻辑</strong>。</p>
 <p>听起来不浪漫，但这就是现代数字电路的冷酷诗意。</p>
 <hr>
-<h1 id="十、经典五级流水线的局限"><a href="#十、经典五级流水线的局限" class="headerlink" title="十、经典五级流水线的局限"></a>十、经典五级流水线的局限</h1><p>五级流水线很经典，但它不是现实高性能 CPU 的终点。</p>
-<h2 id="1）分支代价明显"><a href="#1）分支代价明显" class="headerlink" title="1）分支代价明显"></a>1）分支代价明显</h2><p>如果分支在 EX 才知道结果，控制冒险很伤性能。<br>现代 CPU 会用更激进的分支预测、BTB、RAS 等。</p>
+<h1 id="十、经典五级流水线的局限"><a href="#十、经典五级流水线的局限" class="headerlink" title="十、经典五级流水线的局限"></a>十、经典五级流水线的局限</h1><h2 id="1）分支代价明显"><a href="#1）分支代价明显" class="headerlink" title="1）分支代价明显"></a>1）分支代价明显</h2><p>如果分支在 EX 才知道结果，控制冒险很伤性能。<br>现代 CPU 会用更激进的分支预测、BTB、RAS 等。</p>
 <h2 id="2）load-use-仍需要停顿"><a href="#2）load-use-仍需要停顿" class="headerlink" title="2）load-use 仍需要停顿"></a>2）load-use 仍需要停顿</h2><p>即便有 forwarding，也很难完全避免。<br>除非你改内存时序、改阶段划分、或做更复杂旁路。</p>
 <h2 id="3）时钟频率受阶段不均衡影响"><a href="#3）时钟频率受阶段不均衡影响" class="headerlink" title="3）时钟频率受阶段不均衡影响"></a>3）时钟频率受阶段不均衡影响</h2><p>如果某一级逻辑太长，比如：</p>
 <ul>
@@ -868,26 +852,10 @@
 <li>stall：先别动，等一下</li>
 <li>flush：这条不算，扔掉</li>
 </ul>
-<p>一个像按暂停，一个像按删除。</p>
 <hr>
-<h1 id="十七、总结成一句工程化理解"><a href="#十七、总结成一句工程化理解" class="headerlink" title="十七、总结成一句工程化理解"></a>十七、总结成一句工程化理解</h1><p>RISC-V 五级流水线，本质上是：</p>
+<h1 id="十七、总结"><a href="#十七、总结" class="headerlink" title="十七、总结"></a>十七、总结</h1><p>RISC-V 五级流水线，本质上是：</p>
 <p><strong>把指令执行拆成 IF&#x2F;ID&#x2F;EX&#x2F;MEM&#x2F;WB 五个阶段，用流水线寄存器隔开，通过 forwarding、stall、flush 来处理数据和控制相关，从而在保持硬件复杂度适中的前提下，把吞吐率尽量推近每拍一条。</strong></p>
-<p>或者更直白一点：</p>
-<p><strong>它是一套把“本来顺着做的事情”改造成“重叠做”，然后再拼命修补重叠副作用的机制。</strong></p>
-<p>这就是流水线设计的优雅与折磨。</p>
-<hr>
-<h1 id="十八、你如果要继续深入，下一步最值得啃的方向"><a href="#十八、你如果要继续深入，下一步最值得啃的方向" class="headerlink" title="十八、你如果要继续深入，下一步最值得啃的方向"></a>十八、你如果要继续深入，下一步最值得啃的方向</h1><p>建议顺着这条线往下走：</p>
-<ol>
-<li><strong>画完整 datapath 图</strong>把每个 MUX、寄存器、控制信号都画出来</li>
-<li><strong>手推 forwarding 条件</strong></li>
-<li><strong>手推 load-use stall 条件</strong></li>
-<li><strong>写一个 RV32I 五级流水线的 Verilog&#x2F;Chisel 原型</strong></li>
-<li><strong>再看分支预测、异常、中断、Cache、乘除法多周期</strong></li>
-<li><strong>最后再进入 superscalar &#x2F; OoO（乱序）</strong></li>
-</ol>
-<p>五级流水线像武侠小说里的基础内功。看着朴素，练扎实了，后面的 Tomasulo、ROB、rename 才不会像天书。</p>
-<p>如果你愿意，我下一条可以直接给你画一版 <strong>RISC-V 五级流水线数据通路图的文字版结构图</strong>，或者进一步讲 <strong>forwarding unit &#x2F; hazard detection unit 的判定逻辑与 Verilog 写法</strong>。</p>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://cube1345.github.io">cube</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://cube1345.github.io/2026/04/18/riscv-wu-ji-liu-shui-xian-tong-lan/">https://cube1345.github.io/2026/04/18/riscv-wu-ji-liu-shui-xian-tong-lan/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://cube1345.github.io" target="_blank">Cube Diary</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%9E%B6%E6%9E%84/">计算机架构</a><a class="post-meta__tags" href="/tags/RISC-V/">RISC-V</a></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/04/18/zai-fpga-shang-da-jian-riscv-jia-gou-cpu-litex-vexriscv-artix7/" title="在 FPGA 上搭建 RISC-V 架构 CPU：基于 LiteX + VexRiscv + Xilinx Artix-7 的流程记录"><img class="cover" src="/images/covers/anime-cover-01.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy'><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">在 FPGA 上搭建 RISC-V 架构 CPU：基于 LiteX + VexRiscv + Xilinx Artix-7 的流程记录</div></div><div class="info-2"><div class="info-item-1">以 Artix-7 平台为例，梳理基于 LiteX 和 VexRiscv 搭建 RISC-V SoC 的技术栈选择、硬件结构、构建流程与基础验证方法。</div></div></div></a><a class="pagination-related" href="/2026/04/18/qian-tan-FreeRTOS-zhi-li-lun/" title="浅谈 FreeRTOS 之理论（一）：队列、TCB 与互斥量"><img class="cover" src="/images/covers/yuri-nao-02.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">浅谈 FreeRTOS 之理论（一）：队列、TCB 与互斥量</div></div><div class="info-2"><div class="info-item-1">从 FreeRTOS 的队列机制讲起，梳理任务阻塞、ISR 级 API、TCB、PendSV 上下文切换、优先级反转和互斥量的基本原理。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/04/18/qian-tan-FreeRTOS-zhi-li-lun/" title="浅谈 FreeRTOS 之理论（一）：队列、TCB 与互斥量"><img class="cover" src="/images/covers/yuri-nao-02.jpg" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-04-18</div><div class="info-item-2">浅谈 FreeRTOS 之理论（一）：队列、TCB 与互斥量</div></div><div class="info-2"><div class="info-item-1">从 FreeRTOS 的队列机制讲起，梳理任务阻塞、ISR 级 API、TCB、PendSV 上下文切换、优先级反转和互斥量的基本原理。</div></div></div></a><a class="pagination-related" href="/2026/04/18/zai-fpga-shang-da-jian-riscv-jia-gou-cpu-litex-vexriscv-artix7/" title="在 FPGA 上搭建 RISC-V 架构 CPU：基于 LiteX + VexRiscv + Xilinx Artix-7 的流程记录"><img class="cover" src="/images/covers/anime-cover-01.jpg" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-04-18</div><div class="info-item-2">在 FPGA 上搭建 RISC-V 架构 CPU：基于 LiteX + VexRiscv + Xilinx Artix-7 的流程记录</div></div><div class="info-2"><div class="info-item-1">以 Artix-7 平台为例，梳理基于 LiteX 和 VexRiscv 搭建 RISC-V SoC 的技术栈选择、硬件结构、构建流程与基础验证方法。</div></div></div></a></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By cube</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"></div><div id="rightside-config-show"><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"><script>(() => {
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://cube1345.github.io">cube</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://cube1345.github.io/2026/04/18/riscv-wu-ji-liu-shui-xian-tong-lan/">https://cube1345.github.io/2026/04/18/riscv-wu-ji-liu-shui-xian-tong-lan/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://cube1345.github.io" target="_blank">Cube Diary</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/RISC-V/">RISC-V</a><a class="post-meta__tags" href="/tags/%E6%B5%81%E6%B0%B4%E7%BA%BF/">流水线</a></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/04/18/zai-fpga-shang-da-jian-riscv-jia-gou-cpu-litex-vexriscv-artix7/" title="在 FPGA 上搭建 RISC-V 架构 CPU：基于 LiteX + VexRiscv + Xilinx Artix-7 的流程记录"><img class="cover" src="/images/covers/anime-cover-01.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy'><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">在 FPGA 上搭建 RISC-V 架构 CPU：基于 LiteX + VexRiscv + Xilinx Artix-7 的流程记录</div></div><div class="info-2"><div class="info-item-1">以 Artix-7 平台为例，梳理基于 LiteX 和 VexRiscv 搭建 RISC-V SoC 的技术栈选择、硬件结构、构建流程与基础验证方法。</div></div></div></a><a class="pagination-related" href="/2026/04/18/qian-tan-FreeRTOS-zhi-li-lun/" title="浅谈 FreeRTOS 之理论（一）：队列、TCB 与互斥量"><img class="cover" src="/images/covers/yuri-nao-02.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">浅谈 FreeRTOS 之理论（一）：队列、TCB 与互斥量</div></div><div class="info-2"><div class="info-item-1">从 FreeRTOS 的队列机制讲起，梳理任务阻塞、ISR 级 API、TCB、PendSV 上下文切换、优先级反转和互斥量的基本原理。</div></div></div></a></nav></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By cube</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"></div><div id="rightside-config-show"><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"><script>(() => {
   const loadMathjax = () => {
     if (!window.MathJax) {
       window.MathJax = {
