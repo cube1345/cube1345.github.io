@@ -995,6 +995,8 @@
   const formatter = new Intl.NumberFormat('zh-CN')
   const blockedHosts = new Set(['localhost', '127.0.0.1', '0.0.0.0', '::1'])
   const busuanziSrc = '//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js'
+  let scriptRequested = false
+  let fallbackTimer = null
 
   const setPlaceholder = value => {
     selectors.forEach(selector => {
@@ -1041,7 +1043,8 @@
   }
 
   const loadBusuanzi = () => {
-    if (document.querySelector('script[data-busuanzi-loader="true"]')) return
+    if (scriptRequested || document.querySelector('script[data-busuanzi-loader="true"]')) return
+    scriptRequested = true
     const script = document.createElement('script')
     script.async = true
     script.src = busuanziSrc
@@ -1049,6 +1052,19 @@
     script.dataset.busuanziLoader = 'true'
     script.onerror = () => applyFallback()
     document.body.appendChild(script)
+  }
+
+  const scheduleLoad = () => {
+    const run = () => {
+      loadBusuanzi()
+      fallbackTimer = window.setTimeout(applyFallback, 4000)
+    }
+
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(run, { timeout: 2500 })
+    } else {
+      window.setTimeout(run, 1200)
+    }
   }
 
   const init = () => {
@@ -1059,8 +1075,15 @@
       return
     }
 
-    loadBusuanzi()
-    window.setTimeout(applyFallback, 5000)
+    if (fallbackTimer) window.clearTimeout(fallbackTimer)
+    setPlaceholder('--')
+
+    if (document.readyState === 'complete') {
+      scheduleLoad()
+      return
+    }
+
+    window.addEventListener('load', scheduleLoad, { once: true })
   }
 
   document.addEventListener('pjax:complete', init)
