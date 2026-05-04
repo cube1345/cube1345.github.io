@@ -1,0 +1,199 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>单片机工程架构 | Cube Diary</title><meta name="author" content="cube"><meta name="copyright" content="cube"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f5ef"><meta name="description" content="记录反激电源从整流、储能到次级整流和反馈控制的基本思路。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="单片机工程架构">
+<meta property="og:url" content="https://cube1345.github.io/2026/05/04/dan-pian-ji-gong-cheng-jia-gou/index.html">
+<meta property="og:site_name" content="Cube Diary">
+<meta property="og:description" content="记录反激电源从整流、储能到次级整流和反馈控制的基本思路。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cube1345.github.io/images/covers/takamatsu-tomori-01.jpg">
+<meta property="article:published_time" content="2026-05-04T15:55:00.000Z">
+<meta property="article:modified_time" content="2026-05-04T15:55:00.000Z">
+<meta property="article:author" content="cube">
+<meta property="article:tag" content="MCU">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cube1345.github.io/images/covers/takamatsu-tomori-01.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "单片机工程架构",
+  "url": "https://cube1345.github.io/2026/05/04/dan-pian-ji-gong-cheng-jia-gou/",
+  "image": "https://cube1345.github.io/images/covers/takamatsu-tomori-01.jpg",
+  "datePublished": "2026-05-04T15:55:00.000Z",
+  "dateModified": "2026-05-04T15:55:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "cube",
+      "url": "https://cube1345.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/lilisi1.jpg"><link rel="canonical" href="https://cube1345.github.io/2026/05/04/dan-pian-ji-gong-cheng-jia-gou/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.5.4&amp;cv=1777910253803"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css?cv=1777910253803" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css?cv=1777910253803"></noscript><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f5ef')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '单片机工程架构',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/lilisi1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/friends"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/images/covers/takamatsu-tomori-01.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Cube Diary</span></a><a class="nav-page-title" href="/"><span class="site-name">单片机工程架构</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/friends"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">单片机工程架构</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-05-04T15:55:00.000Z" title="发表于 2026-05-04 23:55:00">2026-05-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-05-04T15:55:00.000Z" title="更新于 2026-05-04 23:55:00">2026-05-04</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">嵌入式</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><div id="post-outdate-notice" data="{&quot;limitDay&quot;:365,&quot;messagePrev&quot;:&quot;It has been&quot;,&quot;messageNext&quot;:&quot;days since the last update, the content of the article may be outdated.&quot;,&quot;postUpdate&quot;:&quot;2026-05-04 23:55:00&quot;}" hidden></div><h1 id="单片机工程架构-–by-cube"><a href="#单片机工程架构-–by-cube" class="headerlink" title="单片机工程架构  –by cube"></a>单片机工程架构  –by cube</h1><p>如果我们有一个项目，其基于STM32F4xxx实现，我们需要调用其库函数（无论是标准库&#x2F;HAL&#x2F;LL）。</p>
+<p>例如，我们定义LED_ON()函数，其本质上我们调用将GPIO设为高电平的库函数；</p>
+<p>再进一步，假设我们的设备需要在加热状态下点亮这颗LED，那么我们就要在这个任务函数下调用LED_ON();</p>
+<p>现在我们的项目已经呈现了一个层状的架构，库函数被一层层地向上调用。</p>
+<p>现在我们有一个问题：现在我们有两颗LED，这两颗LED显示不能使用同一个LED函数；当我们在<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=274167970&content_type=Article&match_order=1&q=cubemx&zhida_source=entity">cubemx</a>里面又加了一个GPIO的配置，并改成了Red_LED_ON()、Green_LED_ON()之后，又在不同的应用函数中分别调用了两颗LED…忽然要求你在另一种单片机上实现同一个方案….</p>
+<p><strong>我们能不能想到一个办法，能够比较便利地增加外设，又能统一地调换接口以适配不同的单片机呢？</strong></p>
+<p>我参考了网络上很多教程以及AI，创建了一个自己的架构。</p>
+<p><strong>注意：本文只记录自己的理解，并不是一个值得被学习or绝对契合实际的经验分享。还请各位大佬不啬赐教。</strong></p>
+<h2 id="C语言的面向对象思想"><a href="#C语言的面向对象思想" class="headerlink" title="C语言的面向对象思想"></a><strong>C语言的<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=274167970&content_type=Article&match_order=1&q=%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E6%80%9D%E6%83%B3&zhida_source=entity">面向对象思想</a></strong></h2><p>解决上述第一个问题的方式，是借鉴CPP的面向对象思想，比如我们可以声明一个对象，这个对象叫Red_LED，他属于LED类。而LED类，他需要被指定Port、Pin，需要指定初始电平，同时操作他的函数有：开、关、反转等等。如果我们有了第二个LED，我们只需要为他声明一个新的对象，为他绑定GPIO，设置初始电平。之后操作这个新的LED，只需要指定是调用这个对象的开函数即可。相较于我们之前的工程，面向对象的优势显而易见。</p>
+<p><strong>那么我是如何借助面向对象思想设置架构的呢？</strong></p>
+<h2 id="Core层"><a href="#Core层" class="headerlink" title="Core层"></a><strong>Core层</strong></h2><p>本层是一个通用工具基类设置，例如：LED与Buzzer，我们可以说他们虽然功能不同，但是操作他们的功能上有很多的相似之处：初始化一个GPIO、ON、OFF、Toggle。</p>
+<p>我们可以在这一层规定一个开关类设备的操作接口，我们把共性很强的设备的操作接口在此做一个统一。</p>
+<p>这一层本质上是一个辅助层，我们基于此层将外设之间的联系拉紧，避免重复的封装</p>
+<h2 id="HAL层"><a href="#HAL层" class="headerlink" title="HAL层"></a><a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=274167970&content_type=Article&match_order=1&q=HAL%E5%B1%82&zhida_source=entity">HAL层</a></h2><p>这一层为硬件抽象层，我们在这一层把所有对外设库函数的操作封装成自己的函数，这样，当我们换一个MCU后，我们只需要将此层的库函数换成新MCU对应的名称即可。</p>
+<p>按照之前的方案，当我们换一个MCU，我们需要把LED驱动库里面的GPIO库函数换一下，需要把Buzzer库函数换一下…</p>
+<p>但是现在我们不需要了，因为LED与Buzzer调用的都是GPIO_WritePin()（一个我们自己编写的函数）这个函数代替各种外设去调用库函数里面GPIO的写高电平，如果我们要换MCU，我们只需要修改这一个函数即可。</p>
+<p><img src="https://pica.zhimg.com/v2-8463126dd690a90138755362d5fc9016_1440w.jpg" loading='lazy'></p>
+<p>这一层，我们解决了换MCU后移植代码过于繁琐的问题。</p>
+<h2 id="Device层"><a href="#Device层" class="headerlink" title="Device层"></a><a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=274167970&content_type=Article&match_order=1&q=Device%E5%B1%82&zhida_source=entity">Device层</a></h2><p>简单来说，这一层的目标是设定我们的外设是什么？需要什么？可以做什么？</p>
+<h3 id="对接HAL层"><a href="#对接HAL层" class="headerlink" title="对接HAL层"></a>对接HAL层</h3><p>当我们把MCU库函数抽象一层之后，我们给我们的外设分别调用HAL层的抽象库函数。当然我们可以在此处加一些条件判断，例如当前对象是否被初始化？如果没有，自然无法操作。</p>
+<h3 id="对接Core层"><a href="#对接Core层" class="headerlink" title="对接Core层"></a>对接Core层</h3><p>对于一个具体的外设，他的信息可以从Core层一个基础类设备继承而来，这也是面向对象拒绝重复封装的思想。</p>
+<p>对于外设要什么？我们可以在一个结构体指明他的GPIO、以及其他的配置信息。关注到GPIO配置信息有极强的重复性（指明Core、Pin）我们完全有道理把GPIO的封装另设一个结构体，每一个外设在配置信息时，都通过这个结构体配置它的IO信息。</p>
+<p>对于外设要做什么，我们可以进行一次ops封装，即将操作他的函数放置在一个结构体中，并注册到类中。这样，我们调用红色LED以及绿色LED相同操作时不用新建函数，直接指明是哪一个对象的哪一个操作函数即可。</p>
+<p><img src="https://picx.zhimg.com/v2-7268987c97beeed801e80e393a55909f_1440w.jpg" loading='lazy'></p>
+<h2 id="Board层"><a href="#Board层" class="headerlink" title="Board层"></a>Board层</h2><p>本层我们的目标是设定对象，暴露对象地址,并配置对象的基本信息,。</p>
+<p>假设我们手上有 两块开发板，一个开发板上把LED绑在PC13上，一个开发板有两个LED，分别绑在PA0、PB8上。我们需要在此层调用Device层的配置信息结构体，告知本项目调用外设的基本信息。</p>
+<p>对于一个外设的操作函数，例如我们调用LED_ON(led_t LED)；我们在Device层就指定LED_ON实际上是调用ops里面的on成员。</p>
+<p>一般上我们把Board层+上述Device层合并为<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=274167970&content_type=Article&match_order=1&q=BSP%E5%B1%82&zhida_source=entity">BSP层</a>。此处我希望Board层作为一个为不同Board而设定的层。</p>
+<p>这么做还有一个好处，假设我们本项目并不需要某一个外设，我们也只需要简单删掉一个对象即可。</p>
+<h2 id="Facade层"><a href="#Facade层" class="headerlink" title="Facade层"></a><a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=274167970&content_type=Article&match_order=1&q=Facade%E5%B1%82&zhida_source=entity">Facade层</a></h2><p>在本层中，我们会调用Device层指定的操作函数以及Board层指定的对象，构成对某一特定外设的特定操作，例如LED_ON(&amp;Red_LED);如果我们现在有一个任务需要红色LED闪烁，我们就可以在这一层通过来回调用特定对象的开关函数实现这一功能。</p>
+<p>这一层的代码面向业务而不是实现业务，或者我们简单理解为针对业务繁杂的问题，我们提前做好部分代码的包装，以此进行预封装。</p>
+<h2 id="App层"><a href="#App层" class="headerlink" title="App层"></a><a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=274167970&content_type=Article&match_order=1&q=App%E5%B1%82&zhida_source=entity">App层</a></h2><p>本层是基于项目而生的应用层，你的项目是什么？请在此处根据你的项目调用不同的面向业务代码抑或是直接调用对象及其操作函数实现我们本项目的具体业务。</p>
+<h2 id="Lib层"><a href="#Lib层" class="headerlink" title="Lib层"></a>Lib层</h2><p>本层独立于其他层之外，提供数据&#x2F;算法等等无关封装但包含大量信息的接口。</p>
+<hr>
+<p>综上，我们的项目中各层的调用关系大抵如此：</p>
+<p><img src="https://pica.zhimg.com/v2-820d6af47d2accf1681d069fbda7435c_1440w.jpg" loading='lazy'></p>
+<p>当前的项目架构还有很多没有考虑到的地方，之后会不断深入写第二篇，如果有佬看到的话，欢迎你多多指点，我也会给出我的思考，希望和大家多多交流~</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://cube1345.github.io">cube</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://cube1345.github.io/2026/05/04/dan-pian-ji-gong-cheng-jia-gou/">https://cube1345.github.io/2026/05/04/dan-pian-ji-gong-cheng-jia-gou/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://cube1345.github.io" target="_blank">Cube Diary</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/MCU/">MCU</a></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/04/19/you-yuan-lv-bo-qi-ji-chu-yu-she-ji/" title="有源滤波器基础与设计"><img class="cover" src="/images/covers/yuri-nao-03.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">有源滤波器基础与设计</div></div><div class="info-2"><div class="info-item-1">从低通响应、原型选择、品质因子到 Sallen-Key 与多路反馈结构，整理有源滤波器设计的主线。</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/lilisi1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">cube</div><div class="author-info-description">欲买桂花同载酒，终不似，少年游。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">10</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/cube1345"><i class="fab fa-github"></i><span>GitHub</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/cube1345" target="_blank" title="GitHub"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:cubeacount123@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的blog (●'◡'●)ﾉ♥</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8D%95%E7%89%87%E6%9C%BA%E5%B7%A5%E7%A8%8B%E6%9E%B6%E6%9E%84-%E2%80%93by-cube"><span class="toc-number">1.</span> <span class="toc-text">单片机工程架构  –by cube</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#C%E8%AF%AD%E8%A8%80%E7%9A%84%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E6%80%9D%E6%83%B3"><span class="toc-number">1.1.</span> <span class="toc-text">C语言的面向对象思想</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Core%E5%B1%82"><span class="toc-number">1.2.</span> <span class="toc-text">Core层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HAL%E5%B1%82"><span class="toc-number">1.3.</span> <span class="toc-text">HAL层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Device%E5%B1%82"><span class="toc-number">1.4.</span> <span class="toc-text">Device层</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E6%8E%A5HAL%E5%B1%82"><span class="toc-number">1.4.1.</span> <span class="toc-text">对接HAL层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E6%8E%A5Core%E5%B1%82"><span class="toc-number">1.4.2.</span> <span class="toc-text">对接Core层</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Board%E5%B1%82"><span class="toc-number">1.5.</span> <span class="toc-text">Board层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Facade%E5%B1%82"><span class="toc-number">1.6.</span> <span class="toc-text">Facade层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#App%E5%B1%82"><span class="toc-number">1.7.</span> <span class="toc-text">App层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lib%E5%B1%82"><span class="toc-number">1.8.</span> <span class="toc-text">Lib层</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/05/04/dan-pian-ji-gong-cheng-jia-gou/" title="单片机工程架构">单片机工程架构</a><time datetime="2026-05-04T15:55:00.000Z" title="发表于 2026-05-04 23:55:00">2026-05-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/19/you-yuan-lv-bo-qi-ji-chu-yu-she-ji/" title="有源滤波器基础与设计">有源滤波器基础与设计</a><time datetime="2026-04-19T03:40:00.000Z" title="发表于 2026-04-19 11:40:00">2026-04-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/19/yun-fang-fei-li-xiang-yu-bi-huan-wu-cha/" title="运放非理想特性与闭环误差">运放非理想特性与闭环误差</a><time datetime="2026-04-19T03:20:00.000Z" title="发表于 2026-04-19 11:20:00">2026-04-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/19/yun-fang-dan-dian-yuan-she-ji/" title="运放单电源设计：交流耦合、直流偏置与阻值选取">运放单电源设计：交流耦合、直流偏置与阻值选取</a><time datetime="2026-04-19T03:00:00.000Z" title="发表于 2026-04-19 11:00:00">2026-04-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/19/shu-kong-dian-yuan/" title="数控电源">数控电源</a><time datetime="2026-04-19T02:00:00.000Z" title="发表于 2026-04-19 10:00:00">2026-04-19</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By cube</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4&amp;cv=1777910253804"></script><script src="/js/main.js?v=5.5.4&amp;cv=1777910253804"></script><div class="js-pjax"></div></div></body></html>
