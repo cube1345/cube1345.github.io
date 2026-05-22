@@ -1,0 +1,285 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>基于MCU的Agent | Cube Diary</title><meta name="author" content="cube"><meta name="copyright" content="cube"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f5ef"><meta name="description" content="如何让LLM操控你的硬件。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于MCU的Agent">
+<meta property="og:url" content="https://cube1345.github.io/2026/05/22/ji-yu-MCU-de-Agent/index.html">
+<meta property="og:site_name" content="Cube Diary">
+<meta property="og:description" content="如何让LLM操控你的硬件。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cube1345.github.io/images/covers/anime-cover-01.jpg">
+<meta property="article:published_time" content="2026-05-22T08:11:00.000Z">
+<meta property="article:modified_time" content="2026-05-22T08:11:00.000Z">
+<meta property="article:author" content="cube">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="MCU">
+<meta property="article:tag" content="物联网">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cube1345.github.io/images/covers/anime-cover-01.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "基于MCU的Agent",
+  "url": "https://cube1345.github.io/2026/05/22/ji-yu-MCU-de-Agent/",
+  "image": "https://cube1345.github.io/images/covers/anime-cover-01.jpg",
+  "datePublished": "2026-05-22T08:11:00.000Z",
+  "dateModified": "2026-05-22T08:11:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "cube",
+      "url": "https://cube1345.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/lilisi1.jpg"><link rel="canonical" href="https://cube1345.github.io/2026/05/22/ji-yu-MCU-de-Agent/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.5.4&amp;cv=1779439619798"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css?cv=1779439619798" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css?cv=1779439619798"></noscript><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f5ef')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '基于MCU的Agent',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/lilisi1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/friends"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/images/covers/anime-cover-01.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Cube Diary</span></a><a class="nav-page-title" href="/"><span class="site-name">基于MCU的Agent</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/friends"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">基于MCU的Agent</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-05-22T08:11:00.000Z" title="发表于 2026-05-22 16:11:00">2026-05-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-05-22T08:11:00.000Z" title="更新于 2026-05-22 16:11:00">2026-05-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">嵌入式</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><div id="post-outdate-notice" data="{&quot;limitDay&quot;:365,&quot;messagePrev&quot;:&quot;It has been&quot;,&quot;messageNext&quot;:&quot;days since the last update, the content of the article may be outdated.&quot;,&quot;postUpdate&quot;:&quot;2026-05-22 16:11:00&quot;}" hidden></div><h1 id="基于-MCU-的-Agent"><a href="#基于-MCU-的-Agent" class="headerlink" title="基于 MCU 的 Agent"></a>基于 MCU 的 Agent</h1><p>ESPAgent 是一个运行在 ESP32-S3 上的 AI Agent 项目。它不是单纯把聊天内容发给大模型，然后把大模型回复显示出来。它更重要的一点是：把设备上的硬件能力整理成工具，交给 LLM 选择。当 LLM 判断用户想读传感器、控制 GPIO、点亮 RGB 灯、转动舵机时，它返回的是结构化的工具调用。固件收到这个工具调用后，再执行真正的硬件驱动代码。</p>
+<p>这篇文章按当前项目代码说明这条链路。主要会讲四部分：LLM 信息的请求、LLM 返回数据到硬件驱动的链路、Skills 与 cache 机制、飞书机器人的接入。</p>
+<h2 id="第一章：LLM-信息的请求"><a href="#第一章：LLM-信息的请求" class="headerlink" title="第一章：LLM 信息的请求"></a>第一章：LLM 信息的请求</h2><p>ESPAgent 的启动入口在 <code>main/mimi.c</code>。设备上电后，<code>app_main()</code> 会初始化一批基础模块，其中和 LLM 请求相关的主要是消息总线、cache、skills、会话记录、LLM 代理和工具注册表。对应代码在 <code>main/mimi.c</code> 里：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ESP_ERROR_CHECK(message_bus_init());</span><br><span class="line">ESP_ERROR_CHECK(memory_store_init());</span><br><span class="line">ESP_ERROR_CHECK(cache_store_init());</span><br><span class="line">ESP_ERROR_CHECK(skill_loader_init());</span><br><span class="line">ESP_ERROR_CHECK(session_mgr_init());</span><br><span class="line">ESP_ERROR_CHECK(wifi_manager_init());</span><br><span class="line">ESP_ERROR_CHECK(http_proxy_init());</span><br><span class="line">ESP_ERROR_CHECK(telegram_bot_init());</span><br><span class="line">ESP_ERROR_CHECK(feishu_bot_init());</span><br><span class="line">ESP_ERROR_CHECK(llm_proxy_init());</span><br><span class="line">ESP_ERROR_CHECK(tool_registry_init());</span><br></pre></td></tr></table></figure>
+
+<p>这段初始化说明了一个事实：LLM 请求不是孤立发生的。它前面有消息来源，旁边有上下文构建，后面还有工具注册表。<code>message_bus_init()</code> 负责准备消息队列，<code>session_mgr_init()</code> 负责历史记录，<code>skill_loader_init()</code> 负责加载技能摘要，<code>tool_registry_init()</code> 负责准备可以交给 LLM 的工具列表。</p>
+<p>真正处理用户消息的是 <code>main/agent/agent_loop.c</code>。<code>agent_loop_task()</code> 会一直从消息总线里等待新消息：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">mimi_msg_t</span> msg;</span><br><span class="line"><span class="type">esp_err_t</span> err = message_bus_pop_inbound(&amp;msg, UINT32_MAX);</span><br></pre></td></tr></table></figure>
+
+<p><code>mimi_msg_t</code> 里保存了三个核心字段：消息来自哪个通道、应该回复给哪个聊天对象、用户说了什么。例如飞书通道进来的消息，<code>channel</code> 会是 <code>feishu</code>，<code>chat_id</code> 是飞书里的会话或用户 ID，<code>content</code> 是用户发来的文本。</p>
+<p>拿到用户消息后，Agent 会构建 system prompt：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">context_build_system_prompt(system_prompt, MIMI_CONTEXT_BUF_SIZE);</span><br><span class="line">append_turn_context_prompt(system_prompt, MIMI_CONTEXT_BUF_SIZE, &amp;msg);</span><br></pre></td></tr></table></figure>
+
+<p><code>context_build_system_prompt()</code> 在 <code>main/agent/context_builder.c</code>。这里会把项目身份、可用工具说明、memory、skills summary 等内容拼成一段系统提示。<code>append_turn_context_prompt()</code> 会补充当前回合的信息，例如当前消息来自哪个 channel、chat_id 是什么。这样 LLM 不只是看到用户的一句话，也能知道自己运行在什么设备上、有哪些工具、当前应该往哪里回复。</p>
+<p>随后 Agent 会加载当前会话历史。代码在 <code>agent_loop.c</code> 中调用：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">session_get_history_json(msg.chat_id, history_json,</span><br><span class="line">                         MIMI_LLM_STREAM_BUF_SIZE, MIMI_AGENT_MAX_HISTORY);</span><br></pre></td></tr></table></figure>
+
+<p>历史记录会被解析成 cJSON 数组，然后当前用户消息会被追加进去：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cJSON *user_msg = cJSON_CreateObject();</span><br><span class="line">cJSON_AddStringToObject(user_msg, <span class="string">&quot;role&quot;</span>, <span class="string">&quot;user&quot;</span>);</span><br><span class="line">cJSON_AddStringToObject(user_msg, <span class="string">&quot;content&quot;</span>, msg.content);</span><br><span class="line">cJSON_AddItemToArray(messages, user_msg);</span><br></pre></td></tr></table></figure>
+
+<p>在请求 LLM 前，Agent 还会取出工具注册表生成的工具 JSON：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">char</span> *tools_json = tool_registry_get_tools_json();</span><br></pre></td></tr></table></figure>
+
+<p>最终请求 LLM 的函数是：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">err = llm_chat_tools(system_prompt, messages, tools_json, &amp;resp);</span><br></pre></td></tr></table></figure>
+
+<p>这个函数位于 <code>main/llm/llm_proxy.c</code>。它会把 system prompt、messages 和 tools 组装成 HTTP 请求。如果当前使用的是 OpenAI 风格接口，代码会加入 <code>messages</code>、<code>tools</code>，并设置 <code>tool_choice</code> 为 <code>auto</code>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cJSON *openai_msgs = convert_messages_openai(system_prompt, messages);</span><br><span class="line">cJSON_AddItemToObject(body, <span class="string">&quot;messages&quot;</span>, openai_msgs);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (tools_json) &#123;</span><br><span class="line">    cJSON *tools = convert_tools_openai(tools_json);</span><br><span class="line">    <span class="keyword">if</span> (tools) &#123;</span><br><span class="line">        cJSON_AddItemToObject(body, <span class="string">&quot;tools&quot;</span>, tools);</span><br><span class="line">        cJSON_AddStringToObject(body, <span class="string">&quot;tool_choice&quot;</span>, <span class="string">&quot;auto&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这就是 ESPAgent 请求 LLM 的基本形式。它不是只发一句用户文本，而是发：系统提示、历史记录、当前用户输入、工具列表。LLM 看到这些信息后，可以选择直接回答，也可以返回工具调用。</p>
+<h2 id="第二章：LLM-返回数据到硬件驱动的链路"><a href="#第二章：LLM-返回数据到硬件驱动的链路" class="headerlink" title="第二章：LLM 返回数据到硬件驱动的链路"></a>第二章：LLM 返回数据到硬件驱动的链路</h2><p>LLM 返回后，<code>llm_chat_tools()</code> 会解析返回 JSON。OpenAI 风格的 <code>tool_calls</code> 会被解析成项目内部的 <code>llm_response_t</code>。工具名来自 <code>function.name</code>，参数来自 <code>function.arguments</code>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cJSON *tool_calls = cJSON_GetObjectItem(message, <span class="string">&quot;tool_calls&quot;</span>);</span><br><span class="line">...</span><br><span class="line">cJSON *name = cJSON_GetObjectItem(func, <span class="string">&quot;name&quot;</span>);</span><br><span class="line">cJSON *args = cJSON_GetObjectItem(func, <span class="string">&quot;arguments&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>项目内部并不直接把原始 JSON 到处传。它会把返回内容整理成统一结构：普通回答放在 <code>resp.text</code>，工具调用放在 <code>resp.calls[]</code>。每个工具调用里有工具名和输入 JSON。这样后面的 Agent 逻辑不用关心 LLM 供应商返回格式，只要看 <code>resp.tool_use</code> 和 <code>resp.calls</code>。</p>
+<p>如果 <code>resp.tool_use</code> 为 false，说明 LLM 没有要求调用工具，Agent 就把 <code>resp.text</code> 当作最终回复。如果 <code>resp.tool_use</code> 为 true，Agent 会进入工具执行流程。执行入口在 <code>main/agent/agent_loop.c</code> 的 <code>build_tool_results()</code>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tool_registry_execute(call-&gt;name, tool_input, tool_output,</span><br><span class="line">                      tool_output_size);</span><br></pre></td></tr></table></figure>
+
+<p>这里的 <code>call-&gt;name</code> 是 LLM 返回的工具名，例如 <code>gpio_write</code>、<code>set_status_light</code>、<code>servo_write</code>、<code>read_air_quality</code>。<code>tool_input</code> 是 LLM 返回的 JSON 参数，例如：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;color&quot;</span><span class="punctuation">:</span><span class="string">&quot;red&quot;</span><span class="punctuation">,</span><span class="attr">&quot;brightness&quot;</span><span class="punctuation">:</span><span class="number">80</span><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>工具注册表在 <code>main/tools/tool_registry.c</code>。每个工具都有名字、描述、输入 schema 和执行函数。结构定义在 <code>main/tools/tool_registry.h</code>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> *name;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> *description;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> *input_schema_json;</span><br><span class="line">    <span class="type">esp_err_t</span> (*execute)(<span class="type">const</span> <span class="type">char</span> *input_json, <span class="type">char</span> *output, <span class="type">size_t</span> output_size);</span><br><span class="line">&#125; <span class="type">mimi_tool_t</span>;</span><br></pre></td></tr></table></figure>
+
+<p>注册工具时，项目会明确告诉 LLM 这个工具叫什么、能做什么、需要哪些参数。比如 <code>gpio_write</code> 的注册内容说明它用于设置 GPIO 高低电平，并要求输入 <code>pin</code> 和 <code>state</code>。<code>set_status_light</code> 的描述会告诉 LLM：当用户说把板载灯调成红色、绿色、蓝色或关闭时，优先使用这个工具。<code>servo_write</code> 的描述说明它控制 GPIO5 上的舵机，可以用角度或脉宽。</p>
+<p><code>tool_registry_execute()</code> 的逻辑很直接：按工具名查找注册表，找到后调用对应函数指针：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="built_in">strcmp</span>(s_tools[i].name, name) == <span class="number">0</span>) &#123;</span><br><span class="line">    ESP_LOGI(TAG, <span class="string">&quot;Executing tool: %s&quot;</span>, name);</span><br><span class="line">    <span class="keyword">return</span> s_tools[i].execute(input_json, output, output_size);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>也就是说，从 LLM 到硬件之间，最关键的转换点就是这里。LLM 只负责返回“调用哪个工具”和“传什么参数”，真正驱动硬件的是 <code>tool_xxx_execute()</code>。</p>
+<p>以 GPIO 为例，工具入口是 <code>main/tools/tool_gpio.c</code> 里的 <code>tool_gpio_write_execute()</code>。它先解析 JSON：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cJSON *root = cJSON_Parse(input_json);</span><br></pre></td></tr></table></figure>
+
+<p>然后取出 <code>pin</code> 和 <code>state</code>，检查 state 是否只能是 0 或 1。接着会检查这个 GPIO 是否允许被用户控制。检查通过后，才会配置输出并设置电平：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">err = ensure_output_gpio(pin);</span><br><span class="line"><span class="keyword">if</span> (err == ESP_OK) &#123;</span><br><span class="line">    err = gpio_set_level(pin, state);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这说明 LLM 不能绕过工具层直接写 GPIO。即使 LLM 生成了不合适的 pin，工具层也会检查并返回错误。</p>
+<p>RGB 灯也是类似的流程。<code>set_status_light</code> 的入口是 <code>tool_set_status_light_execute()</code>。它可以接收 <code>color</code> 字符串，也可以接收 <code>r/g/b</code> 数值。如果是颜色名，会通过 <code>resolve_named_color()</code> 转成 RGB 值。真正发送 WS2812 数据的是 <code>ws2812_apply_color()</code>，底层使用 ESP-IDF 的 RMT：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rmt_transmit(s_ws2812.channel, s_ws2812.encoder, rgb, <span class="keyword">sizeof</span>(rgb), &amp;tx_cfg);</span><br></pre></td></tr></table></figure>
+
+<p>舵机控制走 <code>main/tools/tool_servo.c</code>。LLM 可以返回 <code>{&quot;angle&quot;:90}</code>，工具函数会把 90 度换算成 PWM 脉宽，再调用 LEDC 驱动：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, duty);</span><br><span class="line">ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0);</span><br></pre></td></tr></table></figure>
+
+<p>传感器读取同样走工具。SGP30 的工具入口是 <code>tool_sgp30_read_air_quality_execute()</code>。它从 JSON 里读取可选的 SDA、SCL、I2C port，然后调用驱动层初始化并读取数据。底层驱动在 <code>main/drivers/sgp30.c</code>，核心读写是：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">i2c_master_transmit(dev-&gt;dev, cmd, <span class="keyword">sizeof</span>(cmd), SGP30_XFER_TIMEOUT_MS);</span><br><span class="line">i2c_master_receive(dev-&gt;dev, resp, <span class="keyword">sizeof</span>(resp), SGP30_XFER_TIMEOUT_MS);</span><br></pre></td></tr></table></figure>
+
+<p>如果是综合环境数据，工具入口是 <code>tool_read_environment_execute()</code>，会一次读取 AHT20&#x2F;AHT10 温湿度、SGP30 空气质量、GY-30&#x2F;BH1750 光照。这个工具适合用户说“综合测试”“读取环境数据”“温湿度空气质量光照”这类请求。</p>
+<p>Agent 执行完工具后，会把工具输出包装成 <code>tool_result</code>，再放回 messages 里给 LLM 看。也就是说，LLM 不是调用工具后就结束，而是会再看一次工具结果，然后生成适合用户阅读的最终回答。这样用户最终看到的是自然语言结果，而硬件动作已经在工具执行阶段完成了。</p>
+<h2 id="第三章：Skills-与-cache-机制"><a href="#第三章：Skills-与-cache-机制" class="headerlink" title="第三章：Skills 与 cache 机制"></a>第三章：Skills 与 cache 机制</h2><p>ESPAgent 的 skills 是存放在 SPIFFS 里的 Markdown 文件。路径由 <code>main/mimi_config.h</code> 定义：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MIMI_SKILLS_PREFIX MIMI_SPIFFS_BASE <span class="string">&quot;/skills/&quot;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>启动时，<code>skill_loader_init()</code> 会扫描 <code>/spiffs</code> 下的 <code>skills/*.md</code> 文件，统计当前安装了多少 skill。它不会在启动时把所有 skill 全文读进内存，也不会把所有全文都塞进 prompt。这样做是为了控制内存和 prompt 长度。</p>
+<p>真正进入 system prompt 的是 skills summary。<code>context_build_system_prompt()</code> 会调用：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">size_t</span> skills_len = skill_loader_build_summary(skills_buf, <span class="keyword">sizeof</span>(skills_buf));</span><br></pre></td></tr></table></figure>
+
+<p><code>skill_loader_build_summary()</code> 的工作方式是：先查 cache，看有没有已经生成过的 <code>prompt:skills_summary</code>。如果 cache 命中，就直接返回缓存内容。如果没有命中，就扫描 skills 目录，打开每个 Markdown 文件，提取标题和简介，再生成一份简短列表。</p>
+<p>一个 skill 文件通常可以这样写：</p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section"># 技能名称</span></span><br><span class="line">这一段是简短描述，会进入 system prompt 的 skills summary。</span><br><span class="line"></span><br><span class="line">详细说明：</span><br><span class="line">这里写完整操作规则。只有当 LLM 需要时，才通过 read<span class="emphasis">_file 读取全文。</span></span><br></pre></td></tr></table></figure>
+
+<p>标题提取函数是 <code>extract_title()</code>，它会读取第一行并去掉 <code># </code>。简介提取函数是 <code>extract_description()</code>，它会读取标题后面的几行，遇到空行或 <code>##</code> 就停止。最后生成的 summary 类似：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- **技能名称**: 简短描述 (read with: read_file /spiffs/skills/xxx.md)</span><br></pre></td></tr></table></figure>
+
+<p>这份 summary 会加入 system prompt。LLM 看到的是“有哪些 skill、每个 skill 大概做什么、需要时应该用 read_file 读取哪个文件”。如果任务真的匹配某个 skill，LLM 可以调用 <code>read_file</code> 工具读取完整内容。</p>
+<p>cache 机制在 <code>main/cache/cache_store.c</code>。它是 RAM 里的 KV cache，不是文件缓存。每个 cache entry 里有 key、value、过期时间、最近访问时间和命中次数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="type">bool</span> used;</span><br><span class="line">    <span class="type">char</span> key[MIMI_CACHE_MAX_KEY_BYTES];</span><br><span class="line">    <span class="type">char</span> *value;</span><br><span class="line">    <span class="type">size_t</span> value_len;</span><br><span class="line">    <span class="type">int64_t</span> expires_at_us;</span><br><span class="line">    <span class="type">int64_t</span> last_access_us;</span><br><span class="line">    <span class="type">uint32_t</span> hits;</span><br><span class="line">&#125; <span class="type">cache_entry_t</span>;</span><br></pre></td></tr></table></figure>
+
+<p>cache 初始化函数是 <code>cache_store_init()</code>。它主要创建 mutex，并准备后续读写。缓存容量由 <code>main/mimi_config.h</code> 控制，当前默认是 32 个条目、单个 value 最大 4096 字节、总大小 24KB、默认 TTL 300 秒。skills summary 使用的 TTL 是 <code>MIMI_CACHE_SKILLS_TTL_S</code>，也就是 24 小时。</p>
+<p>读取 cache 用 <code>cache_get()</code>。它会检查 key 是否存在，是否过期。如果命中，会复制 value，并更新 <code>last_access_us</code> 和命中次数。写入 cache 用 <code>cache_put()</code>。如果容量不够，会清理过期项，或者按最近访问时间淘汰旧项。</p>
+<p>skills 和 cache 的关系很明确：skills 文件放在 SPIFFS，summary 放在 cache。这样每一轮对话构建 prompt 时，不需要反复扫描 SPIFFS 和读取所有 skill 文件。</p>
+<p>如果通过 <code>write_file</code> 或 <code>edit_file</code> 修改了 <code>/spiffs/skills/</code> 下的文件，项目会自动清掉 skills summary 的 cache。相关逻辑在 <code>main/tools/tool_files.c</code>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (path &amp;&amp; <span class="built_in">strncmp</span>(path, MIMI_SKILLS_PREFIX, <span class="built_in">strlen</span>(MIMI_SKILLS_PREFIX)) == <span class="number">0</span>) &#123;</span><br><span class="line">    skill_loader_invalidate_cache();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>skill_loader_invalidate_cache()</code> 内部会删除 <code>prompt:skills_summary</code>。下一次构建 system prompt 时，就会重新扫描 skills 文件并生成新的 summary。</p>
+<h2 id="第四章：飞书机器人的接入"><a href="#第四章：飞书机器人的接入" class="headerlink" title="第四章：飞书机器人的接入"></a>第四章：飞书机器人的接入</h2><p>飞书机器人接入在 <code>main/channels/feishu/feishu_bot.c</code>。项目使用的是飞书长连接 WebSocket 模式。启动时，<code>feishu_bot_init()</code> 会从 NVS 读取 <code>app_id</code> 和 <code>app_secret</code>。如果没有配置，会打印提示，让用户用串口命令设置：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set_feishu_creds &lt;APP_ID&gt; &lt;APP_SECRET&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>feishu_bot_start()</code> 会检查凭证是否存在。如果凭证存在，就创建 <code>feishu_ws_task</code>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">xTaskCreatePinnedToCore(</span><br><span class="line">    feishu_ws_task,</span><br><span class="line">    <span class="string">&quot;feishu_ws&quot;</span>,</span><br><span class="line">    MIMI_FEISHU_POLL_STACK,</span><br><span class="line">    <span class="literal">NULL</span>,</span><br><span class="line">    MIMI_FEISHU_POLL_PRIO,</span><br><span class="line">    &amp;s_ws_task,</span><br><span class="line">    MIMI_FEISHU_POLL_CORE);</span><br></pre></td></tr></table></figure>
+
+<p><code>feishu_ws_task()</code> 会先向飞书接口拉取 WebSocket 配置，然后启动 <code>esp_websocket_client</code>。收到 WebSocket 数据后，事件处理函数 <code>feishu_ws_event_handler()</code> 会把分片数据拼起来，拼完后交给 <code>feishu_handle_ws_frame()</code>。</p>
+<p>飞书发来的数据是一个带 frame 的事件。<code>feishu_handle_ws_frame()</code> 会解析 frame，确认是 event 类型后，把 payload 交给 <code>feishu_process_ws_event_json()</code>。如果事件类型是 <code>im.message.receive_v1</code>，就会进入 <code>handle_message_event()</code>。</p>
+<p><code>handle_message_event()</code> 会从飞书事件里取出消息体。它只处理文本消息。飞书文本内容本身还是一个 JSON 字符串，所以代码会再 parse 一次：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cJSON *content_obj = cJSON_Parse(content_j-&gt;valuestring);</span><br><span class="line">cJSON *text_j = cJSON_GetObjectItem(content_obj, <span class="string">&quot;text&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>拿到文本后，代码会处理群聊里可能带上的机器人 mention 前缀，然后决定 route id。单聊时，项目会使用发送者的 <code>open_id</code> 作为会话 ID；群聊时使用 <code>chat_id</code>。最后把消息包装成 <code>mimi_msg_t</code>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">mimi_msg_t</span> msg = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"><span class="built_in">strncpy</span>(msg.channel, MIMI_CHAN_FEISHU, <span class="keyword">sizeof</span>(msg.channel) - <span class="number">1</span>);</span><br><span class="line"><span class="built_in">strncpy</span>(msg.chat_id, route_id, <span class="keyword">sizeof</span>(msg.chat_id) - <span class="number">1</span>);</span><br><span class="line">msg.content = strdup(cleaned);</span><br></pre></td></tr></table></figure>
+
+<p>然后推入 inbound 消息总线：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">message_bus_push_inbound(&amp;msg);</span><br></pre></td></tr></table></figure>
+
+<p>从这里开始，飞书消息就进入了前面讲过的 Agent 流程：构建 prompt、请求 LLM、执行工具、生成回复。</p>
+<p>回复飞书时，Agent 不会直接调用飞书接口。Agent 会把最终回复放进 outbound queue。<code>main/mimi.c</code> 里的 outbound dispatch 任务会根据 channel 判断应该发到哪里。如果 channel 是 <code>feishu</code>，就调用：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">feishu_send_message(msg.chat_id, msg.content);</span><br></pre></td></tr></table></figure>
+
+<p><code>feishu_send_message()</code> 会判断 <code>chat_id</code> 是群聊 ID 还是 open_id。如果以 <code>ou_</code> 开头，就按 <code>open_id</code> 发送，否则按 <code>chat_id</code> 发送。发送前它会构造飞书消息体：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cJSON_AddStringToObject(body, <span class="string">&quot;receive_id&quot;</span>, chat_id);</span><br><span class="line">cJSON_AddStringToObject(body, <span class="string">&quot;msg_type&quot;</span>, <span class="string">&quot;text&quot;</span>);</span><br><span class="line">cJSON_AddStringToObject(body, <span class="string">&quot;content&quot;</span>, content_str);</span><br></pre></td></tr></table></figure>
+
+<p>最后通过 <code>feishu_api_call()</code> 调用飞书 HTTP API。这个函数内部会先确保 tenant token 可用，再发 POST 请求。</p>
+<p>飞书接入在整个项目里只负责通道功能：收消息、转成 <code>mimi_msg_t</code>、把回复发回飞书。它不会直接控制 GPIO，也不会直接读传感器。真正是否调用硬件，由 Agent 和 LLM tool calling 决定。这样的结构让飞书、Telegram、WebSocket 可以共用同一套 Agent 和工具系统。</p>
+<p>完整来看，本项目的链路可以写成：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">飞书收到用户消息</span><br><span class="line">-&gt; feishu_bot.c 解析文本</span><br><span class="line">-&gt; message_bus_push_inbound()</span><br><span class="line">-&gt; agent_loop.c 取消息并构建上下文</span><br><span class="line">-&gt; llm_proxy.c 请求 LLM</span><br><span class="line">-&gt; LLM 返回普通文本或 tool call</span><br><span class="line">-&gt; tool_registry.c 按工具名分发</span><br><span class="line">-&gt; tool_gpio.c / tool_servo.c / tool_sgp30.c 等模块执行硬件操作</span><br><span class="line">-&gt; Agent 根据工具结果生成回复</span><br><span class="line">-&gt; message_bus_push_outbound()</span><br><span class="line">-&gt; feishu_send_message() 发回飞书</span><br></pre></td></tr></table></figure>
+
+<p>ESPAgent 的核心做法是把通道、LLM、工具和硬件驱动拆开。通道只管消息进出，LLM 只负责理解意图和选择工具，工具层负责参数检查和执行，硬件驱动负责真正操作设备。Skills 用来给 Agent 增加可扩展说明，cache 用来减少重复读取和重复构建上下文。整体结构不复杂，但每一层职责比较清楚，后续要加新的传感器或执行器时，也能沿着同样的方式接入。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://cube1345.github.io">cube</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://cube1345.github.io/2026/05/22/ji-yu-MCU-de-Agent/">https://cube1345.github.io/2026/05/22/ji-yu-MCU-de-Agent/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://cube1345.github.io" target="_blank">Cube Diary</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/MCU/">MCU</a><a class="post-meta__tags" href="/tags/AI/">AI</a><a class="post-meta__tags" href="/tags/%E7%89%A9%E8%81%94%E7%BD%91/">物联网</a></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/05/04/dan-pian-ji-gong-cheng-jia-gou/" title="单片机工程架构"><img class="cover" src="/images/covers/takamatsu-tomori-01.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">单片机工程架构</div></div><div class="info-2"><div class="info-item-1">使用oop-in-c，使单片机开发架构能够独立于不同的MCU。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/05/04/dan-pian-ji-gong-cheng-jia-gou/" title="单片机工程架构"><img class="cover" src="/images/covers/takamatsu-tomori-01.jpg" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-04</div><div class="info-item-2">单片机工程架构</div></div><div class="info-2"><div class="info-item-1">使用oop-in-c，使单片机开发架构能够独立于不同的MCU。</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/lilisi1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">cube</div><div class="author-info-description">欲买桂花同载酒，终不似，少年游。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/cube1345"><i class="fab fa-github"></i><span>GitHub</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/cube1345" target="_blank" title="GitHub"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:cubeacount123@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的blog (●'◡'●)ﾉ♥</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E-MCU-%E7%9A%84-Agent"><span class="toc-number">1.</span> <span class="toc-text">基于 MCU 的 Agent</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%9ALLM-%E4%BF%A1%E6%81%AF%E7%9A%84%E8%AF%B7%E6%B1%82"><span class="toc-number">1.1.</span> <span class="toc-text">第一章：LLM 信息的请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0%EF%BC%9ALLM-%E8%BF%94%E5%9B%9E%E6%95%B0%E6%8D%AE%E5%88%B0%E7%A1%AC%E4%BB%B6%E9%A9%B1%E5%8A%A8%E7%9A%84%E9%93%BE%E8%B7%AF"><span class="toc-number">1.2.</span> <span class="toc-text">第二章：LLM 返回数据到硬件驱动的链路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0%EF%BC%9ASkills-%E4%B8%8E-cache-%E6%9C%BA%E5%88%B6"><span class="toc-number">1.3.</span> <span class="toc-text">第三章：Skills 与 cache 机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0%EF%BC%9A%E9%A3%9E%E4%B9%A6%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%9A%84%E6%8E%A5%E5%85%A5"><span class="toc-number">1.4.</span> <span class="toc-text">第四章：飞书机器人的接入</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/05/22/ji-yu-MCU-de-Agent/" title="基于MCU的Agent">基于MCU的Agent</a><time datetime="2026-05-22T08:11:00.000Z" title="发表于 2026-05-22 16:11:00">2026-05-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/05/04/dan-pian-ji-gong-cheng-jia-gou/" title="单片机工程架构">单片机工程架构</a><time datetime="2026-05-04T15:55:00.000Z" title="发表于 2026-05-04 23:55:00">2026-05-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/19/you-yuan-lv-bo-qi-ji-chu-yu-she-ji/" title="有源滤波器基础与设计">有源滤波器基础与设计</a><time datetime="2026-04-19T03:40:00.000Z" title="发表于 2026-04-19 11:40:00">2026-04-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/19/yun-fang-fei-li-xiang-yu-bi-huan-wu-cha/" title="运放非理想特性与闭环误差">运放非理想特性与闭环误差</a><time datetime="2026-04-19T03:20:00.000Z" title="发表于 2026-04-19 11:20:00">2026-04-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/19/yun-fang-dan-dian-yuan-she-ji/" title="运放单电源设计：交流耦合、直流偏置与阻值选取">运放单电源设计：交流耦合、直流偏置与阻值选取</a><time datetime="2026-04-19T03:00:00.000Z" title="发表于 2026-04-19 11:00:00">2026-04-19</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By cube</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4&amp;cv=1779439619800"></script><script src="/js/main.js?v=5.5.4&amp;cv=1779439619800"></script><div class="js-pjax"></div></div></body></html>
