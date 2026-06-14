@@ -1,19 +1,45 @@
-- class_name: 推荐站点
-  class_desc: 这些站点长期更新，内容质量稳定，适合作为日常阅读来源。
-  link_list:
-    - name: Hexo
-      link: https://hexo.io/
-      avatar: https://d33wubrfki0l68.cloudfront.net/2f7e72d4b6fbf47f0d76f798ac0fc1b048121977/4a6b2/logo.svg
-      descr: 快速、简洁且高效的静态博客框架
-    - name: Butterfly
-      link: https://butterfly.js.org/
-      avatar: https://butterfly.js.org/img/butterfly-icon.png
-      descr: 当前主题的官方文档与功能说明
-
 - class_name: 我的主页
-  class_desc: 这里可以放你自己的站点矩阵、项目主页或常用链接。
+  class_desc: 
   link_list:
     - name: GitHub
       link: https://github.com/cube1345
       avatar: https://github.githubassets.com/favicons/favicon.svg
       descr: 代码仓库与项目记录
+
+- class_name: 当前展示
+  class_desc: 下面是当前收录的站点列表。
+  link_list:
+    - name: Eileen'blog
+      link: https://eileen5790.github.io/
+      avatar: https://eileen5790.github.io/photo/me.jpg
+      descr: DNDdm，闲着没事瞎倒腾东西的自由人
+    
+    - name: futurefe的碎碎念
+      link: https://futurefe414.github.io/
+      avatar: https://futurefe414.github.io/images/facial.jpg
+      descr: Csharp大神太有说法了
+
+    - name: io-wy Blog
+      link: https://io-wy.github.io/
+      avatar: https://io-wy.github.io/avatar.jpg
+      descr: AI+科研+后端+数学超级大佬！！！
+    
+    - name: Symb0x76 小站
+      link: https://blog0x76.vercel.app/
+      avatar: https://blog0x76.vercel.app/images/avatar.jpg
+      descr: 全站大蛇
+    
+    - name: s3loy's Blog
+      link: https://blog.s3loy.tech/
+      avatar: https://blog.s3loy.tech/_astro/avatar.9KccEqOk_L7RGF.webp
+      descr: leetcode && 运维大佬~
+
+    - name: Just 曼波
+      link: https://blog.maxqian.cn/
+      avatar: https://blog.maxqian.cn/_astro/avatar.OT9EZtl0_BpeMu.webp
+      descr: 哦哦哦，是C++大佬
+
+    - name: Leaving's Blog
+      link: https://leaviiiiing.github.io/
+      avatar: https://leaviiiiing.github.io/_astro/avatar.CnlcGBSs_Z10ShvC.jpg
+      descr: 后端大佬~
