@@ -1,0 +1,295 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>基于MCU的Agent（二） | Cube Diary</title><meta name="author" content="cube"><meta name="copyright" content="cube"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f5ef"><meta name="description" content="从单板 Agent 到四个 ESP32-S3 节点的 Agent Mesh。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于MCU的Agent（二）">
+<meta property="og:url" content="https://cube1345.github.io/2026/06/15/ji-yu-MCU-de-Agent-2/index.html">
+<meta property="og:site_name" content="Cube Diary">
+<meta property="og:description" content="从单板 Agent 到四个 ESP32-S3 节点的 Agent Mesh。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cube1345.github.io/images/covers/anime-cover-01.jpg">
+<meta property="article:published_time" content="2026-06-15T05:20:00.000Z">
+<meta property="article:modified_time" content="2026-06-15T05:20:00.000Z">
+<meta property="article:author" content="cube">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="ESP32">
+<meta property="article:tag" content="MCU">
+<meta property="article:tag" content="物联网">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cube1345.github.io/images/covers/anime-cover-01.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "基于MCU的Agent（二）",
+  "url": "https://cube1345.github.io/2026/06/15/ji-yu-MCU-de-Agent-2/",
+  "image": "https://cube1345.github.io/images/covers/anime-cover-01.jpg",
+  "datePublished": "2026-06-15T05:20:00.000Z",
+  "dateModified": "2026-06-15T05:20:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "cube",
+      "url": "https://cube1345.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/lilisi1.jpg"><link rel="canonical" href="https://cube1345.github.io/2026/06/15/ji-yu-MCU-de-Agent-2/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.5.4&amp;cv=1781634376305"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css?cv=1781634376305" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css?cv=1781634376305"></noscript><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f5ef')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '基于MCU的Agent（二）',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/lilisi1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/friends"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/images/covers/anime-cover-01.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Cube Diary</span></a><a class="nav-page-title" href="/"><span class="site-name">基于MCU的Agent（二）</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/friends"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">基于MCU的Agent（二）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-06-15T05:20:00.000Z" title="发表于 2026-06-15 13:20:00">2026-06-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-06-15T05:20:00.000Z" title="更新于 2026-06-15 13:20:00">2026-06-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">嵌入式</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><div id="post-outdate-notice" data="{&quot;limitDay&quot;:365,&quot;messagePrev&quot;:&quot;It has been&quot;,&quot;messageNext&quot;:&quot;days since the last update, the content of the article may be outdated.&quot;,&quot;postUpdate&quot;:&quot;2026-06-15 13:20:00&quot;}" hidden></div><h1 id="基于-MCU-的-Agent（二）"><a href="#基于-MCU-的-Agent（二）" class="headerlink" title="基于 MCU 的 Agent（二）"></a>基于 MCU 的 Agent（二）</h1><p>上一篇主要讲的是 ESPAgent 如何把 LLM、工具调用和硬件驱动接起来。那时的重点还是单块 ESP32-S3：用户从飞书发来消息，固件把消息送进 Agent loop，LLM 判断是否需要调用工具，最后由工具层去控制 GPIO、RGB 灯、舵机或者读取传感器。</p>
+<p>最近项目往前走了一步。ESPAgent 现在不只是一个“会调用硬件工具的聊天机器人”，而是在往一个小型 Agent Mesh 演进。当前已经有四个 ESP32-S3 角色：Coordinator、Sensor、Control、Display。它们仍然使用同一套代码，但通过不同的 node profile 启动不同的服务。与此同时，项目里也加入了 <code>spawn_subagent</code>，让主 Agent 可以临时创建一个受限的子 Agent，去完成独立的搜索、查时间、查天气、读文件和总结任务。</p>
+<p>这篇文章就按当前最新进展继续讲：ReAct 链路如何在板端验证，subagent 是怎么实现的，四个 ESP32-S3 如何分工，MQTT Mesh 目前做到哪一步，以及硬件资源到底有没有被吃满。</p>
+<h2 id="第一章：从单板-Agent-到四个角色"><a href="#第一章：从单板-Agent-到四个角色" class="headerlink" title="第一章：从单板 Agent 到四个角色"></a>第一章：从单板 Agent 到四个角色</h2><p>ESPAgent 现在的入口已经从早期集中式启动方式调整成了更清晰的分层启动结构。最外层入口是 <code>main/espagent.c</code>，真正的启动编排在 <code>main/app/espagent_app.c</code>。这样做的目的很简单：<code>app_main()</code> 不再堆满所有初始化细节，而是把启动阶段拆开。</p>
+<p>当前启动过程大致可以看成几段：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">app_main()</span><br><span class="line">  -&gt; espagent_app_init_core()</span><br><span class="line">  -&gt; espagent_app_init_services()</span><br><span class="line">  -&gt; espagent_app_start_local_services()</span><br><span class="line">  -&gt; wifi_manager_start()</span><br><span class="line">  -&gt; espagent_app_start_network_services()</span><br></pre></td></tr></table></figure>
+
+<p>核心初始化里会准备 NVS、SPIFFS、message bus、memory、cache、skills、session、Wi-Fi、HTTP proxy、LLM、工具注册表和四个 role service。代码里四个角色的初始化入口是：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">coordinator_node_init();</span><br><span class="line">sensor_node_init();</span><br><span class="line">control_node_init();</span><br><span class="line">display_node_init();</span><br></pre></td></tr></table></figure>
+
+<p>这四个函数本身现在还比较轻，主要负责打印当前角色边界。但真正有意义的是 role gating。判断当前板子应该跑哪些服务的代码在 <code>main/roles/role_config.c</code>。例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">bool</span> <span class="title function_">espagent_role_runs_llm</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> espagent_role_is_edge() ||</span><br><span class="line">           espagent_role_is_coordinator() ||</span><br><span class="line">           espagent_node_has_capability(<span class="string">&quot;llm&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">bool</span> <span class="title function_">espagent_role_runs_sensor_sampling</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> espagent_role_is_edge() ||</span><br><span class="line">           espagent_role_is_sensor() ||</span><br><span class="line">           espagent_node_has_capability(<span class="string">&quot;telemetry&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>也就是说，四块板并不是四份完全不同的工程，而是同一个固件根据 <code>ESPAGENT_SECRET_NODE_ROLE</code> 和 <code>ESPAGENT_SECRET_NODE_CAPABILITIES</code> 决定启动哪些服务。</p>
+<p>当前四个角色是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/dev/ttyUSB0  esp32s3-coordinator-01  coordinator_agent</span><br><span class="line">/dev/ttyUSB1  esp32s3-sensor-01       sensor_agent</span><br><span class="line">/dev/ttyUSB2  esp32s3-control-01      control_agent</span><br><span class="line">/dev/ttyUSB3  esp32s3-display-01      display_agent</span><br></pre></td></tr></table></figure>
+
+<p>Coordinator 是飞书和 LLM 的入口。Sensor 负责采集环境数据。Control 负责执行器，比如 RGB、GPIO、舵机、继电器、风扇和水泵。Display 负责展示状态、timeline 和告警，未来可以迁移到 ESP32-P4 或 Android App。</p>
+<p>当前推荐仍然是“同仓库、同固件、不同 profile”。这样做的好处是协议、工具、消息结构和调试方式统一。缺点也很明显：Flash 还没有按角色裁剪，四块板的 app 镜像基本一样。最新一次构建的 <code>ESPAgent.bin</code> 大小是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0x14eb70</span><br></pre></td></tr></table></figure>
+
+<p>最小 app 分区是 2MB，还剩：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0xb1490</span><br></pre></td></tr></table></figure>
+
+<p>也就是大约 35% 空间。这个状态不是极限压榨，而是保留了后续扩展余量。</p>
+<h2 id="第二章：ReAct-在板端的真实验证"><a href="#第二章：ReAct-在板端的真实验证" class="headerlink" title="第二章：ReAct 在板端的真实验证"></a>第二章：ReAct 在板端的真实验证</h2><p>ESPAgent 的主 Agent 仍然是一个 ReAct loop。代码在 <code>main/agent/agent_loop.c</code>。它不是简单调用一次 LLM 就结束，而是循环处理 <code>tool_use</code>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (iteration &lt; ESPAGENT_AGENT_MAX_TOOL_ITER) &#123;</span><br><span class="line">    err = llm_chat_tools(system_prompt, messages, tools_json, &amp;resp);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!resp.tool_use) &#123;</span><br><span class="line">        final_text = strdup(resp.text);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    cJSON_AddItemToObject(asst_msg, <span class="string">&quot;content&quot;</span>,</span><br><span class="line">                          build_assistant_content(&amp;resp));</span><br><span class="line"></span><br><span class="line">    cJSON *tool_results =</span><br><span class="line">        build_tool_results(&amp;resp, &amp;msg, tool_output,</span><br><span class="line">                           TOOL_OUTPUT_SIZE,</span><br><span class="line">                           tool_fallback,</span><br><span class="line">                           TOOL_OUTPUT_SIZE + <span class="number">512</span>);</span><br><span class="line"></span><br><span class="line">    cJSON_AddItemToObject(result_msg, <span class="string">&quot;content&quot;</span>, tool_results);</span><br><span class="line">    cJSON_AddItemToArray(messages, result_msg);</span><br><span class="line"></span><br><span class="line">    iteration++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这段逻辑说明了 ReAct 的基本形态：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">用户消息</span><br><span class="line">  -&gt; LLM</span><br><span class="line">  -&gt; tool_use</span><br><span class="line">  -&gt; 执行工具</span><br><span class="line">  -&gt; tool_result 回填给 LLM</span><br><span class="line">  -&gt; LLM 生成最终回复</span><br></pre></td></tr></table></figure>
+
+<p>这一次不是只在代码层面确认，而是在 USB0 的真实 ESP32-S3 上验证过。验证方式是通过串口 CLI 注入一条系统消息：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">inject_msg system react_test 请调用get_current_time并回复当前时间</span><br></pre></td></tr></table></figure>
+
+<p>串口日志里能看到完整链路：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Processing message from system:react_test</span><br><span class="line">Tool use iteration 1: 1 calls</span><br><span class="line">LLM tool[0]: get_current_time(&#123;&#125;)</span><br><span class="line">Executing tool: get_current_time</span><br><span class="line">Tool[get_current_time] =&gt; 2026-06-15 12:48:18 CST (Monday)</span><br><span class="line">LLM final response: 当前时间：**2026年6月15日（星期一）12:48 CST**</span><br></pre></td></tr></table></figure>
+
+<p>这个验证很关键。它证明的不只是 <code>get_current_time</code> 这个工具能跑，而是证明主 Agent 的 ReAct 链路可以在真实板端完成一次 LLM 工具调用往返。也就是说，消息进入 Agent loop、LLM 返回 tool call、工具执行、结果回填、LLM 再回答，这条链路是通的。</p>
+<h2 id="第三章：subagent-是怎么实现的"><a href="#第三章：subagent-是怎么实现的" class="headerlink" title="第三章：subagent 是怎么实现的"></a>第三章：subagent 是怎么实现的</h2><p><code>spawn_subagent</code> 是这次新增的一个重要能力。它不是第二块 ESP32，也不是云端进程，而是在同一块 ESP32-S3 上创建一个临时 FreeRTOS task。</p>
+<p>它的注册在 <code>main/tools/tool_registry.c</code>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">register_tool(&amp;(<span class="type">espagent_tool_t</span>)&#123;</span><br><span class="line">    .name = <span class="string">&quot;spawn_subagent&quot;</span>,</span><br><span class="line">    .description = <span class="string">&quot;Delegate an independent subtask to a temporary ESPAgent subagent...&quot;</span>,</span><br><span class="line">    .input_schema_json =</span><br><span class="line">        <span class="string">&quot;&#123;\&quot;type\&quot;:\&quot;object\&quot;,&quot;</span></span><br><span class="line">        <span class="string">&quot;\&quot;properties\&quot;:&#123;\&quot;task\&quot;:&#123;\&quot;type\&quot;:\&quot;string\&quot;&#125;,&quot;</span></span><br><span class="line">        <span class="string">&quot;\&quot;context\&quot;:&#123;\&quot;type\&quot;:\&quot;string\&quot;&#125;&#125;,&quot;</span></span><br><span class="line">        <span class="string">&quot;\&quot;required\&quot;:[\&quot;task\&quot;]&#125;&quot;</span>,</span><br><span class="line">    .execute = tool_subagent_execute,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>执行入口在 <code>main/tools/tool_subagent.c</code>。当主 Agent 或串口 CLI 调用 <code>spawn_subagent</code> 时，固件会解析输入 JSON，取出 <code>task</code> 和可选的 <code>context</code>，然后创建一个新的 FreeRTOS task：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">BaseType_t ok = xTaskCreatePinnedToCore(subagent_task,</span><br><span class="line">                                        <span class="string">&quot;subagent&quot;</span>,</span><br><span class="line">                                        ESPAGENT_SUBAGENT_STACK,</span><br><span class="line">                                        ctx,</span><br><span class="line">                                        ESPAGENT_SUBAGENT_PRIO,</span><br><span class="line">                                        <span class="literal">NULL</span>,</span><br><span class="line">                                        ESPAGENT_SUBAGENT_CORE);</span><br></pre></td></tr></table></figure>
+
+<p>主调用方会等待这个子任务完成：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">BaseType_t done = xSemaphoreTake(ctx-&gt;done_sem,</span><br><span class="line">                                 pdMS_TO_TICKS(ESPAGENT_SUBAGENT_TIMEOUT_MS));</span><br></pre></td></tr></table></figure>
+
+<p>所以当前 subagent 是同步等待模式。它不是后台长期任务，也不会返回一个 task id。主 Agent 调用它后，会等它完成或者超时。</p>
+<p>子任务内部也有一个短 ReAct loop：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> iter = <span class="number">0</span>; iter &lt; ESPAGENT_SUBAGENT_MAX_TOOL_ITER; iter++) &#123;</span><br><span class="line">    <span class="type">esp_err_t</span> err = llm_chat_tools(system_prompt, messages,</span><br><span class="line">                                   s_subagent_tools_json, &amp;resp);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!resp.tool_use) &#123;</span><br><span class="line">        ctx-&gt;result = strdup(resp.text);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    tool_registry_execute(call-&gt;name, call-&gt;input, tool_output,</span><br><span class="line">                          ESPAGENT_SUBAGENT_TOOL_BUF_SIZE);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不过它和主 Agent 有一个重要区别：子 Agent 不能看到所有工具。<code>tool_subagent.c</code> 里有一个白名单：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">bool</span> <span class="title function_">subagent_tool_allowed</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *name)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">strcmp</span>(name, <span class="string">&quot;web_search&quot;</span>) == <span class="number">0</span> ||</span><br><span class="line">           <span class="built_in">strcmp</span>(name, <span class="string">&quot;get_weather&quot;</span>) == <span class="number">0</span> ||</span><br><span class="line">           <span class="built_in">strcmp</span>(name, <span class="string">&quot;get_current_time&quot;</span>) == <span class="number">0</span> ||</span><br><span class="line">           <span class="built_in">strcmp</span>(name, <span class="string">&quot;read_file&quot;</span>) == <span class="number">0</span> ||</span><br><span class="line">           <span class="built_in">strcmp</span>(name, <span class="string">&quot;write_file&quot;</span>) == <span class="number">0</span> ||</span><br><span class="line">           <span class="built_in">strcmp</span>(name, <span class="string">&quot;edit_file&quot;</span>) == <span class="number">0</span> ||</span><br><span class="line">           <span class="built_in">strcmp</span>(name, <span class="string">&quot;list_dir&quot;</span>) == <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这意味着 subagent 适合做独立的信息任务，例如：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">查当前时间</span><br><span class="line">查天气</span><br><span class="line">联网搜索</span><br><span class="line">读取 SPIFFS 文件</span><br><span class="line">总结某个 skill 或 memory 文件</span><br><span class="line">编辑简单文本文件</span><br></pre></td></tr></table></figure>
+
+<p>它不能做：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">GPIO 控制</span><br><span class="line">WS2812 控制</span><br><span class="line">舵机控制</span><br><span class="line">直接读取硬件传感器</span><br><span class="line">发送 mesh_send_command</span><br><span class="line">递归创建新的 subagent</span><br></pre></td></tr></table></figure>
+
+<p>这里有两层安全限制。第一层是构造给子 Agent 的 tools JSON 时只放白名单工具。第二层是在真正执行工具前再检查一次 <code>subagent_tool_allowed()</code>。如果模型幻觉出了 <code>gpio_write</code> 或 <code>mesh_send_command</code>，执行侧也会拒绝。</p>
+<p>USB0 上已经验证过 subagent。串口命令是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tool_exec spawn_subagent &#123;&quot;task&quot;:&quot;Call_get_current_time_and_return_one_sentence&quot;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>日志显示：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Executing tool: spawn_subagent</span><br><span class="line">Spawning subagent</span><br><span class="line">Subagent started</span><br><span class="line">Subagent tool iteration 1</span><br><span class="line">Executing tool: get_current_time</span><br><span class="line">Subagent tool get_current_time result: 32 bytes</span><br><span class="line">Subagent done</span><br><span class="line">Subagent completed</span><br><span class="line">tool_exec status: ESP_OK</span><br></pre></td></tr></table></figure>
+
+<p>最后输出：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Current time is **Monday, June 15, 2026, 12:47 PM CST**.</span><br></pre></td></tr></table></figure>
+
+<p>这说明 subagent 不只是编译通过，而是在真实 ESP32-S3 上完成了“子 Agent 调 LLM、选择工具、执行工具、再让 LLM 总结”的完整闭环。</p>
+<h2 id="第四章：MQTT-Mesh-与四块-ESP32-的通信"><a href="#第四章：MQTT-Mesh-与四块-ESP32-的通信" class="headerlink" title="第四章：MQTT Mesh 与四块 ESP32 的通信"></a>第四章：MQTT Mesh 与四块 ESP32 的通信</h2><p>四块 ESP32-S3 之间目前主要通过 MQTT Mesh 组织起来。topic 规划在 <code>main/espagent_config.h</code>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> ESPAGENT_SENSOR_MQTT_TOPIC_STATE \</span></span><br><span class="line"><span class="meta">    ESPAGENT_MESH_TOPIC_PREFIX <span class="string">&quot;/nodes/&quot;</span> ESPAGENT_NODE_ID <span class="string">&quot;/state&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ESPAGENT_SENSOR_MQTT_TOPIC_EVENTS \</span></span><br><span class="line"><span class="meta">    ESPAGENT_MESH_TOPIC_PREFIX <span class="string">&quot;/nodes/&quot;</span> ESPAGENT_NODE_ID <span class="string">&quot;/events&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ESPAGENT_SENSOR_MQTT_TOPIC_COMMAND \</span></span><br><span class="line"><span class="meta">    ESPAGENT_MESH_TOPIC_PREFIX <span class="string">&quot;/nodes/&quot;</span> ESPAGENT_NODE_ID <span class="string">&quot;/command&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ESPAGENT_MESH_TOPIC_ROLE_COMMAND \</span></span><br><span class="line"><span class="meta">    ESPAGENT_MESH_TOPIC_PREFIX <span class="string">&quot;/roles/&quot;</span> ESPAGENT_NODE_ROLE <span class="string">&quot;/command&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ESPAGENT_MESH_TOPIC_TIMELINE \</span></span><br><span class="line"><span class="meta">    ESPAGENT_MESH_TOPIC_PREFIX <span class="string">&quot;/agent/timeline&quot;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>当前联调使用的 topic prefix 是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">espagent/cube1345</span><br></pre></td></tr></table></figure>
+
+<p>所以四个节点会发布类似这样的状态：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">espagent/cube1345/nodes/esp32s3-coordinator-01/state</span><br><span class="line">espagent/cube1345/nodes/esp32s3-sensor-01/state</span><br><span class="line">espagent/cube1345/nodes/esp32s3-control-01/state</span><br><span class="line">espagent/cube1345/nodes/esp32s3-display-01/state</span><br></pre></td></tr></table></figure>
+
+<p>每个节点还会订阅自己的 node command topic 和 role command topic。例如 Control 节点会关注：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">espagent/cube1345/nodes/esp32s3-control-01/command</span><br><span class="line">espagent/cube1345/roles/control_agent/command</span><br></pre></td></tr></table></figure>
+
+<p>Coordinator 给其它节点发命令时，走的是 <code>mesh_send_command</code> 工具。它的实现入口在 <code>main/tools/tool_mesh_command.c</code>。如果用户只是说“读取温湿度”，Coordinator 不需要用户提供 MQTT ID。代码会根据 action 自动补目标角色：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ((!target_node || !target_node[<span class="number">0</span>]) &amp;&amp;</span><br><span class="line">    (!target_role || !target_role[<span class="number">0</span>]) &amp;&amp;</span><br><span class="line">    <span class="built_in">strcmp</span>(action, <span class="string">&quot;read_temperature_humidity&quot;</span>) == <span class="number">0</span>) &#123;</span><br><span class="line">    target_role = <span class="string">&quot;sensor_agent&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>控制类 action 也会自动路由到 <code>control_agent</code>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> ((!target_node || !target_node[<span class="number">0</span>]) &amp;&amp;</span><br><span class="line">         (!target_role || !target_role[<span class="number">0</span>]) &amp;&amp;</span><br><span class="line">         is_control_action(action)) &#123;</span><br><span class="line">    target_role = <span class="string">&quot;control_agent&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这解决了一个用户体验问题：用户不应该在飞书里说“请调用 mesh_send_command，让 esp32s3-sensor-01 执行 read_temperature_humidity”。正常情况下，用户只需要说“读取温湿度”。Coordinator 应该自动判断交给 Sensor 节点。</p>
+<p>Sensor 节点目前已经有一个窄的真实执行路径。代码在 <code>main/sensors/sensor_mqtt.c</code>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">bool</span> <span class="title function_">handle_sensor_mesh_command</span><span class="params">(<span class="type">const</span> <span class="type">espagent_mesh_command_t</span> *cmd)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (!espagent_role_is_sensor()) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">strcmp</span>(cmd-&gt;action, <span class="string">&quot;read_temperature_humidity&quot;</span>) != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="type">esp_err_t</span> err = tool_aht10_read_temperature_humidity_execute(</span><br><span class="line">        cmd-&gt;args_json[<span class="number">0</span>] ? cmd-&gt;args_json : <span class="string">&quot;&#123;&#125;&quot;</span>,</span><br><span class="line">        result,</span><br><span class="line">        <span class="keyword">sizeof</span>(result));</span><br><span class="line"></span><br><span class="line">    publish_mesh_command_result(cmd, err, result);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>也就是说，Sensor 收到 <code>read_temperature_humidity</code> 后，可以直接调用 AHT10&#x2F;AHT20 工具，并发布 <code>mesh_command_result</code>。</p>
+<p>Control 节点也已经有联调用的直接执行路径。它可以处理：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">set_status_light</span><br><span class="line">ws2812_set</span><br><span class="line">servo_write</span><br><span class="line">gpio_write</span><br></pre></td></tr></table></figure>
+
+<p>但是这里要强调一个边界：这仍然是联调路径，不是最终的生产安全链路。真正开放远程执行前，还要补 command queue、鉴权、审计、safety interlock、actuator state 和 result correlation。</p>
+<p>当前正确的远程控制链路应该演进成：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">MQTT command</span><br><span class="line">  -&gt; mesh_protocol validate</span><br><span class="line">  -&gt; command_queue</span><br><span class="line">  -&gt; safety_interlock</span><br><span class="line">  -&gt; actuator_state</span><br><span class="line">  -&gt; driver/tool</span><br><span class="line">  -&gt; result event + timeline event</span><br></pre></td></tr></table></figure>
+
+<p>现在还没有完全做到这一点。所以可以说：MQTT Mesh 的状态发布、命令发布、角色路由和部分执行路径已经打通，但还不是完整的多 Agent 调度闭环。</p>
+<h2 id="第五章：四个角色的资源占用"><a href="#第五章：四个角色的资源占用" class="headerlink" title="第五章：四个角色的资源占用"></a>第五章：四个角色的资源占用</h2><p>现在四块 ESP32-S3 并没有真正把硬件资源吃满。更准确的说法是：运行时已经按角色裁剪服务，但固件体积还没有按角色裁剪，资源也保留了较大余量。</p>
+<p>Coordinator 是最重的角色。它启动 LLM、Feishu WebSocket、本地 WebSocket server、MQTT、SNTP、cron、heartbeat、proactive、session&#x2F;context 和工具系统。它还可以临时启动 subagent。USB0 启动日志里可以看到 PSRAM 大约 8MB 可用，完成一次 ReAct 验证后仍然有约 8.25MB PSRAM 可用。</p>
+<p>Sensor 角色会跳过 LLM 和 Feishu。它主要运行 sensor sampling、environment monitor、presence monitor、MQTT telemetry 和串口 CLI。当前还没有 sensor cache、滤波统计、阈值事件队列，所以资源占用并不高。</p>
+<p>Control 角色也不运行 LLM 和 Feishu。它主要承担 MQTT command receiver、本地执行器工具、控制边界和 boot servo demo。后续真正让它吃资源的部分应该是 command queue、safety interlock、actuator registry、actuator state，以及更多外设，例如继电器、风扇、水泵、加湿器、蜂鸣器或音频提示。</p>
+<p>Display 角色目前最空。现在它有 display&#x2F;state&#x2F;watchdog 的边界和 MQTT 订阅，但还没有真实屏幕 UI、timeline store、状态聚合和 watchdog 规则。未来如果接 ESP32-P4 或 Android App，这一层才会真正变重。</p>
+<p>当前状态可以总结成：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Coordinator: 最重，LLM 和通信入口，已经接近真实使用形态</span><br><span class="line">Sensor: 中等，采样任务已启动，但还缺缓存、滤波、阈值事件</span><br><span class="line">Control: 中等偏低，工具存在，但安全执行闭环还没补完</span><br><span class="line">Display: 最轻，角色边界有了，展示能力还没真正展开</span><br></pre></td></tr></table></figure>
+
+<p>所以“把每个 ESP32 都尽量吃满”还没有完成。项目现在保留余量是合理的。因为在 MCU 上，过早把 RAM、任务栈、TLS buffer 和外设都压满，会让调试变得非常困难。更稳妥的方式是先让通信链路和安全边界跑通，再逐步把每个角色的资源吃起来。</p>
+<p>下一步更实际的资源扩展方向是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Sensor:</span><br><span class="line">  sensor_cache</span><br><span class="line">  采样滤波</span><br><span class="line">  telemetry schema</span><br><span class="line">  humidity_low / air_quality_bad / presence_changed 事件</span><br><span class="line"></span><br><span class="line">Control:</span><br><span class="line">  command_queue</span><br><span class="line">  safety_interlock</span><br><span class="line">  actuator_state</span><br><span class="line">  relay/fan/pump/humidifier registry</span><br><span class="line">  执行结果审计</span><br><span class="line"></span><br><span class="line">Display:</span><br><span class="line">  timeline_store</span><br><span class="line">  node state 聚合</span><br><span class="line">  telemetry 聚合</span><br><span class="line">  alerts/watchdog 规则</span><br><span class="line">  ESP32-P4 或 Android 可视化界面</span><br><span class="line"></span><br><span class="line">Coordinator:</span><br><span class="line">  command_id result correlation</span><br><span class="line">  远端执行结果汇总回复飞书</span><br><span class="line">  tool_use/tool_result timeline</span><br><span class="line">  role-based tool exposure</span><br></pre></td></tr></table></figure>
+
+<h2 id="第六章：当前项目的边界"><a href="#第六章：当前项目的边界" class="headerlink" title="第六章：当前项目的边界"></a>第六章：当前项目的边界</h2><p>现在 ESPAgent 已经比第一篇时更接近一个多节点 Agent 系统，但边界仍然要说清楚。</p>
+<p>已经跑通的部分：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">主 ReAct loop 板端验证通过</span><br><span class="line">spawn_subagent 板端验证通过</span><br><span class="line">USB0 Coordinator 已接入 Feishu / LLM / MQTT</span><br><span class="line">四角色 profile 已经存在</span><br><span class="line">MQTT state / events / command topic 已经存在</span><br><span class="line">Coordinator 可以按自然语言选择 sensor_agent / control_agent</span><br><span class="line">Sensor 有 read_temperature_humidity 的白名单执行路径</span><br><span class="line">Control 有若干执行器 action 的联调执行路径</span><br></pre></td></tr></table></figure>
+
+<p>尚未完成的部分：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Coordinator 还不会等待远端 mesh_command_result 并汇总回复用户</span><br><span class="line">Control 还没有完整 command queue / safety interlock / actuator_state</span><br><span class="line">Display 还没有真实 UI 和 timeline store</span><br><span class="line">工具列表还没有按角色裁剪</span><br><span class="line">完整 tool_use / tool_result timeline 还没落地</span><br></pre></td></tr></table></figure>
+
+<p>这也是 MCU 上做 Agent 比在云端做 Agent 更麻烦的地方。云端 Agent 可以比较轻松地开线程、开进程、访问数据库和消息队列。MCU 上每一个任务栈、每一个 TLS buffer、每一次 JSON parse 都要算内存。让 LLM 控制硬件也不能只靠 prompt，必须有工具 schema、执行侧校验、GPIO allowlist、role boundary 和安全互锁。</p>
+<p>ESPAgent 现在的形态可以概括为：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Feishu / WebSocket / Cron / Serial</span><br><span class="line">        -&gt; message_bus</span><br><span class="line">        -&gt; agent_loop ReAct</span><br><span class="line">        -&gt; tool_registry</span><br><span class="line">        -&gt; 本地工具或 MQTT Mesh command</span><br><span class="line">        -&gt; Sensor / Control / Display 节点</span><br><span class="line">        -&gt; events / timeline / Feishu 回复</span><br></pre></td></tr></table></figure>
+
+<p>相比第一篇，项目已经从“单板 LLM 调硬件”推进到了“四板角色分工 + 受限 subagent + MQTT Mesh 雏形”。它还不是完整的分布式多 Agent 系统，但核心方向已经清楚：Coordinator 负责理解和调度，Sensor 负责感知，Control 负责安全执行，Display 负责展示和监督。</p>
+<p>接下来最关键的不是继续堆更多工具，而是把远程结果闭环补上。也就是 Coordinator 发出 command 后，要能等待 <code>mesh_command_result</code>，根据 <code>command_id</code> 关联结果，再把真实执行结果告诉用户。只有做到这一步，用户在飞书里说“读取温湿度”时，才不是只得到“我已经发送指令”，而是真的得到来自 Sensor 节点的温度和湿度。</p>
+<p>做到这里，ESPAgent 才会从“能发命令的 Agent”变成“能确认执行结果的 Agent Mesh”。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://cube1345.github.io">cube</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://cube1345.github.io/2026/06/15/ji-yu-MCU-de-Agent-2/">https://cube1345.github.io/2026/06/15/ji-yu-MCU-de-Agent-2/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://cube1345.github.io" target="_blank">Cube Diary</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/MCU/">MCU</a><a class="post-meta__tags" href="/tags/AI/">AI</a><a class="post-meta__tags" href="/tags/%E7%89%A9%E8%81%94%E7%BD%91/">物联网</a><a class="post-meta__tags" href="/tags/ESP32/">ESP32</a><a class="post-meta__tags" href="/tags/Agent/">Agent</a></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/05/22/ji-yu-MCU-de-Agent/" title="基于MCU的Agent"><img class="cover" src="/images/covers/anime-cover-01.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">基于MCU的Agent</div></div><div class="info-2"><div class="info-item-1">如何让LLM操控你的硬件。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/05/22/ji-yu-MCU-de-Agent/" title="基于MCU的Agent"><img class="cover" src="/images/covers/anime-cover-01.jpg" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-22</div><div class="info-item-2">基于MCU的Agent</div></div><div class="info-2"><div class="info-item-1">如何让LLM操控你的硬件。</div></div></div></a><a class="pagination-related" href="/2026/05/04/dan-pian-ji-gong-cheng-jia-gou/" title="单片机工程架构"><img class="cover" src="/images/covers/takamatsu-tomori-01.jpg" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-04</div><div class="info-item-2">单片机工程架构</div></div><div class="info-2"><div class="info-item-1">使用oop-in-c，使单片机开发架构能够独立于不同的MCU。</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/lilisi1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">cube</div><div class="author-info-description">欲买桂花同载酒，终不似，少年游。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/cube1345"><i class="fab fa-github"></i><span>GitHub</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/cube1345" target="_blank" title="GitHub"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:cubeacount123@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的blog (●'◡'●)ﾉ♥</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E-MCU-%E7%9A%84-Agent%EF%BC%88%E4%BA%8C%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">基于 MCU 的 Agent（二）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%9A%E4%BB%8E%E5%8D%95%E6%9D%BF-Agent-%E5%88%B0%E5%9B%9B%E4%B8%AA%E8%A7%92%E8%89%B2"><span class="toc-number">1.1.</span> <span class="toc-text">第一章：从单板 Agent 到四个角色</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0%EF%BC%9AReAct-%E5%9C%A8%E6%9D%BF%E7%AB%AF%E7%9A%84%E7%9C%9F%E5%AE%9E%E9%AA%8C%E8%AF%81"><span class="toc-number">1.2.</span> <span class="toc-text">第二章：ReAct 在板端的真实验证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0%EF%BC%9Asubagent-%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%E7%9A%84"><span class="toc-number">1.3.</span> <span class="toc-text">第三章：subagent 是怎么实现的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0%EF%BC%9AMQTT-Mesh-%E4%B8%8E%E5%9B%9B%E5%9D%97-ESP32-%E7%9A%84%E9%80%9A%E4%BF%A1"><span class="toc-number">1.4.</span> <span class="toc-text">第四章：MQTT Mesh 与四块 ESP32 的通信</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0%EF%BC%9A%E5%9B%9B%E4%B8%AA%E8%A7%92%E8%89%B2%E7%9A%84%E8%B5%84%E6%BA%90%E5%8D%A0%E7%94%A8"><span class="toc-number">1.5.</span> <span class="toc-text">第五章：四个角色的资源占用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E7%AB%A0%EF%BC%9A%E5%BD%93%E5%89%8D%E9%A1%B9%E7%9B%AE%E7%9A%84%E8%BE%B9%E7%95%8C"><span class="toc-number">1.6.</span> <span class="toc-text">第六章：当前项目的边界</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/06/15/ji-yu-MCU-de-Agent-2/" title="基于MCU的Agent（二）">基于MCU的Agent（二）</a><time datetime="2026-06-15T05:20:00.000Z" title="发表于 2026-06-15 13:20:00">2026-06-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/05/22/ji-yu-MCU-de-Agent/" title="基于MCU的Agent">基于MCU的Agent</a><time datetime="2026-05-22T08:11:00.000Z" title="发表于 2026-05-22 16:11:00">2026-05-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/05/04/dan-pian-ji-gong-cheng-jia-gou/" title="单片机工程架构">单片机工程架构</a><time datetime="2026-05-04T15:55:00.000Z" title="发表于 2026-05-04 23:55:00">2026-05-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/19/you-yuan-lv-bo-qi-ji-chu-yu-she-ji/" title="有源滤波器基础与设计">有源滤波器基础与设计</a><time datetime="2026-04-19T03:40:00.000Z" title="发表于 2026-04-19 11:40:00">2026-04-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/04/19/yun-fang-fei-li-xiang-yu-bi-huan-wu-cha/" title="运放非理想特性与闭环误差">运放非理想特性与闭环误差</a><time datetime="2026-04-19T03:20:00.000Z" title="发表于 2026-04-19 11:20:00">2026-04-19</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By cube</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4&amp;cv=1781634376332"></script><script src="/js/main.js?v=5.5.4&amp;cv=1781634376332"></script><div class="js-pjax"></div></div></body></html>
