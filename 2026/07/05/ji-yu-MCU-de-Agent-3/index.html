@@ -1,0 +1,376 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>基于MCU的Agent（三） | Cube Diary</title><meta name="author" content="cube"><meta name="copyright" content="cube"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f5ef"><meta name="description" content="从单板 Agent 走到四个 ESP32-S3 Agent Mesh、Guardian 安全裁决、结构化 OutputMessage、Lua runtime、manifest 动态扩展，以及 ESP32-P4 显示终端的当前进度。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于MCU的Agent（三）">
+<meta property="og:url" content="https://cube1345.github.io/2026/07/05/ji-yu-MCU-de-Agent-3/index.html">
+<meta property="og:site_name" content="Cube Diary">
+<meta property="og:description" content="从单板 Agent 走到四个 ESP32-S3 Agent Mesh、Guardian 安全裁决、结构化 OutputMessage、Lua runtime、manifest 动态扩展，以及 ESP32-P4 显示终端的当前进度。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cube1345.github.io/images/covers/anime-cover-01.jpg">
+<meta property="article:published_time" content="2026-07-05T13:10:00.000Z">
+<meta property="article:modified_time" content="2026-07-05T13:10:00.000Z">
+<meta property="article:author" content="cube">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="ESP32">
+<meta property="article:tag" content="FreeRTOS">
+<meta property="article:tag" content="Lua">
+<meta property="article:tag" content="MCU">
+<meta property="article:tag" content="MQTT">
+<meta property="article:tag" content="多Agent">
+<meta property="article:tag" content="安全">
+<meta property="article:tag" content="物联网">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cube1345.github.io/images/covers/anime-cover-01.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "基于MCU的Agent（三）",
+  "url": "https://cube1345.github.io/2026/07/05/ji-yu-MCU-de-Agent-3/",
+  "image": "https://cube1345.github.io/images/covers/anime-cover-01.jpg",
+  "datePublished": "2026-07-05T13:10:00.000Z",
+  "dateModified": "2026-07-05T13:10:00.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "cube",
+      "url": "https://cube1345.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/lilisi1.jpg"><link rel="canonical" href="https://cube1345.github.io/2026/07/05/ji-yu-MCU-de-Agent-3/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.5.4&amp;cv=1784707170417"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css?cv=1784707170417" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css?cv=1784707170417"></noscript><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f5ef')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '基于MCU的Agent（三）',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/lilisi1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">22</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/friends"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/images/covers/anime-cover-01.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Cube Diary</span></a><a class="nav-page-title" href="/"><span class="site-name">基于MCU的Agent（三）</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/friends"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">基于MCU的Agent（三）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-07-05T13:10:00.000Z" title="发表于 2026-07-05 21:10:00">2026-07-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-07-05T13:10:00.000Z" title="更新于 2026-07-05 21:10:00">2026-07-05</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">嵌入式</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><div id="post-outdate-notice" data="{&quot;limitDay&quot;:365,&quot;messagePrev&quot;:&quot;It has been&quot;,&quot;messageNext&quot;:&quot;days since the last update, the content of the article may be outdated.&quot;,&quot;postUpdate&quot;:&quot;2026-07-05 21:10:00&quot;}" hidden></div><h1 id="基于-MCU-的-Agent（三）"><a href="#基于-MCU-的-Agent（三）" class="headerlink" title="基于 MCU 的 Agent（三）"></a>基于 MCU 的 Agent（三）</h1><p>前两篇文章里，我分别梳理了 ESPAgent 的单板工具调用链路，以及它如何从一块 ESP32-S3 演化成四块 ESP32-S3 的 Agent Mesh。到现在，这个项目又往前走了一大步：它已经不再只是“飞书能控制几个 GPIO、点亮一个灯”的演示，而是开始具备一个更完整的边缘 Agent 系统该有的几个关键结构：角色分工、跨节点 ReAct 闭环、权限裁决、安全边界、结构化结果消息、显示终端，以及面向二次开发的动态硬件扩展底座。</p>
+<p>如果说第一篇的重点是“LLM 怎么选工具”，第二篇的重点是“多个 ESP32 怎么协作”，那这第三篇更想回答的是：当一个 MCU Agent 项目真的开始走向系统化，它会长成什么样；哪些已经做到了，哪些只是规划，哪些又必须认真承认还没完成。</p>
+<p>这篇文章就按当前项目的最新真实进度来写，不再回避工程边界。主要讲六部分：四角色 Agent Mesh 现在到底是什么状态；为什么 <code>OutputMessage</code> 对 MCU Agent 很关键；Guardian 这块安全节点到底做了什么；P4 显示终端现在展示到了哪一步；Lua runtime 与 manifest 动态扩展是怎么接进来的；以及最后我对这个项目当前阶段的判断。</p>
+<h2 id="第一章：现在的-ESPAgent-已经不是单板-Agent-了"><a href="#第一章：现在的-ESPAgent-已经不是单板-Agent-了" class="headerlink" title="第一章：现在的 ESPAgent 已经不是单板 Agent 了"></a>第一章：现在的 ESPAgent 已经不是单板 Agent 了</h2><p>当前项目的核心硬件形态已经比较明确：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/dev/ttyUSB0  esp32s3-coordinator-01  coordinator_agent</span><br><span class="line">/dev/ttyUSB1  esp32s3-sensor-01       sensor_agent</span><br><span class="line">/dev/ttyUSB2  esp32s3-control-01      control_agent</span><br><span class="line">/dev/ttyUSB3  esp32s3-guardian-01     guardian_agent</span><br><span class="line">/dev/ttyACM0  ESP32-P4                display terminal</span><br></pre></td></tr></table></figure>
+
+<p>这五块板不是五个重复的聊天机器人，而是五个不同层次的节点。</p>
+<p>前四块 ESP32-S3 是真正参与协作的 Agent Mesh：</p>
+<ul>
+<li><code>Coordinator</code> 负责 Feishu &#x2F; WebSocket &#x2F; LLM &#x2F; ReAct &#x2F; 调度 &#x2F; timeline。</li>
+<li><code>Sensor</code> 负责温湿度、空气质量、光照、presence 等环境感知，以及 telemetry 发布。</li>
+<li><code>Control</code> 负责 WS2812、GPIO、舵机、继电器、virtual device 等执行路径。</li>
+<li><code>Guardian</code> 负责 <code>policy_check</code>、<code>policy_decision</code>、审计、StateBoard、watchdog 和隐私治理。</li>
+</ul>
+<p>而 ESP32-P4 则不再是“第四角色”，它现在更像一个第五节点：不是决策者，而是 Display Terminal，是一个专门观察 Agent Mesh 推理与通信过程的可视化终端。</p>
+<p>这背后的架构思想其实很简单：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">S3 负责真实 Agent 行为与真实硬件</span><br><span class="line">P4 / Android 负责复杂显示、调试和交互</span><br></pre></td></tr></table></figure>
+
+<p>这比把一块 S3 专门浪费在“显示角色”上更合理。S3 的资源更适合承担边缘感知、控制和安全逻辑，P4 则更适合承接更复杂的 UI 与多过程展示。</p>
+<h2 id="第二章：多节点协作现在不是“发个-MQTT-就结束”"><a href="#第二章：多节点协作现在不是“发个-MQTT-就结束”" class="headerlink" title="第二章：多节点协作现在不是“发个 MQTT 就结束”"></a>第二章：多节点协作现在不是“发个 MQTT 就结束”</h2><p>前期很多 MCU AI 项目都会卡在一个很典型的问题上：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Agent 发出命令</span><br><span class="line">-&gt; MQTT 发布出去</span><br><span class="line">-&gt; 另一块板去执行</span><br><span class="line">-&gt; 本地 Agent 只能说“我已经发送了”</span><br></pre></td></tr></table></figure>
+
+<p>这其实不算真正的闭环。因为对于用户来说，“我已经发送了”并不等于“灯真的变蓝了”“温湿度真的读取到了”“继电器真的打开了”。</p>
+<p>所以项目里现在补上的最关键结构之一，就是结构化 <code>OutputMessage</code>。</p>
+<p>当前四板主链路已经变成：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Feishu / WebSocket / Serial / Cron / Proactive</span><br><span class="line">        ↓</span><br><span class="line">message_bus inbound queue</span><br><span class="line">        ↓</span><br><span class="line">agent_loop</span><br><span class="line">        ↓</span><br><span class="line">LLM tool calling / ReAct / spawn_subagent</span><br><span class="line">        ↓</span><br><span class="line">mesh_send_command</span><br><span class="line">        ↓</span><br><span class="line">Guardian policy_check / policy_decision</span><br><span class="line">        ↓</span><br><span class="line">Sensor / Control 执行命令</span><br><span class="line">        ↓</span><br><span class="line">espagent.output.v1 OutputMessage</span><br><span class="line">        ↓</span><br><span class="line">Coordinator 后台等待并回注 message_bus</span><br><span class="line">        ↓</span><br><span class="line">LLM 再总结成最终回复</span><br><span class="line">        ↓</span><br><span class="line">Feishu / WebSocket / P4 / Android</span><br></pre></td></tr></table></figure>
+
+<p>这条链路真正解决的是“跨节点 ReAct 的结果如何回到推理回路里”。</p>
+<p>当前 <code>OutputMessage</code> 的 schema 叫 <code>espagent.output.v1</code>，它不是大模型厂商原生的 message，而是 ESPAgent 在节点之间约定的结构化结果消息。它会携带：</p>
+<ul>
+<li><code>node_id</code></li>
+<li><code>role</code></li>
+<li><code>command_id</code></li>
+<li><code>trace_id</code></li>
+<li><code>action</code></li>
+<li><code>status</code></li>
+<li><code>summary</code></li>
+<li><code>result</code></li>
+<li><code>error</code></li>
+<li><code>ts_ms</code></li>
+</ul>
+<p>这样 Coordinator 在下发一个远程动作时，不再只是拿到一个“命令已发送”的本地 tool result，而是可以真正等待远端同一 <code>command_id</code> 的结果回来。</p>
+<p>这就让跨节点 ReAct 从：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">推理 -&gt; 下发</span><br></pre></td></tr></table></figure>
+
+<p>变成了：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">推理 -&gt; 下发 -&gt; 等待远端结果 -&gt; 再推理 -&gt; 面向用户回复</span><br></pre></td></tr></table></figure>
+
+<p>现在这个闭环已经在真实板端验证过。比如从飞书让远程控制板把状态灯调成蓝色，Coordinator 的返回不再是“我已尝试发送”，而是等到 <code>control_agent</code> 的 <code>OutputMessage</code> 回来，再回复用户“远程控制板的状态灯已设置为蓝色”。</p>
+<p>这件事看起来只是多了一层结果等待，但本质上它让 MCU Agent 脱离了“只会发指令的聊天壳”，开始具备“知道自己行为结果”的基本能力。</p>
+<h2 id="第三章：第四角色为什么变成了-Guardian"><a href="#第三章：第四角色为什么变成了-Guardian" class="headerlink" title="第三章：第四角色为什么变成了 Guardian"></a>第三章：第四角色为什么变成了 Guardian</h2><p>早期最容易想到的四角色划分，是把第四块板拿去做显示。但项目推进下来后，第四角色更有价值的定位变成了 <code>guardian_agent</code>。</p>
+<p>原因也很现实：</p>
+<p>第一，显示并不是强约束的边缘职责，P4&#x2F;Android 更适合做这件事。</p>
+<p>第二，当项目真的开始让 AI 参与硬件控制，安全问题比显示问题更早变成主问题。尤其是多节点场景里，控制请求跨过了 MQTT、跨过了不同 ESP32、还可能面向高风险硬件，这时“是否允许执行、谁来裁决、如何审计”会比“怎么显示更好看”更关键。</p>
+<p>所以现在第四角色是这样定义的：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Guardian:</span><br><span class="line">  policy_check</span><br><span class="line">  policy_decision</span><br><span class="line">  audit</span><br><span class="line">  privacy</span><br><span class="line">  watchdog</span><br><span class="line">  StateBoard</span><br></pre></td></tr></table></figure>
+
+<p>当前 Guardian 已经做了几件实事。</p>
+<h3 id="1-policy-gate"><a href="#1-policy-gate" class="headerlink" title="1. policy gate"></a>1. policy gate</h3><p>Coordinator 在执行 <code>mesh_send_command</code> 时，不会直接把命令打给 Sensor 或 Control，而是先发布 <code>espagent.policy_check.v1</code>。Guardian 收到后会根据目标角色、动作、安全等级、部分参数边界和白名单规则，返回 <code>espagent.policy_decision.v1</code>。</p>
+<p>只有 <code>decision=allow</code>，Coordinator 才会继续发真正的 Mesh command。</p>
+<h3 id="2-Control-本地二次校验"><a href="#2-Control-本地二次校验" class="headerlink" title="2. Control 本地二次校验"></a>2. Control 本地二次校验</h3><p>Guardian 的意义不只是“中央审核”。当前 <code>control_agent</code> 本机也会缓存最近的 allow decision，并在执行前本地再检查一次。也就是说，即使有人想伪造 MQTT control topic，也不能轻易绕过 Guardian 边界。</p>
+<h3 id="3-审计与-StateBoard"><a href="#3-审计与-StateBoard" class="headerlink" title="3. 审计与 StateBoard"></a>3. 审计与 StateBoard</h3><p>Guardian 还会订阅 <code>agent/timeline</code>、<code>nodes/+/state</code>、<code>nodes/+/telemetry</code>，对关键事件生成 <code>espagent.guardian.audit.v1</code>。同时它还维护了一个轻量 StateBoard，用来记录最近的 <code>policy_decision</code>、<code>mesh_command_result</code>、<code>final_reply</code>、watchdog 状态摘要等。</p>
+<h3 id="4-风险分数与隐私模式"><a href="#4-风险分数与隐私模式" class="headerlink" title="4. 风险分数与隐私模式"></a>4. 风险分数与隐私模式</h3><p>现在 <code>policy_decision</code> 里已经不是单纯的 <code>allow / deny</code>，还会给出 <code>risk_score</code> 和 <code>privacy_mode=metadata_only</code>。这说明 Guardian 已经不只是布尔判断节点，而开始承担“动作风险表达”和“隐私边界表达”的角色。</p>
+<p>当然，当前 Guardian 还不是最终态。私有 broker ACL&#x2F;TLS、真实硬件互锁接线、生产级密钥轮换、参数级更细粒度策略、完整脱敏策略，这些都还没有完成。但项目已经从“靠 prompt 告诉模型不要乱来”走到了“固件路径上强制经过安全节点”的阶段，这个层级已经不一样了。</p>
+<h2 id="第四章：ESP32-P4-现在能做什么"><a href="#第四章：ESP32-P4-现在能做什么" class="headerlink" title="第四章：ESP32-P4 现在能做什么"></a>第四章：ESP32-P4 现在能做什么</h2><p>P4 这部分是项目最近一个很重要的进度点。</p>
+<p>当前 P4 的代码已经不只是个 LVGL 智能家居面板，而是明确增加了一个 <code>AgentMesh</code> tab，并接入了 MQTT 观察链路。它的定位也越来越清楚：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Display Terminal</span><br><span class="line">AgentMesh Observer</span><br><span class="line">Debug / Demo Console</span><br></pre></td></tr></table></figure>
+
+<p>这块屏不是新的 Coordinator，也不直接绕过 Guardian 去控制硬件。它的任务是订阅 Mesh 数据流，然后把多个 Agent 之间的推理、通信和结果展示出来。</p>
+<p>当前 P4 已经接入或补齐的内容有：</p>
+<ul>
+<li>订阅 <code>agent/timeline</code></li>
+<li>订阅 <code>agent/dispatch</code></li>
+<li>订阅 <code>nodes/+/state</code></li>
+<li>订阅 <code>nodes/+/telemetry</code></li>
+<li>订阅 <code>nodes/+/events</code></li>
+<li>订阅 <code>alerts</code></li>
+<li>订阅 <code>security/policy_check</code></li>
+<li>订阅 <code>security/policy_decision</code></li>
+<li>订阅 <code>security/audit</code></li>
+<li>订阅 <code>guardian/stateboard</code></li>
+<li>订阅 <code>guardian/watchdog</code></li>
+</ul>
+<p>在 UI 上，它现在已经有几层显示：</p>
+<h3 id="1-四角色状态卡"><a href="#1-四角色状态卡" class="headerlink" title="1. 四角色状态卡"></a>1. 四角色状态卡</h3><p>P4 的 <code>AgentMesh</code> 页会为 <code>Coordinator / Sensor / Control / Guardian</code> 分别显示：</p>
+<ul>
+<li>当前状态</li>
+<li>最近活动</li>
+<li>最近 RX</li>
+<li>最近 TX</li>
+</ul>
+<p>这意味着你不再只看到“某条 timeline 过去了”，而是可以看到每个角色最近在干什么。</p>
+<h3 id="2-timeline"><a href="#2-timeline" class="headerlink" title="2. timeline"></a>2. timeline</h3><p>P4 已经能解析并显示这些事件：</p>
+<ul>
+<li><code>tool_use</code></li>
+<li><code>tool_result</code></li>
+<li><code>policy_check</code></li>
+<li><code>policy_decision</code></li>
+<li><code>mesh_command_queued</code></li>
+<li><code>mesh_command_result</code></li>
+<li><code>guardian_audit</code></li>
+<li><code>stateboard_update</code></li>
+<li><code>watchdog_node_state</code></li>
+<li><code>watchdog_node_telemetry</code></li>
+<li><code>final_reply</code></li>
+</ul>
+<p>这让“用户从飞书说了一句话，系统内部到底发生了哪些步骤”开始具备可视化基础。</p>
+<h3 id="3-遥测卡片绑定"><a href="#3-遥测卡片绑定" class="headerlink" title="3. 遥测卡片绑定"></a>3. 遥测卡片绑定</h3><p>P4 现在不只是显示 timeline，也开始把 <code>sensor_agent telemetry</code> 真正绑定到 UI 卡片上。最近这轮改动里，我把这些补上了：</p>
+<ul>
+<li>温度通过 MQTT 实时刷新</li>
+<li>湿度通过 MQTT 实时刷新</li>
+<li>光照通过 MQTT 实时刷新</li>
+<li>CO2 通过 MQTT 实时刷新</li>
+<li>TVOC 会作为 CO2 卡片的 note 显示</li>
+<li><code>sample_count</code> 会作为 telemetry 的附加上下文显示</li>
+<li><code>risk_score</code> 会在 policy decision 结果区显示</li>
+</ul>
+<p>也就是说，P4 不再只是“看通信过程”，开始同时看“数据”和“推理过程”。</p>
+<p>当前这版 P4 工程已经重新编译并烧录到 <code>/dev/ttyACM0</code>。屏幕侧的核心链路已经具备，下一步主要是继续用真实四板流量和飞书命令验证“每种事件是否都稳定显示到了 UI”。</p>
+<h2 id="第五章：Lua-runtime-和-manifest-动态扩展"><a href="#第五章：Lua-runtime-和-manifest-动态扩展" class="headerlink" title="第五章：Lua runtime 和 manifest 动态扩展"></a>第五章：Lua runtime 和 manifest 动态扩展</h2><p>如果一个 MCU Agent 项目只能操作固件里预先写死的设备，那它最终还是会卡在“每接一个新硬件都要重新写 C、重新编译、重新烧录”。</p>
+<p>所以项目这段时间补的另一个很重要的方向，就是受控的动态扩展。</p>
+<p>不过这里我没有直接走“让 AI 自由裸控 GPIO&#x2F;I2C&#x2F;UART&#x2F;SPI”的方向，因为那条路很危险。真正落地的路径有两层。</p>
+<h3 id="第一层：manifest-primitive"><a href="#第一层：manifest-primitive" class="headerlink" title="第一层：manifest primitive"></a>第一层：manifest primitive</h3><p>项目现在已经有 runtime hardware manifest 体系。开发者可以用结构化 JSON 描述一个硬件设备的通信方式、参数和权限边界，固件会校验：</p>
+<ul>
+<li><code>manifest_version</code></li>
+<li><code>permissions</code></li>
+<li>role &#x2F; risk 边界</li>
+<li>SHA-256 sidecar</li>
+</ul>
+<p>目前已经补上的 manifest 类型主要是 read-only 路径，例如：</p>
+<ul>
+<li>I2C</li>
+<li>UART</li>
+<li>Modbus</li>
+<li>SPI</li>
+<li>ADC</li>
+<li>GPIO input</li>
+</ul>
+<p>控制类 manifest 也已经开始支持，但不是完全开放的自由控制，而是必须继续经过 Guardian、风险级别、duration、safe-state restore 等限制。</p>
+<p>这意味着项目已经开始具备一种更接近“二次开发产品”的底座：不是所有新设备都必须重新写固件，而是可以通过 manifest 描述能力边界，然后由固件按规则去调用既有 primitive。</p>
+<h3 id="第二层：Lua-runtime"><a href="#第二层：Lua-runtime" class="headerlink" title="第二层：Lua runtime"></a>第二层：Lua runtime</h3><p>除了 manifest，项目还把 Lua runtime 真正接进了固件。</p>
+<p>当前已经支持：</p>
+<ul>
+<li><code>lua_runtime_info</code></li>
+<li><code>lua_list_modules</code></li>
+<li><code>lua_list_scripts</code></li>
+<li><code>lua_run_source</code></li>
+<li><code>lua_run_script</code></li>
+<li><code>lua_run_script_async</code></li>
+<li><code>lua_list_jobs</code></li>
+<li><code>lua_get_job</code></li>
+<li><code>lua_stop_job</code></li>
+</ul>
+<p>但这套 Lua 不是裸脚本执行器。它被严格限制在 ESPAgent 现有能力边界内。当前 Lua 访问硬件的路径是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Lua</span><br><span class="line">  -&gt; espagent.call_capability(name, args_json)</span><br><span class="line">  -&gt; capability registry / tool registry</span><br><span class="line">  -&gt; sandbox / role profile / Guardian / Mesh / interlock</span><br><span class="line">  -&gt; 真正硬件</span><br></pre></td></tr></table></figure>
+
+<p>这意味着 Lua 的价值不是绕过系统，而是在系统允许的边界内提供更灵活的组合能力。</p>
+<p>换句话说，项目在吸收 <code>esp-claw</code> 这类单板 Agent runtime 思想时，保留的是它的工程化优势，而不是照搬它的“直接脚本化硬件访问方式”。</p>
+<p>这条边界我认为非常重要。因为如果脚本层可以绕过 <code>capability_registry</code>、<code>tool_registry</code>、<code>Guardian</code> 和 <code>Control interlock</code>，那整个多节点安全架构就失去意义了。</p>
+<h2 id="第六章：关于-skills、benchmark-和“这个项目现在算到哪一步了”"><a href="#第六章：关于-skills、benchmark-和“这个项目现在算到哪一步了”" class="headerlink" title="第六章：关于 skills、benchmark 和“这个项目现在算到哪一步了”"></a>第六章：关于 skills、benchmark 和“这个项目现在算到哪一步了”</h2><p>现在这个项目已经不仅仅有工具，还有一套运行时 skills 和 benchmark 体系。</p>
+<p>当前 SPIFFS &#x2F; prompt 里已经补充了几类更偏系统层的 skills：</p>
+<ul>
+<li>Agent Mesh 协调</li>
+<li>MQTT Mesh 运维边界</li>
+<li>MCU edge AI 能力边界</li>
+<li>sandbox &#x2F; permissions</li>
+<li>privacy &#x2F; data minimization</li>
+<li>tool integrity &#x2F; prompt injection 防护</li>
+</ul>
+<p>这些 skills 的意义不是“给模型多讲一点背景故事”，而是把系统边界固化到运行时提示里，让模型在工具选择、权限判断和上下文使用上更稳定。</p>
+<p>另一方面，项目现在也不再只是“凭感觉说 skills 有效”，而是增加了自己的 benchmark。通过 <code>tools/benchmark_skills_usb0_3.py</code>，可以在四板串口上对 skills loading、Mesh routing、sandbox、privacy、prompt injection、workflow 等行为做回归验证。</p>
+<p>这件事本身也很重要。因为如果一个 Agent 系统没有验证手段，那很多时候我们说“这个 skill 已经支持”“这个边界已经生效”其实只是主观判断。</p>
+<p>到目前为止，我对这个项目的判断是：</p>
+<h3 id="已经跨过去的阶段"><a href="#已经跨过去的阶段" class="headerlink" title="已经跨过去的阶段"></a>已经跨过去的阶段</h3><ul>
+<li>已经不是单板玩具，而是四角色多节点 Agent Mesh。</li>
+<li>已经不是只会本地 tool calling，而是跨节点 ReAct + OutputMessage 闭环。</li>
+<li>已经不是只有硬件控制，而是加上了 Guardian 安全裁决。</li>
+<li>已经不是只有串口&#x2F;飞书结果，而是开始有 P4 终端展示推理与通信过程。</li>
+<li>已经不是完全写死硬件，而是开始有 manifest 和 Lua 两层动态扩展底座。</li>
+</ul>
+<h3 id="还没跨过去的阶段"><a href="#还没跨过去的阶段" class="headerlink" title="还没跨过去的阶段"></a>还没跨过去的阶段</h3><ul>
+<li>还不是完全异步、可恢复、可查询的任务调度系统。</li>
+<li>还没有完整的长期 trace 索引与远程查询 API。</li>
+<li>还没有生产级的 TLS、ACL、密钥轮换和真实硬件互锁部署流程。</li>
+<li>还没有把 Android &#x2F; P4 做成成熟的工程化上位机。</li>
+<li>还没有把复杂协议全部做成真实可执行 primitive。</li>
+</ul>
+<p>也就是说，这个项目现在已经有了非常清晰的系统骨架，但还没有到“产品完成态”。</p>
+<h2 id="最后一章：为什么我仍然觉得这条路值得继续做"><a href="#最后一章：为什么我仍然觉得这条路值得继续做" class="headerlink" title="最后一章：为什么我仍然觉得这条路值得继续做"></a>最后一章：为什么我仍然觉得这条路值得继续做</h2><p>如果只从“点灯、读温湿度”这些局部现象来看，做四块 ESP32、再加 P4 和 Android，似乎有点重。但真正值得做的从来不是这些单个现象，而是它背后的系统能力迁移。</p>
+<p>这个项目现在最有意思的地方，其实是把很多原本只在 PC Agent、云端 Agent、代码 Agent 上才常见的概念，开始一点点迁移到了 MCU 边缘系统里：</p>
+<ul>
+<li>ReAct</li>
+<li>tool calling</li>
+<li>subagent</li>
+<li>OutputMessage</li>
+<li>sandbox</li>
+<li>policy gate</li>
+<li>audit</li>
+<li>dynamic extension</li>
+<li>benchmark</li>
+<li>timeline visualization</li>
+</ul>
+<p>这些能力一旦能在 MCU 边缘端建立起稳定边界，它的意义就不再只是“做一个会聊天的控制板”，而是为一种新的边缘智能设备形态打基础：设备自己能够理解任务、调用工具、请求权限、把结果结构化返回、和其他节点协作，并且把全过程可视化给人看。</p>
+<p>当前 ESPAgent 距离这种终局当然还有距离，但方向已经开始变清楚了。</p>
+<p>从单板 Agent 到四角色 Agent Mesh，从工具调用到跨节点闭环，从硬件控制到权限治理，从串口日志到 P4 可视化终端，我觉得这条路已经不是“能不能做”的问题，而是“后面把哪些能力做扎实”的问题了。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://cube1345.github.io">cube</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://cube1345.github.io/2026/07/05/ji-yu-MCU-de-Agent-3/">https://cube1345.github.io/2026/07/05/ji-yu-MCU-de-Agent-3/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://cube1345.github.io" target="_blank">Cube Diary</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/MCU/">MCU</a><a class="post-meta__tags" href="/tags/AI/">AI</a><a class="post-meta__tags" href="/tags/%E7%89%A9%E8%81%94%E7%BD%91/">物联网</a><a class="post-meta__tags" href="/tags/ESP32/">ESP32</a><a class="post-meta__tags" href="/tags/Agent/">Agent</a><a class="post-meta__tags" href="/tags/MQTT/">MQTT</a><a class="post-meta__tags" href="/tags/FreeRTOS/">FreeRTOS</a><a class="post-meta__tags" href="/tags/Lua/">Lua</a><a class="post-meta__tags" href="/tags/%E5%AE%89%E5%85%A8/">安全</a><a class="post-meta__tags" href="/tags/%E5%A4%9AAgent/">多Agent</a></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/07/22/(yu-le-xiang)CPU-jia-gou/" title="CPU架构"><img class="cover" src="/images/covers/yuri-nao-01.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy'><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">CPU架构</div></div><div class="info-2"><div class="info-item-1">简述一些CPU架构上的有趣知识点</div></div></div></a><a class="pagination-related" href="/2026/06/15/ji-yu-MCU-de-Agent-2/" title="基于MCU的Agent（二）"><img class="cover" src="/images/covers/anime-cover-01.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">基于MCU的Agent（二）</div></div><div class="info-2"><div class="info-item-1">从单板 Agent 到四个 ESP32-S3 Agent Mesh、Guardian 安全节点、OutputMessage 闭环、Lua runtime、动态硬件扩展与 ESP32-P4/Android 显示终端。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/06/15/ji-yu-MCU-de-Agent-2/" title="基于MCU的Agent（二）"><img class="cover" src="/images/covers/anime-cover-01.jpg" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-15</div><div class="info-item-2">基于MCU的Agent（二）</div></div><div class="info-2"><div class="info-item-1">从单板 Agent 到四个 ESP32-S3 Agent Mesh、Guardian 安全节点、OutputMessage 闭环、Lua runtime、动态硬件扩展与 ESP32-P4/Android 显示终端。</div></div></div></a><a class="pagination-related" href="/2026/05/22/ji-yu-MCU-de-Agent/" title="基于MCU的Agent"><img class="cover" src="/images/covers/anime-cover-01.jpg" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-22</div><div class="info-item-2">基于MCU的Agent</div></div><div class="info-2"><div class="info-item-1">如何让LLM操控你的硬件。</div></div></div></a><a class="pagination-related" href="/2026/05/04/dan-pian-ji-gong-cheng-jia-gou/" title="单片机工程架构"><img class="cover" src="/images/covers/takamatsu-tomori-01.jpg" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-05-04</div><div class="info-item-2">单片机工程架构</div></div><div class="info-2"><div class="info-item-1">使用oop-in-c，使单片机开发架构能够独立于不同的MCU。</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/lilisi1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">cube</div><div class="author-info-description">欲买桂花同载酒，终不似，少年游。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">22</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">5</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/cube1345"><i class="fab fa-github"></i><span>GitHub</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/cube1345" target="_blank" title="GitHub"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:cubeacount123@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的blog (●'◡'●)ﾉ♥</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E-MCU-%E7%9A%84-Agent%EF%BC%88%E4%B8%89%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">基于 MCU 的 Agent（三）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0%EF%BC%9A%E7%8E%B0%E5%9C%A8%E7%9A%84-ESPAgent-%E5%B7%B2%E7%BB%8F%E4%B8%8D%E6%98%AF%E5%8D%95%E6%9D%BF-Agent-%E4%BA%86"><span class="toc-number">1.1.</span> <span class="toc-text">第一章：现在的 ESPAgent 已经不是单板 Agent 了</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0%EF%BC%9A%E5%A4%9A%E8%8A%82%E7%82%B9%E5%8D%8F%E4%BD%9C%E7%8E%B0%E5%9C%A8%E4%B8%8D%E6%98%AF%E2%80%9C%E5%8F%91%E4%B8%AA-MQTT-%E5%B0%B1%E7%BB%93%E6%9D%9F%E2%80%9D"><span class="toc-number">1.2.</span> <span class="toc-text">第二章：多节点协作现在不是“发个 MQTT 就结束”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0%EF%BC%9A%E7%AC%AC%E5%9B%9B%E8%A7%92%E8%89%B2%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%98%E6%88%90%E4%BA%86-Guardian"><span class="toc-number">1.3.</span> <span class="toc-text">第三章：第四角色为什么变成了 Guardian</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-policy-gate"><span class="toc-number">1.3.1.</span> <span class="toc-text">1. policy gate</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Control-%E6%9C%AC%E5%9C%B0%E4%BA%8C%E6%AC%A1%E6%A0%A1%E9%AA%8C"><span class="toc-number">1.3.2.</span> <span class="toc-text">2. Control 本地二次校验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AE%A1%E8%AE%A1%E4%B8%8E-StateBoard"><span class="toc-number">1.3.3.</span> <span class="toc-text">3. 审计与 StateBoard</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E9%A3%8E%E9%99%A9%E5%88%86%E6%95%B0%E4%B8%8E%E9%9A%90%E7%A7%81%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.3.4.</span> <span class="toc-text">4. 风险分数与隐私模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0%EF%BC%9AESP32-P4-%E7%8E%B0%E5%9C%A8%E8%83%BD%E5%81%9A%E4%BB%80%E4%B9%88"><span class="toc-number">1.4.</span> <span class="toc-text">第四章：ESP32-P4 现在能做什么</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%9B%9B%E8%A7%92%E8%89%B2%E7%8A%B6%E6%80%81%E5%8D%A1"><span class="toc-number">1.4.1.</span> <span class="toc-text">1. 四角色状态卡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-timeline"><span class="toc-number">1.4.2.</span> <span class="toc-text">2. timeline</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E9%81%A5%E6%B5%8B%E5%8D%A1%E7%89%87%E7%BB%91%E5%AE%9A"><span class="toc-number">1.4.3.</span> <span class="toc-text">3. 遥测卡片绑定</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0%EF%BC%9ALua-runtime-%E5%92%8C-manifest-%E5%8A%A8%E6%80%81%E6%89%A9%E5%B1%95"><span class="toc-number">1.5.</span> <span class="toc-text">第五章：Lua runtime 和 manifest 动态扩展</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E5%B1%82%EF%BC%9Amanifest-primitive"><span class="toc-number">1.5.1.</span> <span class="toc-text">第一层：manifest primitive</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E5%B1%82%EF%BC%9ALua-runtime"><span class="toc-number">1.5.2.</span> <span class="toc-text">第二层：Lua runtime</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%85%AD%E7%AB%A0%EF%BC%9A%E5%85%B3%E4%BA%8E-skills%E3%80%81benchmark-%E5%92%8C%E2%80%9C%E8%BF%99%E4%B8%AA%E9%A1%B9%E7%9B%AE%E7%8E%B0%E5%9C%A8%E7%AE%97%E5%88%B0%E5%93%AA%E4%B8%80%E6%AD%A5%E4%BA%86%E2%80%9D"><span class="toc-number">1.6.</span> <span class="toc-text">第六章：关于 skills、benchmark 和“这个项目现在算到哪一步了”</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%B2%E7%BB%8F%E8%B7%A8%E8%BF%87%E5%8E%BB%E7%9A%84%E9%98%B6%E6%AE%B5"><span class="toc-number">1.6.1.</span> <span class="toc-text">已经跨过去的阶段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%98%E6%B2%A1%E8%B7%A8%E8%BF%87%E5%8E%BB%E7%9A%84%E9%98%B6%E6%AE%B5"><span class="toc-number">1.6.2.</span> <span class="toc-text">还没跨过去的阶段</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E4%B8%80%E7%AB%A0%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E4%BB%8D%E7%84%B6%E8%A7%89%E5%BE%97%E8%BF%99%E6%9D%A1%E8%B7%AF%E5%80%BC%E5%BE%97%E7%BB%A7%E7%BB%AD%E5%81%9A"><span class="toc-number">1.7.</span> <span class="toc-text">最后一章：为什么我仍然觉得这条路值得继续做</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/07/22/(yu-le-xiang)CPU-jia-gou/" title="CPU架构">CPU架构</a><time datetime="2026-07-22T15:55:00.000Z" title="发表于 2026-07-22 23:55:00">2026-07-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/07/05/ji-yu-MCU-de-Agent-3/" title="基于MCU的Agent（三）">基于MCU的Agent（三）</a><time datetime="2026-07-05T13:10:00.000Z" title="发表于 2026-07-05 21:10:00">2026-07-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/06/15/ji-yu-MCU-de-Agent-2/" title="基于MCU的Agent（二）">基于MCU的Agent（二）</a><time datetime="2026-06-15T05:20:00.000Z" title="发表于 2026-06-15 13:20:00">2026-06-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/05/22/ji-yu-MCU-de-Agent/" title="基于MCU的Agent">基于MCU的Agent</a><time datetime="2026-05-22T08:11:00.000Z" title="发表于 2026-05-22 16:11:00">2026-05-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/05/04/dan-pian-ji-gong-cheng-jia-gou/" title="单片机工程架构">单片机工程架构</a><time datetime="2026-05-04T15:55:00.000Z" title="发表于 2026-05-04 23:55:00">2026-05-04</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By cube</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4&amp;cv=1784707170419"></script><script src="/js/main.js?v=5.5.4&amp;cv=1784707170419"></script><div class="js-pjax"></div></div></body></html>
