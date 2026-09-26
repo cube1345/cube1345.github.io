@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>基于 STM32U535 + ICM42688 的九轴 IMU 模块 | Cube Diary</title><meta name="author" content="cube"><meta name="copyright" content="cube"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f5ef"><meta name="description" content="一块 25 × 30 mm 的 MCU + IMU 外设模块板，沉淀出一套可跨 MCU 移植的嵌入式框架；姿态解算覆盖 Mahony 互补滤波与误差状态 EKF（MEKF）。">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>基于 STM32U535 + ICM42688 的九轴 IMU 模块 | Cube Diary</title><meta name="author" content="cube"><meta name="copyright" content="cube"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f5ef"><meta name="description" content="一块 25 × 30 mm 的 MCU + IMU 外设模块板，沉淀出一套可跨 MCU 移植的嵌入式框架；姿态解算覆盖 Mahony 互补滤波与误差状态 EKF。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="基于 STM32U535 + ICM42688 的九轴 IMU 模块">
 <meta property="og:url" content="https://cube1345.github.io/2026/09/07/jiu-zhou-imu-mo-kuai/index.html">
 <meta property="og:site_name" content="Cube Diary">
-<meta property="og:description" content="一块 25 × 30 mm 的 MCU + IMU 外设模块板，沉淀出一套可跨 MCU 移植的嵌入式框架；姿态解算覆盖 Mahony 互补滤波与误差状态 EKF（MEKF）。">
+<meta property="og:description" content="一块 25 × 30 mm 的 MCU + IMU 外设模块板，沉淀出一套可跨 MCU 移植的嵌入式框架；姿态解算覆盖 Mahony 互补滤波与误差状态 EKF。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://cube1345.github.io/images/covers/yuri-nao-03.jpg">
 <meta property="article:published_time" content="2026-09-06T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-09-26T19:26:10.915Z">
+<meta property="article:modified_time" content="2026-09-26T19:58:54.472Z">
 <meta property="article:author" content="cube">
 <meta property="article:tag" content="Bootloader">
 <meta property="article:tag" content="EKF">
@@ -22,7 +22,7 @@
   "url": "https://cube1345.github.io/2026/09/07/jiu-zhou-imu-mo-kuai/",
   "image": "https://cube1345.github.io/images/covers/yuri-nao-03.jpg",
   "datePublished": "2026-09-06T16:00:00.000Z",
-  "dateModified": "2026-09-26T19:26:10.915Z",
+  "dateModified": "2026-09-26T19:58:54.472Z",
   "author": [
     {
       "@type": "Person",
@@ -30,7 +30,7 @@
       "url": "https://cube1345.github.io"
     }
   ]
-}</script><link rel="shortcut icon" href="/img/lilisi1.jpg"><link rel="canonical" href="https://cube1345.github.io/2026/09/07/jiu-zhou-imu-mo-kuai/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.5.4&amp;cv=1790450812894"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css?cv=1790450812894" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css?cv=1790450812894"></noscript><script>
+}</script><link rel="shortcut icon" href="/img/lilisi1.jpg"><link rel="canonical" href="https://cube1345.github.io/2026/09/07/jiu-zhou-imu-mo-kuai/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.5.4&amp;cv=1790452739116"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css?cv=1790452739116" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css?cv=1790452739116"></noscript><script>
     (() => {
       
     const saveToLocal = {
@@ -163,7 +163,7 @@
   isHighlightShrink: false,
   isToc: true,
   pageType: 'post'
-}</script><meta name="generator" content="Hexo 8.1.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/lilisi1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">24</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">49</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/portfolio"><i class="fa-fw fa-solid fa-diagram-project"></i><span> 作品集</span></a></div><div class="menus_item"><a class="site-page" href="/friends"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/images/covers/yuri-nao-03.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Cube Diary</span></a><a class="nav-page-title" href="/"><span class="site-name">基于 STM32U535 + ICM42688 的九轴 IMU 模块</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/portfolio"><i class="fa-fw fa-solid fa-diagram-project"></i><span> 作品集</span></a></div><div class="menus_item"><a class="site-page" href="/friends"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">基于 STM32U535 + ICM42688 的九轴 IMU 模块</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-06T16:00:00.000Z" title="发表于 2026-09-07 00:00:00">2026-09-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-26T19:26:10.915Z" title="更新于 2026-09-27 03:26:10">2026-09-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%BD%9C%E5%93%81%E9%9B%86/">作品集</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><div id="post-outdate-notice" data="{&quot;limitDay&quot;:365,&quot;messagePrev&quot;:&quot;It has been&quot;,&quot;messageNext&quot;:&quot;days since the last update, the content of the article may be outdated.&quot;,&quot;postUpdate&quot;:&quot;2026-09-27 03:26:10&quot;}" hidden></div><h1 id="基于-STM32U535-ICM42688-的九轴-IMU-模块"><a href="#基于-STM32U535-ICM42688-的九轴-IMU-模块" class="headerlink" title="基于 STM32U535 + ICM42688 的九轴 IMU 模块"></a>基于 STM32U535 + ICM42688 的九轴 IMU 模块</h1><p><strong>项目定位</strong>：一块 25 × 30 mm 的 MCU + IMU 外设模块板，可配合其他主控使用，为整体系统提供角度与加速度感知，并参与闭环控制。项目在软件侧沉淀出一套可跨 MCU 移植的嵌入式框架，后续多个项目复用在此之上。</p>
+}</script><meta name="generator" content="Hexo 8.1.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/lilisi1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">24</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">49</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/portfolio"><i class="fa-fw fa-solid fa-diagram-project"></i><span> 作品集</span></a></div><div class="menus_item"><a class="site-page" href="/friends"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/images/covers/yuri-nao-03.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Cube Diary</span></a><a class="nav-page-title" href="/"><span class="site-name">基于 STM32U535 + ICM42688 的九轴 IMU 模块</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/portfolio"><i class="fa-fw fa-solid fa-diagram-project"></i><span> 作品集</span></a></div><div class="menus_item"><a class="site-page" href="/friends"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">基于 STM32U535 + ICM42688 的九轴 IMU 模块</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-06T16:00:00.000Z" title="发表于 2026-09-07 00:00:00">2026-09-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-26T19:58:54.472Z" title="更新于 2026-09-27 03:58:54">2026-09-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%BD%9C%E5%93%81%E9%9B%86/">作品集</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><div id="post-outdate-notice" data="{&quot;limitDay&quot;:365,&quot;messagePrev&quot;:&quot;It has been&quot;,&quot;messageNext&quot;:&quot;days since the last update, the content of the article may be outdated.&quot;,&quot;postUpdate&quot;:&quot;2026-09-27 03:58:54&quot;}" hidden></div><h1 id="基于-STM32U535-ICM42688-的九轴-IMU-模块"><a href="#基于-STM32U535-ICM42688-的九轴-IMU-模块" class="headerlink" title="基于 STM32U535 + ICM42688 的九轴 IMU 模块"></a>基于 STM32U535 + ICM42688 的九轴 IMU 模块</h1><p><strong>项目定位</strong>：一块 25 × 30 mm 的 MCU + IMU 外设模块板，可配合其他主控使用，为整体系统提供角度与加速度感知，并参与闭环控制。项目在软件侧沉淀出一套可跨 MCU 移植的嵌入式框架，后续多个项目复用在此之上。</p>
 <h2 id="硬件设计"><a href="#硬件设计" class="headerlink" title="硬件设计"></a>硬件设计</h2><p><img src="/images/posts/jiu-zhou-imu-mo-kuai/01.png" alt="九轴 IMU 模块板" loading='lazy'></p>
 <p><img src="/images/posts/jiu-zhou-imu-mo-kuai/02.png" alt="九轴 IMU 模块细节" loading='lazy'></p>
 <p>以 STM32U535 为主控，集成 ICM42688（六轴）与 LIS2MDLTR（磁力计）构成九轴 IMU，通过 CH9102 实现 USB 转串口，负责模块初始化配置与数据上报。</p>
@@ -176,7 +176,7 @@
 <li><strong>磁力计</strong>：采集极值求硬磁偏置与对角软磁比例，附带三维覆盖度检查，跨度不足或近共面直接判失败。</li>
 </ul>
 <p>校准参数可持久化到 Flash，序列化与 CRC 由上层负责。</p>
-<h2 id="MEKF-的核心设计"><a href="#MEKF-的核心设计" class="headerlink" title="MEKF 的核心设计"></a>MEKF 的核心设计</h2><p>状态量不直接用四元数，而是 6 维误差状态：</p>
+<h2 id="EKF-的核心设计"><a href="#EKF-的核心设计" class="headerlink" title="EKF 的核心设计"></a>EKF 的核心设计</h2><p>状态量不直接用四元数，而是 6 维误差状态：</p>
 <p>$$\delta x &#x3D; [,\delta\theta \in \mathbb{R}^3,\ \ \delta b \in \mathbb{R}^3,]$$</p>
 <p>$\delta\theta$ 为右乘的局部角误差，$\delta b$ 为陀螺残余零偏。<strong>用误差状态而非直接对四元数做 EKF 的原因</strong>：四元数 4 个参数表示 3 个自由度，协方差矩阵会奇异；误差状态只有 3 维旋转向量，且名义四元数能始终保持严格单位长度。</p>
 <p>协方差为 6×6 行优先数组，初值 $\mathrm{diag}(0.04,0.04,0.04,\ 0.0025,0.0025,0.0025)$，对应角误差标准差 0.2 rad、零偏 0.05 rad&#x2F;s。</p>
@@ -185,7 +185,37 @@
 <li><strong>更新</strong>：重力方向与磁北方向都建模为三维单位向量观测，$H &#x3D; [,\mathrm{skew}(\hat z),\ 0,]$，用 Cholesky 分解求 3×3 逆矩阵，协方差用 <strong>Joseph 形式</strong>更新，再用<strong>右 Jacobian</strong> 把协方差重置到误差注入后的新切空间。</li>
 </ul>
 <h2 id="初始对齐与磁重获"><a href="#初始对齐与磁重获" class="headerlink" title="初始对齐与磁重获"></a>初始对齐与磁重获</h2><p>首次可靠重力用最短旋转对齐倾角（倒置情形特判为绕 X 轴旋转 180°，避免反向向量退化）；首次可靠磁场锁定磁倾角，并且只绕世界重力轴对齐航向。磁丢失时退化六轴运行，累计缺失 ≥ 2 s 且重力可靠时重新捕获并对齐航向。</p>
-<h2 id="稳态协方差"><a href="#稳态协方差" class="headerlink" title="稳态协方差"></a>稳态协方差</h2><p>静止、100 Hz、跑 1000 s 收敛后：</p>
+<table>
+<thead>
+<tr>
+<th>门限</th>
+<th>判据</th>
+<th>拦截对象</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>模长</td>
+<td>加速度 0.8<del>1.2 g、磁场 10</del>100 uT</td>
+<td>剧烈运动、传感器异常</td>
+</tr>
+<tr>
+<td>方向角差</td>
+<td>$\langle \hat m, \hat z\rangle &lt; 0.5$（≈60°）</td>
+<td>姿态严重失配时的野值</td>
+</tr>
+<tr>
+<td>NIS</td>
+<td>$\chi^2_3$ 的 0.001 分位 <strong>16.27</strong></td>
+<td>统计上不可能的创新</td>
+</tr>
+<tr>
+<td>磁倾角一致性</td>
+<td>与锁定参考的 $z$ 分量偏差 &gt; 0.35 rad（≈20°）</td>
+<td>局部磁干扰 &#x2F; 硬铁异常</td>
+</tr>
+</tbody></table>
+<p>磁观测另需水平分量 $\ge 0.1$ 且<strong>水平场强</strong> $\ge 2$ uT——倾角接近 90° 时航向本就不可观，此时拒绝磁观测而不是让它污染状态。</p>
+<h2 id="稳态协方差"><a href="#稳态协方差" class="headerlink" title="稳态协方差"></a>稳态协方差</h2><p>静止、100 Hz、1000 s、磁倾角 40°、场强 50 uT：</p>
 <table>
 <thead>
 <tr>
@@ -207,7 +237,7 @@
 <tr>
 <td>yaw</td>
 <td>1.67e-4 rad²</td>
-<td><strong>0.740°</strong>（磁）</td>
+<td><strong>0.741°</strong>（磁）</td>
 </tr>
 <tr>
 <td>零偏 x&#x2F;y&#x2F;z</td>
@@ -215,20 +245,159 @@
 <td><strong>1.23e-3 rad&#x2F;s</strong></td>
 </tr>
 </tbody></table>
+<p>姿态约 300 s 收敛、零偏约 500 s，700 s 后不再变化。场强从 15 到 90 uT 结果完全相同——因为只观测<strong>方向</strong>而非矢量。</p>
 <ul>
-<li><strong>yaw 方差是 roll&#x2F;pitch 的 2.3 倍</strong> —— roll&#x2F;pitch 由加速度计约束（$R&#x3D;0.05$），yaw 只能靠磁力计（$R&#x3D;0.08$）。滤波器把「更不信任磁航向」这件事如实写进了协方差，这正是协方差自动加权最直观的体现。</li>
+<li><strong>yaw 方差是 roll 的 2.3 倍，主导因素不是噪声比而是几何。</strong> $R_{mag}&#x2F;R_{acc}&#x3D;1.6$ 只解释一小部分；真正的原因在磁倾角——航向只由磁场的<strong>水平分量</strong>约束，而水平分量 $\propto\cos(\text{dip})$：</li>
 </ul>
+<table>
+<thead>
+<tr>
+<th>磁倾角</th>
+<th>0°</th>
+<th>20°</th>
+<th><strong>40°</strong></th>
+<th>60°</th>
+<th>75°</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>yaw&#x2F;roll 方差比</td>
+<td>1.61</td>
+<td>1.77</td>
+<td><strong>2.34</strong></td>
+<td>3.99</td>
+<td>8.35</td>
+</tr>
+</tbody></table>
+<h2 id="误差预算与一致性分析（蒙特卡洛仿真）"><a href="#误差预算与一致性分析（蒙特卡洛仿真）" class="headerlink" title="误差预算与一致性分析（蒙特卡洛仿真）"></a>误差预算与一致性分析（蒙特卡洛仿真）</h2><p>仿真条件：静止、100 Hz、磁倾角 40°、场强 50 uT。</p>
+<h3 id="①-噪声假设与器件实际规格的差距"><a href="#①-噪声假设与器件实际规格的差距" class="headerlink" title="① 噪声假设与器件实际规格的差距"></a>① 噪声假设与器件实际规格的差距</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>滤波器配置</th>
+<th>ICM42688 &#x2F; MMC5983 规格</th>
+<th>配置保守倍数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>gyro_noise</code></td>
+<td>0.015 rad&#x2F;s&#x2F;√Hz</td>
+<td>0.0028 dps&#x2F;√Hz</td>
+<td><strong>307×</strong></td>
+</tr>
+<tr>
+<td><code>accel_noise</code></td>
+<td>0.05（归一化）</td>
+<td>70 µg&#x2F;√Hz</td>
+<td><strong>51×</strong></td>
+</tr>
+<tr>
+<td><code>mag_noise</code></td>
+<td>0.08（归一化）</td>
+<td>0.5 mG</td>
+<td><strong>113×</strong></td>
+</tr>
+</tbody></table>
+<p>配置值刻意保守，但这也意味着<strong>表观精度主要反映的是假设而非器件能力</strong>。</p>
+<h3 id="②-一致性检验（注入噪声-配置假设）"><a href="#②-一致性检验（注入噪声-配置假设）" class="headerlink" title="② 一致性检验（注入噪声 &#x3D; 配置假设）"></a>② 一致性检验（注入噪声 &#x3D; 配置假设）</h3><table>
+<thead>
+<tr>
+<th>轴</th>
+<th>实际 RMS 误差</th>
+<th>自报 σ</th>
+<th>实际&#x2F;自报</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>roll</td>
+<td>0.421°</td>
+<td>0.484°</td>
+<td><strong>0.87</strong></td>
+</tr>
+<tr>
+<td>pitch</td>
+<td>0.547°</td>
+<td>0.454°</td>
+<td><strong>0.77</strong></td>
+</tr>
+<tr>
+<td>yaw</td>
+<td>0.664°</td>
+<td>0.735°</td>
+<td><strong>0.90</strong></td>
+</tr>
+</tbody></table>
+<p>roll&#x2F;yaw 比值接近 1，滤波器自洽；<strong>pitch 实际误差是自报值的约 3 倍</strong>——物理上 pitch 本应最准（<code>skew(gravity)</code> 对 roll&#x2F;pitch 灵敏度相同，而 <code>skew(mag)</code> 对 pitch 最灵敏），出现倒挂说明存在模型缺陷。</p>
+<h3 id="③-根因定位"><a href="#③-根因定位" class="headerlink" title="③ 根因定位"></a>③ 根因定位</h3><p><code>align_heading()</code> 用<strong>单帧含噪样本</strong>锁定磁参考：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ctx-&gt;mag_reference[<span class="number">2</span>] = world[<span class="number">2</span>];   <span class="comment">/* 该帧磁倾角噪声被永久写进参考 */</span></span><br></pre></td></tr></table></figure>
+
+<p>紧接着 <code>initial_p(ctx)</code> 把协方差重置回初值，等于宣称「参考是精确的」——<strong>参考自身的误差从此不进入 P</strong>。对照实验（仅改变参考锁定方式）：</p>
+<table>
+<thead>
+<tr>
+<th>参考锁定方式</th>
+<th>pitch 实际</th>
+<th>自报</th>
+<th>比值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>单帧含噪样本（现状）</td>
+<td>1.35° &#x2F; 1.01°（两次独立种子）</td>
+<td>0.454°</td>
+<td>2.97 &#x2F; 2.23</td>
+</tr>
+<tr>
+<td>无噪样本</td>
+<td><strong>0.387°</strong> &#x2F; 0.387°</td>
+<td>0.454°</td>
+<td><strong>0.85</strong> ✓</td>
+</tr>
+</tbody></table>
+<p>方向可复现（含噪锁定必然抬高 pitch），幅度随那一帧噪声波动；roll&#x2F;yaw 基本不受影响。<strong>改用多帧平均锁定参考即可把该误差降一个量级。</strong></p>
+<h3 id="④-噪声受限地板"><a href="#④-噪声受限地板" class="headerlink" title="④ 噪声受限地板"></a>④ 噪声受限地板</h3><p>器件实际噪声比配置低 51~307 倍，按线性外推受限地板 <strong>&lt; 0.02°</strong>，低于本实现 float32 的分辨率——蒙特卡洛在 k≤0.03 时已崩塌（误差直接归零），即<strong>该地板已无法用本仿真观测</strong>。</p>
+<h3 id="⑤-磁干扰敏感性（决定-yaw）"><a href="#⑤-磁干扰敏感性（决定-yaw）" class="headerlink" title="⑤ 磁干扰敏感性（决定 yaw）"></a>⑤ 磁干扰敏感性（决定 yaw）</h3><table>
+<thead>
+<tr>
+<th>误差源</th>
+<th>仿真中</th>
+<th>真机典型量级</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>传感器白噪声</td>
+<td>✅ 已建模</td>
+<td>&lt; 0.02°（非瓶颈）</td>
+</tr>
+<tr>
+<td><strong>加计标定残差</strong></td>
+<td>❌ 不存在</td>
+<td><strong>0.1~0.5°</strong></td>
+</tr>
+<tr>
+<td><strong>磁环境残余</strong></td>
+<td>❌ 不存在</td>
+<td><strong>1~3°</strong></td>
+</tr>
+<tr>
+<td><strong>零偏不稳定性</strong></td>
+<td>⚠️ 仅随机游走</td>
+<td>分钟级主导</td>
+</tr>
+</tbody></table>
 <h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><ul>
 <li>无零偏轨迹：最差姿态误差 <strong>0.0275°</strong></li>
 <li>注入零偏后：最差 0.3474°，零偏估计误差 <strong>&lt; 0.004 rad&#x2F;s</strong></li>
 <li>四元数模长 1 ± 2e-5；协方差对称性 &lt; 1e-6</li>
+<li>协方差全程保持正定（最小特征值 1.50e-6 &gt; 0）——这是滤波器不发散的前提，而朴素实现最容易丢掉它</li>
+<li>零偏估计无虚报：输入零偏为 0 时稳态估计收敛到 0，不会因姿态残差而「编造」出零偏</li>
 </ul>
 <h2 id="调试与工具链"><a href="#调试与工具链" class="headerlink" title="调试与工具链"></a>调试与工具链</h2><p>使用 CMake + DAPLink + OpenOCD 搭建 GDB MCP Server，让 AI Agent 规范化参与到 MCU 的 Debug 流程中——该工具链后续复用到电赛车载平衡系统中。</p>
 <h2 id="技术栈"><a href="#技术栈" class="headerlink" title="技术栈"></a>技术栈</h2><p>STM32U535 · ICM42688 · LIS2MDLTR · 误差状态 EKF · Mahony · CMSIS-DSP · Bootloader · CH9102 · 嘉立创 EDA · CMake &#x2F; OpenOCD</p>
 <blockquote>
 <p>仓库：<a target="_blank" rel="noopener" href="https://github.com/cube1345/MCU_Template.git">IMU</a></p>
 </blockquote>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://cube1345.github.io">cube</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://cube1345.github.io/2026/09/07/jiu-zhou-imu-mo-kuai/">https://cube1345.github.io/2026/09/07/jiu-zhou-imu-mo-kuai/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://cube1345.github.io" target="_blank">Cube Diary</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/STM32/">STM32</a><a class="post-meta__tags" href="/tags/IMU/">IMU</a><a class="post-meta__tags" href="/tags/EKF/">EKF</a><a class="post-meta__tags" href="/tags/%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97/">姿态解算</a><a class="post-meta__tags" href="/tags/Bootloader/">Bootloader</a></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/09/08/ling-shu-agent-mesh/" title="灵枢 Agent Mesh：多 Agent 协作家庭智能助手"><img class="cover" src="/images/covers/yuri-nao-01.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy'><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">灵枢 Agent Mesh：多 Agent 协作家庭智能助手</div></div><div class="info-2"><div class="info-item-1">让 AI Agent 打通到硬件本体的操作链路：以 ESP32-S3 承载轻量 LLM Agent Runtime，MQTT Mesh 组织四节点分布式协作，Raspberry Pi 作边缘 AI 网关。</div></div></div></a><a class="pagination-related" href="/2026/09/06/di-xia-che-ku-xiao-fang-xun-jian-che/" title="地下车库自动消防智能巡检无人车系统"><img class="cover" src="/images/covers/takamatsu-tomori-02.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">地下车库自动消防智能巡检无人车系统</div></div><div class="info-2"><div class="info-item-1">面向地下车库的自动消防智能巡检无人车，RTOS 任务划分 + 串级速度闭环 + 图模型导航 + 火焰识别与自动灭火状态机。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/09/09/dian-sai-che-zai-ping-heng-kong-zhi-xi-tong/" title="电赛：车载平衡控制系统"><img class="cover" src="/images/covers/yuri-nao-02.jpg" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-09</div><div class="info-item-2">电赛：车载平衡控制系统</div></div><div class="info-2"><div class="info-item-1">2026 年全国大学生电子设计竞赛 H 题，STM32 + FreeRTOS 主控、Jetson Nano 视觉上位机，在循迹行驶中完成摆杆钢球实时平衡。我负责 MCU 端软件开发与 PCB 设计。</div></div></div></a><a class="pagination-related" href="/2026/09/01/f407-he-xin-ban/" title="STM32F407 核心板"><img class="cover" src="/images/covers/yuri-nao-04.jpg" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-01</div><div class="info-item-2">STM32F407 核心板</div></div><div class="info-2"><div class="info-item-1">基于 STM32F407 的核心板设计。</div></div></div></a><a class="pagination-related" href="/2026/09/06/di-xia-che-ku-xiao-fang-xun-jian-che/" title="地下车库自动消防智能巡检无人车系统"><img class="cover" src="/images/covers/takamatsu-tomori-02.jpg" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">地下车库自动消防智能巡检无人车系统</div></div><div class="info-2"><div class="info-item-1">面向地下车库的自动消防智能巡检无人车，RTOS 任务划分 + 串级速度闭环 + 图模型导航 + 火焰识别与自动灭火状态机。</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/lilisi1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">cube</div><div class="author-info-description">欲买桂花同载酒，终不似，少年游。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">24</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">49</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/cube1345"><i class="fab fa-github"></i><span>GitHub</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/cube1345" target="_blank" title="GitHub"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:cubeacount123@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的blog (●'◡'●)ﾉ♥</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E-STM32U535-ICM42688-%E7%9A%84%E4%B9%9D%E8%BD%B4-IMU-%E6%A8%A1%E5%9D%97"><span class="toc-number">1.</span> <span class="toc-text">基于 STM32U535 + ICM42688 的九轴 IMU 模块</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.1.</span> <span class="toc-text">硬件设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%84"><span class="toc-number">1.2.</span> <span class="toc-text">软件架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bootloader-%E4%B8%8E%E5%8F%AF%E9%9D%A0%E6%80%A7"><span class="toc-number">1.3.</span> <span class="toc-text">Bootloader 与可靠性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97"><span class="toc-number">1.4.</span> <span class="toc-text">姿态解算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%A0%E6%84%9F%E5%99%A8%E6%A0%87%E5%AE%9A%EF%BC%88%E4%B8%89%E7%A7%8D%E9%83%BD%E5%AE%9E%E7%8E%B0%EF%BC%89"><span class="toc-number">1.5.</span> <span class="toc-text">传感器标定（三种都实现）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MEKF-%E7%9A%84%E6%A0%B8%E5%BF%83%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.6.</span> <span class="toc-text">MEKF 的核心设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%AF%B9%E9%BD%90%E4%B8%8E%E7%A3%81%E9%87%8D%E8%8E%B7"><span class="toc-number">1.7.</span> <span class="toc-text">初始对齐与磁重获</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%B3%E6%80%81%E5%8D%8F%E6%96%B9%E5%B7%AE"><span class="toc-number">1.8.</span> <span class="toc-text">稳态协方差</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81"><span class="toc-number">1.9.</span> <span class="toc-text">验证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E8%AF%95%E4%B8%8E%E5%B7%A5%E5%85%B7%E9%93%BE"><span class="toc-number">1.10.</span> <span class="toc-text">调试与工具链</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E6%A0%88"><span class="toc-number">1.11.</span> <span class="toc-text">技术栈</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/09/10/ji-yu-ego-planner-de-wu-ren-ji-bi-zhang/" title="基于 ROS2 Ego-Planner 的无人机避障">基于 ROS2 Ego-Planner 的无人机避障</a><time datetime="2026-09-09T16:00:00.000Z" title="发表于 2026-09-10 00:00:00">2026-09-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/09/09/dian-sai-che-zai-ping-heng-kong-zhi-xi-tong/" title="电赛：车载平衡控制系统">电赛：车载平衡控制系统</a><time datetime="2026-09-08T16:00:00.000Z" title="发表于 2026-09-09 00:00:00">2026-09-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/09/08/ling-shu-agent-mesh/" title="灵枢 Agent Mesh：多 Agent 协作家庭智能助手">灵枢 Agent Mesh：多 Agent 协作家庭智能助手</a><time datetime="2026-09-07T16:00:00.000Z" title="发表于 2026-09-08 00:00:00">2026-09-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/09/07/jiu-zhou-imu-mo-kuai/" title="基于 STM32U535 + ICM42688 的九轴 IMU 模块">基于 STM32U535 + ICM42688 的九轴 IMU 模块</a><time datetime="2026-09-06T16:00:00.000Z" title="发表于 2026-09-07 00:00:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/09/06/di-xia-che-ku-xiao-fang-xun-jian-che/" title="地下车库自动消防智能巡检无人车系统">地下车库自动消防智能巡检无人车系统</a><time datetime="2026-09-05T16:00:00.000Z" title="发表于 2026-09-06 00:00:00">2026-09-06</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By cube</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4&amp;cv=1790450812895"></script><script src="/js/main.js?v=5.5.4&amp;cv=1790450812895"></script><div class="js-pjax"><script>(() => {
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://cube1345.github.io">cube</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://cube1345.github.io/2026/09/07/jiu-zhou-imu-mo-kuai/">https://cube1345.github.io/2026/09/07/jiu-zhou-imu-mo-kuai/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://cube1345.github.io" target="_blank">Cube Diary</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/STM32/">STM32</a><a class="post-meta__tags" href="/tags/IMU/">IMU</a><a class="post-meta__tags" href="/tags/EKF/">EKF</a><a class="post-meta__tags" href="/tags/%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97/">姿态解算</a><a class="post-meta__tags" href="/tags/Bootloader/">Bootloader</a></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/09/08/ling-shu-agent-mesh/" title="灵枢 Agent Mesh：多 Agent 协作家庭智能助手"><img class="cover" src="/images/covers/yuri-nao-01.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy'><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">灵枢 Agent Mesh：多 Agent 协作家庭智能助手</div></div><div class="info-2"><div class="info-item-1">让 AI Agent 打通到硬件本体的操作链路：以 ESP32-S3 承载轻量 LLM Agent Runtime，MQTT Mesh 组织四节点分布式协作，Raspberry Pi 作边缘 AI 网关。</div></div></div></a><a class="pagination-related" href="/2026/09/06/di-xia-che-ku-xiao-fang-xun-jian-che/" title="地下车库自动消防智能巡检无人车系统"><img class="cover" src="/images/covers/takamatsu-tomori-02.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">地下车库自动消防智能巡检无人车系统</div></div><div class="info-2"><div class="info-item-1">面向地下车库的自动消防智能巡检无人车，RTOS 任务划分 + 串级速度闭环 + 图模型导航 + 火焰识别与自动灭火状态机。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/09/09/dian-sai-che-zai-ping-heng-kong-zhi-xi-tong/" title="电赛：车载平衡控制系统"><img class="cover" src="/images/covers/yuri-nao-02.jpg" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-09</div><div class="info-item-2">电赛：车载平衡控制系统</div></div><div class="info-2"><div class="info-item-1">2026 年全国大学生电子设计竞赛 H 题，STM32 + FreeRTOS 主控、Jetson Nano 视觉上位机，在循迹行驶中完成摆杆钢球实时平衡。在本项目中，我主要负责 MCU 端软件开发与 PCB 设计。</div></div></div></a><a class="pagination-related" href="/2026/09/01/f407-he-xin-ban/" title="STM32F407 核心板"><img class="cover" src="/images/covers/yuri-nao-04.jpg" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-01</div><div class="info-item-2">STM32F407 核心板</div></div><div class="info-2"><div class="info-item-1">基于 STM32F407 的核心板设计。</div></div></div></a><a class="pagination-related" href="/2026/09/06/di-xia-che-ku-xiao-fang-xun-jian-che/" title="地下车库自动消防智能巡检无人车系统"><img class="cover" src="/images/covers/takamatsu-tomori-02.jpg" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-06</div><div class="info-item-2">地下车库自动消防智能巡检无人车系统</div></div><div class="info-2"><div class="info-item-1">面向地下车库的自动消防智能巡检无人车，RTOS 任务划分 + 串级速度闭环 + 图模型导航 + 火焰识别与自动灭火状态机。</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/lilisi1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">cube</div><div class="author-info-description">欲买桂花同载酒，终不似，少年游。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">24</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">49</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/cube1345"><i class="fab fa-github"></i><span>GitHub</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/cube1345" target="_blank" title="GitHub"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:cubeacount123@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的blog (●'◡'●)ﾉ♥</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E-STM32U535-ICM42688-%E7%9A%84%E4%B9%9D%E8%BD%B4-IMU-%E6%A8%A1%E5%9D%97"><span class="toc-number">1.</span> <span class="toc-text">基于 STM32U535 + ICM42688 的九轴 IMU 模块</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.1.</span> <span class="toc-text">硬件设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%84"><span class="toc-number">1.2.</span> <span class="toc-text">软件架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bootloader-%E4%B8%8E%E5%8F%AF%E9%9D%A0%E6%80%A7"><span class="toc-number">1.3.</span> <span class="toc-text">Bootloader 与可靠性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A7%BF%E6%80%81%E8%A7%A3%E7%AE%97"><span class="toc-number">1.4.</span> <span class="toc-text">姿态解算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%A0%E6%84%9F%E5%99%A8%E6%A0%87%E5%AE%9A%EF%BC%88%E4%B8%89%E7%A7%8D%E9%83%BD%E5%AE%9E%E7%8E%B0%EF%BC%89"><span class="toc-number">1.5.</span> <span class="toc-text">传感器标定（三种都实现）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#EKF-%E7%9A%84%E6%A0%B8%E5%BF%83%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.6.</span> <span class="toc-text">EKF 的核心设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%AF%B9%E9%BD%90%E4%B8%8E%E7%A3%81%E9%87%8D%E8%8E%B7"><span class="toc-number">1.7.</span> <span class="toc-text">初始对齐与磁重获</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%B3%E6%80%81%E5%8D%8F%E6%96%B9%E5%B7%AE"><span class="toc-number">1.8.</span> <span class="toc-text">稳态协方差</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%AF%E5%B7%AE%E9%A2%84%E7%AE%97%E4%B8%8E%E4%B8%80%E8%87%B4%E6%80%A7%E5%88%86%E6%9E%90%EF%BC%88%E8%92%99%E7%89%B9%E5%8D%A1%E6%B4%9B%E4%BB%BF%E7%9C%9F%EF%BC%89"><span class="toc-number">1.9.</span> <span class="toc-text">误差预算与一致性分析（蒙特卡洛仿真）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A0-%E5%99%AA%E5%A3%B0%E5%81%87%E8%AE%BE%E4%B8%8E%E5%99%A8%E4%BB%B6%E5%AE%9E%E9%99%85%E8%A7%84%E6%A0%BC%E7%9A%84%E5%B7%AE%E8%B7%9D"><span class="toc-number">1.9.1.</span> <span class="toc-text">① 噪声假设与器件实际规格的差距</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A1-%E4%B8%80%E8%87%B4%E6%80%A7%E6%A3%80%E9%AA%8C%EF%BC%88%E6%B3%A8%E5%85%A5%E5%99%AA%E5%A3%B0-%E9%85%8D%E7%BD%AE%E5%81%87%E8%AE%BE%EF%BC%89"><span class="toc-number">1.9.2.</span> <span class="toc-text">② 一致性检验（注入噪声 &#x3D; 配置假设）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A2-%E6%A0%B9%E5%9B%A0%E5%AE%9A%E4%BD%8D"><span class="toc-number">1.9.3.</span> <span class="toc-text">③ 根因定位</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A3-%E5%99%AA%E5%A3%B0%E5%8F%97%E9%99%90%E5%9C%B0%E6%9D%BF"><span class="toc-number">1.9.4.</span> <span class="toc-text">④ 噪声受限地板</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%91%A4-%E7%A3%81%E5%B9%B2%E6%89%B0%E6%95%8F%E6%84%9F%E6%80%A7%EF%BC%88%E5%86%B3%E5%AE%9A-yaw%EF%BC%89"><span class="toc-number">1.9.5.</span> <span class="toc-text">⑤ 磁干扰敏感性（决定 yaw）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81"><span class="toc-number">1.10.</span> <span class="toc-text">验证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E8%AF%95%E4%B8%8E%E5%B7%A5%E5%85%B7%E9%93%BE"><span class="toc-number">1.11.</span> <span class="toc-text">调试与工具链</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E6%A0%88"><span class="toc-number">1.12.</span> <span class="toc-text">技术栈</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/09/10/ji-yu-ego-planner-de-wu-ren-ji-bi-zhang/" title="基于 ROS2 Ego-Planner 的无人机避障">基于 ROS2 Ego-Planner 的无人机避障</a><time datetime="2026-09-09T16:00:00.000Z" title="发表于 2026-09-10 00:00:00">2026-09-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/09/09/dian-sai-che-zai-ping-heng-kong-zhi-xi-tong/" title="电赛：车载平衡控制系统">电赛：车载平衡控制系统</a><time datetime="2026-09-08T16:00:00.000Z" title="发表于 2026-09-09 00:00:00">2026-09-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/09/08/ling-shu-agent-mesh/" title="灵枢 Agent Mesh：多 Agent 协作家庭智能助手">灵枢 Agent Mesh：多 Agent 协作家庭智能助手</a><time datetime="2026-09-07T16:00:00.000Z" title="发表于 2026-09-08 00:00:00">2026-09-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/09/07/jiu-zhou-imu-mo-kuai/" title="基于 STM32U535 + ICM42688 的九轴 IMU 模块">基于 STM32U535 + ICM42688 的九轴 IMU 模块</a><time datetime="2026-09-06T16:00:00.000Z" title="发表于 2026-09-07 00:00:00">2026-09-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/09/06/di-xia-che-ku-xiao-fang-xun-jian-che/" title="地下车库自动消防智能巡检无人车系统">地下车库自动消防智能巡检无人车系统</a><time datetime="2026-09-05T16:00:00.000Z" title="发表于 2026-09-06 00:00:00">2026-09-06</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By cube</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4&amp;cv=1790452739117"></script><script src="/js/main.js?v=5.5.4&amp;cv=1790452739117"></script><div class="js-pjax"><script>(() => {
   const loadMathjax = () => {
     if (!window.MathJax) {
       window.MathJax = {
